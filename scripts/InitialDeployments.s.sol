@@ -3,7 +3,17 @@ pragma solidity ^0.8.0;
 
 import './BaseDeployerScript.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
-import {MiscArbitrum, MiscAvalanche, MiscBase, MiscEthereum, MiscOptimism, MiscPolygon, MiscMetis, MiscGnosis, MiscBNB, MiscScroll, MiscPolygonZkEvm} from 'aave-address-book/AaveAddressBook.sol';
+import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
+import {MiscAvalanche} from 'aave-address-book/MiscAvalanche.sol';
+import {MiscBase} from 'aave-address-book/MiscBase.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
+import {MiscOptimism} from 'aave-address-book/MiscOptimism.sol';
+import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
+import {MiscMetis} from 'aave-address-book/MiscMetis.sol';
+import {MiscGnosis} from 'aave-address-book/MiscGnosis.sol';
+import {MiscBNB} from 'aave-address-book/MiscBNB.sol';
+import {MiscScroll} from 'aave-address-book/MiscScroll.sol';
+import {MiscPolygonZkEvm} from 'aave-address-book/MiscPolygonZkEvm.sol';
 
 abstract contract BaseInitialDeployment is BaseDeployerScript {
   function OWNER() internal virtual returns (address) {
@@ -357,5 +367,11 @@ contract Scroll_testnet is BaseInitialDeployment {
 contract Celo_testnet is BaseInitialDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.CELO_ALFAJORES;
+  }
+}
+
+contract Linea_testnet is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }

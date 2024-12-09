@@ -116,6 +116,9 @@ deploy-wormhole-adapters:
 deploy-zksync-adapters-test:
 	$(call deploy_fn,adapters/DeployZkSyncAdapter,ethereum)
 
+deploy-zksync-adapters-test:
+	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum linea)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
@@ -158,7 +161,7 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,zksync)
+	$(call deploy_fn,InitialDeployments,linea)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
