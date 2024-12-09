@@ -276,6 +276,24 @@ contract Zksync is BaseInitialDeployment {
   }
 }
 
+contract Linea is BaseInitialDeployment {
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xDe090EfCD6ef4b86792e2D84E55a5fa8d49D25D2;
+  }
+
+  function PROXY_ADMIN() internal pure override returns (address) {
+    return 0x160E35e28fEE90F3656420584e0a990276219b5A;
+  }
+
+  //  function GUARDIAN() internal pure override returns (address) {
+  //    return;
+  //  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.LINEA;
+  }
+}
+
 contract Ethereum_testnet is BaseInitialDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

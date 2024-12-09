@@ -45,6 +45,8 @@ celo="${RPC_CELO}"
 celo-testnet="${RPC_CELO_ALFAJORES}"
 zksync="${RPC_ZK_SYNC}"
 zksync-testnet="${RPC_ZK_SYNC_TESTNET}"
+linea="${RPC_LINEA}"
+linea-sepolia="${RPC_LINEA_SEPOLIA}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY_MAINNET}", chain=1 }
@@ -75,6 +77,8 @@ celo={key="${ETHERSCAN_API_KEY_CELO}", chain=42220, utl='https://api.celoscan.io
 celo-testnet={key="${ETHERSCAN_API_KEY_CELO}", chain=44787, url='https://api-alfajores.celoscan.io/api'}
 zksync={key="${ETHERSCAN_API_KEY_ZK_SYNC}", chain=324}
 zksync-testnet={key="${ETHERSCAN_API_KEY_ZK_SYNC}", chain=300, url='https://api-sepolia-era.zksync.network/api'}
+linea={key="${ETHERSCAN_API_KEY_LINEA}", chain=59144 }
+linea_sepolia={key="${ETHERSCAN_API_KEY_LINEA}",chain=59141}
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
 [fuzz]
