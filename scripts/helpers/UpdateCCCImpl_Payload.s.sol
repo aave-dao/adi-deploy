@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import '../BaseDeployerScript.sol';
-import {TransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
+import {ITransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import {ProxyAdmin} from 'solidity-utils/contracts/transparent-proxy/ProxyAdmin.sol';
 
@@ -19,7 +19,7 @@ contract UpdateCCCImpl {
 
   function execute() external {
     ProxyAdmin(PROXY_ADMIN).upgradeAndCall(
-      TransparentUpgradeableProxy(payable(CCC)),
+      ITransparentUpgradeableProxy(payable(CCC)),
       CCC_IMPL,
       abi.encodeWithSignature('initializeRevision()')
     );

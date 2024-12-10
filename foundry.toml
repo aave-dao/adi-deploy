@@ -8,7 +8,7 @@ remappings = [
 ]
 fs_permissions = [{ access = "read-write", path = "./"}]
 metadata="none"
-solc = "0.8.19"
+solc = "0.8.20"
 ffi = true
 
 [profile.zksync.zksync]

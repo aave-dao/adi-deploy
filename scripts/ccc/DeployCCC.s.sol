@@ -5,6 +5,7 @@ import '../BaseDeployerScript.sol';
 import {TransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
+import {ProxyAdmin} from 'solidity-utils/contracts/transparent-proxy/ProxyAdmin.sol';
 
 abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy {
   function _execute(Addresses memory addresses) internal override {
@@ -14,7 +15,7 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
     if (CL_EMERGENCY_ORACLE() == address(0)) {
       crossChainController = TransparentProxyFactory(addresses.proxyFactory).createDeterministic(
         addresses.crossChainControllerImpl,
-        addresses.proxyAdmin,
+        ProxyAdmin(addresses.proxyAdmin),
         abi.encodeWithSelector(
           CrossChainController.initialize.selector,
           addresses.owner,
@@ -30,7 +31,7 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
     } else {
       crossChainController = TransparentProxyFactory(addresses.proxyFactory).createDeterministic(
         addresses.crossChainControllerImpl,
-        addresses.proxyAdmin,
+        ProxyAdmin(addresses.proxyAdmin),
         abi.encodeWithSelector(
           ICrossChainControllerWithEmergencyMode.initialize.selector,
           addresses.owner,
