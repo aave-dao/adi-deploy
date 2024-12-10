@@ -335,6 +335,28 @@ contract Zksync is BaseSetCCRAdapters {
   }
 }
 
+contract Linea is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.LINEA;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](1);
+    receiverBridgeAdaptersToAllow[0] = addresses.lineaAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}
+
 contract Ethereum_testnet is Ethereum {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
@@ -538,6 +560,28 @@ contract Celo_testnet is BaseSetCCRAdapters {
   ) public pure override returns (address[] memory) {
     address[] memory receiverBridgeAdaptersToAllow = new address[](1);
     receiverBridgeAdaptersToAllow[0] = addresses.wormholeAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}
+
+contract Linea_testnet is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return TestNetChainIds.LINEA_SEPOLIA;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](1);
+    receiverBridgeAdaptersToAllow[0] = addresses.lineaAdapter;
 
     return receiverBridgeAdaptersToAllow;
   }

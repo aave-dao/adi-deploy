@@ -151,6 +151,12 @@ contract Zksync is BaseCCCNetworkDeployment {
   }
 }
 
+contract Linea is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.LINEA;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
@@ -214,5 +220,11 @@ contract Scroll_testnet is BaseCCCNetworkDeployment {
 contract Celo_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.CELO_ALFAJORES;
+  }
+}
+
+contract Linea_testnet is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }

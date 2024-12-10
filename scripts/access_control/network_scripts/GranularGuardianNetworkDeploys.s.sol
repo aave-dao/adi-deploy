@@ -220,3 +220,21 @@ contract Zksync is DeployGranularGuardian {
     return ChainIds.ZKSYNC;
   }
 }
+
+contract Linea is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0x8c2d95FE7aeB57b86961F3abB296A54f0ADb7F88; //GovernanceV3Linea.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return; // dao guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ZKSYNC;
+  }
+}

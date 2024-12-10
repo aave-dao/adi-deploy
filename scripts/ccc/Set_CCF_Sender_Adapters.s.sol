@@ -17,6 +17,7 @@ struct NetworkAddresses {
   Addresses scroll;
   Addresses celo;
   Addresses zksync;
+  Addresses linea;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -41,7 +42,7 @@ contract Ethereum is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        24
+        25
       );
 
     NetworkAddresses memory networkAddresses = NetworkAddresses({
@@ -56,7 +57,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       zkevm: _getAddresses(ChainIds.POLYGON_ZK_EVM),
       scroll: _getAddresses(ChainIds.SCROLL),
       celo: _getAddresses(ChainIds.CELO),
-      zksync: _getAddresses(ChainIds.ZKSYNC)
+      zksync: _getAddresses(ChainIds.ZKSYNC),
+      linea: _getAddresses(ChainIds.LINEA)
     });
 
     // polygon path
@@ -201,6 +203,13 @@ contract Ethereum is BaseCCFSenderAdapters {
       destinationBridgeAdapter: networkAddresses.zksync.zksyncAdapter,
       destinationChainId: networkAddresses.zksync.chainId
     });
+
+    // Linea
+    bridgeAdaptersToEnable[24] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.lineaAdapter,
+      destinationBridgeAdapter: networkAddresses.linea.lineaAdapter,
+      destinationChainId: networkAddresses.linea.chainId
+    });
     return bridgeAdaptersToEnable;
   }
 }
@@ -291,7 +300,7 @@ contract Ethereum_testnet is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        16
+        17
       );
 
     //     polygon path
@@ -404,6 +413,14 @@ contract Ethereum_testnet is BaseCCFSenderAdapters {
       currentChainBridgeAdapter: addresses.wormholeAdapter,
       destinationBridgeAdapter: addressesCelo.wormholeAdapter,
       destinationChainId: addressesCelo.chainId
+    });
+
+    // Linea
+    Addresses memory addressesLinea = _getAddresses(TestNetChainIds.LINEA_SEPOLIA);
+    bridgeAdaptersToEnable[15] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.lineaAdapter,
+      destinationBridgeAdapter: addressesLinea.lineaAdapter,
+      destinationChainId: addressesLinea.chainId
     });
     return bridgeAdaptersToEnable;
   }
