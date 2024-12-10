@@ -249,7 +249,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,avalanche)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,zksync)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,linea)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -264,7 +264,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,zksync)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,linea)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
