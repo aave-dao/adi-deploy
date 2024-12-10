@@ -11,14 +11,22 @@ metadata="none"
 solc = "0.8.20"
 ffi = true
 
+evm_version = 'london'
+
 [profile.zksync.zksync]
 fallback_oz = true
 mode = "3"
 zksolc="1.4.1"
 
+[profile.linea]
+evm_version = 'london'
+
+[profile.linea-testnet]
+evm_version = 'london'
+
 [rpc_endpoints]
 ethereum="${RPC_MAINNET}"
-ethereum_sepolia="${RPC_ETHEREUM_SEPOLIA}"
+ethereum-testnet="${RPC_ETHEREUM_SEPOLIA}"
 polygon="${RPC_POLYGON}"
 polygon-testnet="${RPC_POLYGON_MUMBAI}"
 arbitrum="${RPC_ARBITRUM}"
@@ -50,7 +58,7 @@ linea-testnet="${RPC_LINEA_SEPOLIA}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY_MAINNET}", chain=1 }
-ethereum_sepolia={key="${ETHERSCAN_API_KEY_MAINNET}",chain=11155111}
+ethereum_testnet={key="${ETHERSCAN_API_KEY_MAINNET}",chain=11155111}
 optimism={key="${ETHERSCAN_API_KEY_OPTIMISM}",chain=10}
 optimism-testnet={key="${ETHERSCAN_API_KEY_OPTIMISM}",chain=10}
 avalanche={key="${ETHERSCAN_API_KEY_AVALANCHE}",chain=43114}

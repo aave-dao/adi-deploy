@@ -417,7 +417,7 @@ contract Ethereum_testnet is BaseCCFSenderAdapters {
 
     // Linea
     Addresses memory addressesLinea = _getAddresses(TestNetChainIds.LINEA_SEPOLIA);
-    bridgeAdaptersToEnable[15] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    bridgeAdaptersToEnable[16] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.lineaAdapter,
       destinationBridgeAdapter: addressesLinea.lineaAdapter,
       destinationChainId: addressesLinea.chainId

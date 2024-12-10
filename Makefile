@@ -24,6 +24,8 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 #custom_metis := --verifier-url  https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan
 #custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 custom_zksync := --zksync
+custom_linea-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
+custom_ethereum-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
 
 # params:
 #  1 - path/file_name
@@ -113,10 +115,10 @@ deploy-zkevm-adapters:
 deploy-wormhole-adapters:
 	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum celo)
 
-deploy-zksync-adapters-test:
+deploy-zksync-adapters:
 	$(call deploy_fn,adapters/DeployZkSyncAdapter,ethereum)
 
-deploy-zksync-adapters-test:
+deploy-linea-adapters:
 	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum linea)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
@@ -165,7 +167,7 @@ deploy-proxy-factory-test:
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,zksync)
+	$(call deploy_fn,ccc/DeployCCC,linea)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -207,17 +209,19 @@ deploy-metis-adapters-test:
 deploy-base-adapters-test:
 	$(call deploy_fn,adapters/DeployCBaseAdapter,ethereum)
 
+deploy-linea-adapters-test:
+	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum)
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,zksync)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,linea)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,zksync)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,linea)
 
 
 ## Deploy and configure all contracts

@@ -51,6 +51,10 @@ contract Ethereum_testnet is DeployLineaAdapter {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
   }
 
+  function isTestnet() internal pure override returns (bool) {
+    return true;
+  }
+
   function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
     return new RemoteCCC[](0);
   }
@@ -63,6 +67,10 @@ contract Linea_testnet is DeployLineaAdapter {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.LINEA_SEPOLIA;
+  }
+
+  function isTestnet() internal pure override returns (bool) {
+    return true;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {

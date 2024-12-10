@@ -9,7 +9,7 @@ import {ProxyAdmin} from 'solidity-utils/contracts/transparent-proxy/ProxyAdmin.
 
 abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy {
   function _execute(Addresses memory addresses) internal override {
-    addresses.crossChainControllerImpl = _deployWithoutCreate2(); //_deployCCCImpl();
+    addresses.crossChainControllerImpl = _deployCCCImpl();
     address crossChainController;
     // if address is 0 means that ccc will not be emergency consumer
     if (CL_EMERGENCY_ORACLE() == address(0)) {
