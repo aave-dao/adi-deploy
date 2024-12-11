@@ -71,9 +71,9 @@ contract Celo is BaseRemoveBridgeAdapters {
   }
 }
 
-contract Scroll is BaseRemoveBridgeAdapters {
+contract Linea is BaseRemoveBridgeAdapters {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.ETHEREUM;
+    return ChainIds.LINEA;
   }
 
   function getBridgeAdaptersToDisable()
@@ -82,15 +82,8 @@ contract Scroll is BaseRemoveBridgeAdapters {
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
   {
-    uint256[] memory chainIds = new uint256[](1);
-    chainIds[0] = ChainIds.CELO;
-
     ICrossChainForwarder.BridgeAdapterToDisable[]
-      memory bridgeAdapters = new ICrossChainForwarder.BridgeAdapterToDisable[](1);
-    bridgeAdapters[0] = ICrossChainForwarder.BridgeAdapterToDisable({
-      bridgeAdapter: 0xFf8C72bE9bE0Fe889e04BBFdA7D83f78dE7A5E64,
-      chainIds: chainIds
-    });
+      memory bridgeAdapters = new ICrossChainForwarder.BridgeAdapterToDisable[](0);
     return bridgeAdapters;
   }
 
@@ -100,8 +93,15 @@ contract Scroll is BaseRemoveBridgeAdapters {
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
   {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
     ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[]
-      memory bridgeAdapters = new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0);
+      memory bridgeAdapters = new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](1);
+    bridgeAdapters[0] = ICrossChainReceiver.ReceiverBridgeAdapterConfigInput({
+      bridgeAdapter: 0xcE7741c1d99f0A8048eA8f19CB25C506Fb31d6cb,
+      chainIds: chainIds
+    });
 
     return bridgeAdapters;
   }
@@ -119,12 +119,12 @@ contract Ethereum is BaseRemoveBridgeAdapters {
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
   {
     uint256[] memory chainIds = new uint256[](1);
-    chainIds[0] = ChainIds.CELO;
+    chainIds[0] = ChainIds.LINEA;
 
     ICrossChainForwarder.BridgeAdapterToDisable[]
       memory bridgeAdapters = new ICrossChainForwarder.BridgeAdapterToDisable[](1);
     bridgeAdapters[0] = ICrossChainForwarder.BridgeAdapterToDisable({
-      bridgeAdapter: 0xFf8C72bE9bE0Fe889e04BBFdA7D83f78dE7A5E64,
+      bridgeAdapter: 0xC8135D3a64E00ACd72905928a307FC4c469A95F6,
       chainIds: chainIds
     });
     return bridgeAdapters;

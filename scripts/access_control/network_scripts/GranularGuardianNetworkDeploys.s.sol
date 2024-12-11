@@ -227,7 +227,7 @@ contract Linea is DeployGranularGuardian {
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
-    return; //  bgd guardian
+    return 0xfD3a6E65e470a7D7D730FFD5D36a9354E8F9F4Ea; //  bgd guardian
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
@@ -235,6 +235,6 @@ contract Linea is DeployGranularGuardian {
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.ZKSYNC;
+    return ChainIds.LINEA;
   }
 }

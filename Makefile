@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-#custom_ethereum := --with-gas-price 15000000000 # 53 gwei
+custom_ethereum := --with-gas-price 30000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -25,6 +25,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 #custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 custom_zksync := --zksync
 custom_linea-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
+custom_linea :=  --with-gas-price 1000000000 --force # 1 gwei
 custom_ethereum-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
 
 # params:
@@ -211,6 +212,7 @@ deploy-base-adapters-test:
 
 deploy-linea-adapters-test:
 	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
@@ -243,10 +245,10 @@ deploy-full-test:
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
 remove-bridge-adapters:
-	$(call deploy_fn,helpers/RemoveBridgeAdapters,celo)
+	$(call deploy_fn,helpers/RemoveBridgeAdapters,ethereum)
 
 send-direct-message:
-	$(call deploy_fn,helpers/Send_Direct_CCMessage,avalanche)
+	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
 	$(call deploy_fn,helpers/Deploy_Mock_destination,linea)

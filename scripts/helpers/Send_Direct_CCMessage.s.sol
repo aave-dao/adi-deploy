@@ -37,7 +37,7 @@ contract Ethereum is BaseSendDirectMessage {
   }
 
   function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.METIS;
+    return ChainIds.LINEA;
   }
 }
 
@@ -67,7 +67,7 @@ contract Ethereum_testnet is BaseSendDirectMessage {
   }
 
   function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_AMOY;
+    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }
 
