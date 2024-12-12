@@ -19,6 +19,7 @@ import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
 import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
+//import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
 import {IBaseAdapter} from 'aave-address-book/common/IBaseAdapter.sol';
 
 contract ADITestBase is Test {
@@ -586,7 +587,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](10);
+      uint256[] memory chainIds = new uint256[](11);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -597,6 +598,7 @@ contract ADITestBase is Test {
       chainIds[7] = ChainIds.METIS;
       chainIds[8] = ChainIds.BASE;
       chainIds[9] = ChainIds.SCROLL;
+      chainIds[10] = ChainIds.LINEA;
 
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {
@@ -672,6 +674,8 @@ contract ADITestBase is Test {
       return GovernanceV3Gnosis.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.SCROLL) {
       return GovernanceV3Scroll.CROSS_CHAIN_CONTROLLER;
+    } else if (chainId == ChainIds.LINEA) {
+      return 0x0D3f821e9741C8a8Bcac231162320251Db0cdf52;
     }
     revert();
   }

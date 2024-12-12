@@ -67,7 +67,7 @@ abstract contract BaseAddLineaPathPayloadTest is ADITestBase {
 
 contract EthereumAddLineaPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddLineaPathPayloadTest('ethereum', 21386314)
+  BaseAddLineaPathPayloadTest('ethereum', 21386891)
 {
   function _getDeployedPayload() internal pure override returns (address) {
     return 0x3C2A076cD5ECbed55D8Fc0A341c14Fc808bA7fF7;
