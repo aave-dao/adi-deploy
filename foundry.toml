@@ -11,7 +11,7 @@ metadata="none"
 solc = "0.8.20"
 ffi = true
 
-#evm_version = 'london'
+evm_version = 'london'
 
 [profile.zksync.zksync]
 fallback_oz = true
