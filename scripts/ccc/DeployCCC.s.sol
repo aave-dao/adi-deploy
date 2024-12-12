@@ -5,16 +5,17 @@ import '../BaseDeployerScript.sol';
 import {TransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
+import {ProxyAdmin} from 'solidity-utils/contracts/transparent-proxy/ProxyAdmin.sol';
 
 abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy {
   function _execute(Addresses memory addresses) internal override {
-    addresses.crossChainControllerImpl = _deployWithoutCreate2(); //_deployCCCImpl();
+    addresses.crossChainControllerImpl = _deployCCCImpl();
     address crossChainController;
     // if address is 0 means that ccc will not be emergency consumer
     if (CL_EMERGENCY_ORACLE() == address(0)) {
       crossChainController = TransparentProxyFactory(addresses.proxyFactory).createDeterministic(
         addresses.crossChainControllerImpl,
-        addresses.proxyAdmin,
+        ProxyAdmin(addresses.proxyAdmin),
         abi.encodeWithSelector(
           CrossChainController.initialize.selector,
           addresses.owner,
@@ -30,7 +31,7 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
     } else {
       crossChainController = TransparentProxyFactory(addresses.proxyFactory).createDeterministic(
         addresses.crossChainControllerImpl,
-        addresses.proxyAdmin,
+        ProxyAdmin(addresses.proxyAdmin),
         abi.encodeWithSelector(
           ICrossChainControllerWithEmergencyMode.initialize.selector,
           addresses.owner,
@@ -150,6 +151,12 @@ contract Zksync is BaseCCCNetworkDeployment {
   }
 }
 
+contract Linea is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.LINEA;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
@@ -213,5 +220,11 @@ contract Scroll_testnet is BaseCCCNetworkDeployment {
 contract Celo_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.CELO_ALFAJORES;
+  }
+}
+
+contract Linea_testnet is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }

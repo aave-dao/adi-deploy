@@ -8,17 +8,25 @@ remappings = [
 ]
 fs_permissions = [{ access = "read-write", path = "./"}]
 metadata="none"
-solc = "0.8.19"
+solc = "0.8.20"
 ffi = true
+
+#evm_version = 'london'
 
 [profile.zksync.zksync]
 fallback_oz = true
 mode = "3"
 zksolc="1.4.1"
 
+[profile.linea]
+evm_version = 'london'
+
+[profile.linea-testnet]
+evm_version = 'london'
+
 [rpc_endpoints]
 ethereum="${RPC_MAINNET}"
-ethereum_sepolia="${RPC_ETHEREUM_SEPOLIA}"
+ethereum-testnet="${RPC_ETHEREUM_SEPOLIA}"
 polygon="${RPC_POLYGON}"
 polygon-testnet="${RPC_POLYGON_MUMBAI}"
 arbitrum="${RPC_ARBITRUM}"
@@ -45,10 +53,12 @@ celo="${RPC_CELO}"
 celo-testnet="${RPC_CELO_ALFAJORES}"
 zksync="${RPC_ZK_SYNC}"
 zksync-testnet="${RPC_ZK_SYNC_TESTNET}"
+linea="${RPC_LINEA}"
+linea-testnet="${RPC_LINEA_SEPOLIA}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY_MAINNET}", chain=1 }
-ethereum_sepolia={key="${ETHERSCAN_API_KEY_MAINNET}",chain=11155111}
+ethereum_testnet={key="${ETHERSCAN_API_KEY_MAINNET}",chain=11155111}
 optimism={key="${ETHERSCAN_API_KEY_OPTIMISM}",chain=10}
 optimism-testnet={key="${ETHERSCAN_API_KEY_OPTIMISM}",chain=10}
 avalanche={key="${ETHERSCAN_API_KEY_AVALANCHE}",chain=43114}
@@ -75,6 +85,8 @@ celo={key="${ETHERSCAN_API_KEY_CELO}", chain=42220, utl='https://api.celoscan.io
 celo-testnet={key="${ETHERSCAN_API_KEY_CELO}", chain=44787, url='https://api-alfajores.celoscan.io/api'}
 zksync={key="${ETHERSCAN_API_KEY_ZK_SYNC}", chain=324}
 zksync-testnet={key="${ETHERSCAN_API_KEY_ZK_SYNC}", chain=300, url='https://api-sepolia-era.zksync.network/api'}
+linea={key="${ETHERSCAN_API_KEY_LINEA}", chain=59144 }
+linea-testnet={key="${ETHERSCAN_API_KEY_LINEA}",chain=59141}
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
 [fuzz]

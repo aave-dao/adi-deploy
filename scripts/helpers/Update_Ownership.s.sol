@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 
 import {ZkSyncScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
-import {GovernanceV3ZkSync} from 'aave-address-book/AaveAddressBook.sol';
+import {GovernanceV3ZkSync} from 'aave-address-book/GovernanceV3ZkSync.sol';
 
 contract ZkSync is ZkSyncScript {
   function run() external {

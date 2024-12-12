@@ -6,7 +6,7 @@ import 'forge-std/Test.sol';
 import {IBaseAdaptersUpdate} from '../../src/templates/interfaces/IBaseAdaptersUpdate.sol';
 import {ChainHelpers, ChainIds} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
-import {ProxyHelpers} from 'aave-helpers/ProxyHelpers.sol';
+import {ProxyHelpers} from 'aave-v3-origin/../tests/utils/ProxyHelpers.sol';
 
 import {ICrossChainReceiver, ICrossChainForwarder} from 'aave-address-book/common/ICrossChainController.sol';
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';

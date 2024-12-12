@@ -6,7 +6,8 @@ import 'adi-tests/BaseTest.sol';
 import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
 import {TestUtils} from 'adi-tests/utils/TestUtils.sol';
 import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
-import {Ethereum, Polygon, Avalanche, Binance, Gnosis, Metis, Scroll, Optimism, Arbitrum, Base} from '../../scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol';
+import {Ethereum, Polygon, Avalanche, Binance, Gnosis, Metis, Scroll, Optimism, Arbitrum, Base, Linea} from '../../scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol';
+import {IAccessControl} from 'openzeppelin-contracts/contracts/access/IAccessControl.sol';
 
 abstract contract BaseGGTest is BaseTest {
   bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
@@ -70,12 +71,10 @@ abstract contract BaseGGTest is BaseTest {
     vm.assume(caller != _getDefaultAdmin());
     hoax(caller);
     vm.expectRevert(
-      bytes(
-        string.concat(
-          'AccessControl: account 0x',
-          TestUtils.toAsciiString(caller),
-          ' is missing role 0x0000000000000000000000000000000000000000000000000000000000000000'
-        )
+      abi.encodeWithSelector(
+        IAccessControl.AccessControlUnauthorizedAccount.selector,
+        caller,
+        0x0000000000000000000000000000000000000000000000000000000000000000
       )
     );
     control.updateGuardian(newGuardian);
@@ -108,12 +107,10 @@ abstract contract BaseCCCWithEmergency is BaseGGTest {
     vm.assume(caller != _getSolveEmergencyGuardian());
     hoax(caller);
     vm.expectRevert(
-      bytes(
-        string.concat(
-          'AccessControl: account 0x',
-          TestUtils.toAsciiString(caller),
-          ' is missing role 0xf4cdc679c22cbf47d6de8e836ce79ffdae51f38408dcde3f0645de7634fa607d'
-        )
+      abi.encodeWithSelector(
+        IAccessControl.AccessControlUnauthorizedAccount.selector,
+        caller,
+        0xf4cdc679c22cbf47d6de8e836ce79ffdae51f38408dcde3f0645de7634fa607d
       )
     );
     control.solveEmergencyDeprecated(
@@ -179,12 +176,10 @@ abstract contract BaseCCForwarder is BaseGGTest {
 
     hoax(caller);
     vm.expectRevert(
-      bytes(
-        string.concat(
-          'AccessControl: account 0x',
-          TestUtils.toAsciiString(caller),
-          ' is missing role 0xc448b9502bbdf9850cc39823b6ea40cfe96d3ac63008e89edd2b8e98c6cc0af3'
-        )
+      abi.encodeWithSelector(
+        IAccessControl.AccessControlUnauthorizedAccount.selector,
+        caller,
+        0xc448b9502bbdf9850cc39823b6ea40cfe96d3ac63008e89edd2b8e98c6cc0af3
       )
     );
 
@@ -244,12 +239,10 @@ abstract contract BaseCCForwarder is BaseGGTest {
 
     hoax(caller);
     vm.expectRevert(
-      bytes(
-        string.concat(
-          'AccessControl: account 0x',
-          TestUtils.toAsciiString(caller),
-          ' is missing role 0xc448b9502bbdf9850cc39823b6ea40cfe96d3ac63008e89edd2b8e98c6cc0af3'
-        )
+      abi.encodeWithSelector(
+        IAccessControl.AccessControlUnauthorizedAccount.selector,
+        caller,
+        0xc448b9502bbdf9850cc39823b6ea40cfe96d3ac63008e89edd2b8e98c6cc0af3
       )
     );
     control.retryEnvelope(envelope, gasLimit);
@@ -282,12 +275,10 @@ abstract contract BaseCCForwarderWithEmergency is BaseCCForwarder {
     vm.assume(caller != _getSolveEmergencyGuardian());
     hoax(caller);
     vm.expectRevert(
-      bytes(
-        string.concat(
-          'AccessControl: account 0x',
-          TestUtils.toAsciiString(caller),
-          ' is missing role 0xf4cdc679c22cbf47d6de8e836ce79ffdae51f38408dcde3f0645de7634fa607d'
-        )
+      abi.encodeWithSelector(
+        IAccessControl.AccessControlUnauthorizedAccount.selector,
+        caller,
+        0xf4cdc679c22cbf47d6de8e836ce79ffdae51f38408dcde3f0645de7634fa607d
       )
     );
     control.solveEmergencyDeprecated(
@@ -514,6 +505,28 @@ contract ArbitrumGGTest is Arbitrum, BaseGGTest('arbitrum', 222622842) {
 }
 
 contract CBaseGGTest is Base, BaseGGTest('base', 15896446) {
+  function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
+  }
+
+  function _getDefaultAdmin() internal pure override returns (address) {
+    return DEFAULT_ADMIN();
+  }
+
+  function _getRetryGuardian() internal pure override returns (address) {
+    return RETRY_GUARDIAN();
+  }
+
+  function _getSolveEmergencyGuardian() internal pure override returns (address) {
+    return SOLVE_EMERGENCY_GUARDIAN();
+  }
+}
+
+contract LineaGGTest is Linea, BaseGGTest('linea', 13215719) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }

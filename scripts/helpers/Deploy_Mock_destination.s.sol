@@ -88,6 +88,12 @@ contract Zksync is BaseMockDestination {
   }
 }
 
+contract Linea is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.LINEA;
+  }
+}
+
 contract Ethereum_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
@@ -145,5 +151,11 @@ contract Scroll_testnet is BaseMockDestination {
 contract Celo_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return TestNetChainIds.CELO_ALFAJORES;
+  }
+}
+
+contract Linea_testnet is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }
