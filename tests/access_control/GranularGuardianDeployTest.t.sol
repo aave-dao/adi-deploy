@@ -526,7 +526,7 @@ contract CBaseGGTest is Base, BaseGGTest('base', 15896446) {
   }
 }
 
-contract LineaGGTest is Linea, BaseGGTest('linea', 13215719) {
+contract LineaGGTest is Linea, BaseGGTest('linea', 13223742) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }

@@ -231,7 +231,7 @@ contract Linea is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return 0x0BF186764D8333a938f35e5dD124a7b9b9dccDF9; // dao guardian
+    return 0x056E4C4E80D1D14a637ccbD0412CDAAEc5B51F4E; // dao governance guardian
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
