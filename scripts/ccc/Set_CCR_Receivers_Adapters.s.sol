@@ -303,11 +303,10 @@ contract Celo is BaseSetCCRAdapters {
   function getReceiverBridgeAdaptersToAllow(
     Addresses memory addresses
   ) public pure override returns (address[] memory) {
-    address[] memory receiverBridgeAdaptersToAllow = new address[](4);
+    address[] memory receiverBridgeAdaptersToAllow = new address[](3);
     receiverBridgeAdaptersToAllow[0] = addresses.lzAdapter;
     receiverBridgeAdaptersToAllow[1] = addresses.hlAdapter;
-    receiverBridgeAdaptersToAllow[2] = addresses.wormholeAdapter;
-    receiverBridgeAdaptersToAllow[3] = addresses.ccipAdapter;
+    receiverBridgeAdaptersToAllow[2] = addresses.ccipAdapter;
 
     return receiverBridgeAdaptersToAllow;
   }
