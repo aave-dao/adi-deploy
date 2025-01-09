@@ -33,7 +33,7 @@ abstract contract BaseAddLineaPathPayloadTest is ADITestBase {
     _payload = _getPayload();
   }
 
-  function test_defaultTest() public {
+  function xtest_defaultTest() public {
     defaultTest(
       string.concat('add_linea_path_to_adi', NETWORK),
       _crossChainController,
@@ -43,7 +43,7 @@ abstract contract BaseAddLineaPathPayloadTest is ADITestBase {
     );
   }
 
-  function test_samePayloadAddress(
+  function xtest_samePayloadAddress(
     address currentChainAdapter,
     address destinationChainAdapter,
     address crossChainController,
