@@ -54,17 +54,13 @@ contract Celo is BaseRemoveBridgeAdapters {
     chainIds[0] = ChainIds.ETHEREUM;
 
     ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[]
-      memory bridgeAdapters = new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](3);
+      memory bridgeAdapters = new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](2);
     bridgeAdapters[0] = ICrossChainReceiver.ReceiverBridgeAdapterConfigInput({
-      bridgeAdapter: 0xcB1F67533DAD738E1930404bE9D4F844752773DA,
+      bridgeAdapter: 0xa5cc218513305221201f196760E9e64e9D49d98A,
       chainIds: chainIds
     });
     bridgeAdapters[1] = ICrossChainReceiver.ReceiverBridgeAdapterConfigInput({
-      bridgeAdapter: 0x2e649f6b54B07E210b31c9cC2eB8a0d5997c3D4A,
-      chainIds: chainIds
-    });
-    bridgeAdapters[2] = ICrossChainReceiver.ReceiverBridgeAdapterConfigInput({
-      bridgeAdapter: 0x9fE056F44510F970d724adA16903ba5D75CC4742,
+      bridgeAdapter: 0xAE93BEa44dcbE52B625169588574d31e36fb3A67,
       chainIds: chainIds
     });
     return bridgeAdapters;

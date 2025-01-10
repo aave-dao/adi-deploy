@@ -82,7 +82,7 @@ contract EthereumAddCeloPathPayloadTest is
   BaseAddCeloPathPayloadTest('ethereum', 21586373)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0xE11a04e56f650fe78411F763ca15D7936a57fe5c;
+    return 0x8F7E2023686B78E148e65004Ca8AcEf9B2B46922;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -95,11 +95,11 @@ contract EthereumAddCeloPathPayloadTest is
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
       currentChainHLBridgeAdapter: 0x01dcb90Cf13b82Cde4A0BAcC655585a83Af3cCC1,
-      destinationChainHLBridgeAdapter: 0xa5cc218513305221201f196760E9e64e9D49d98A,
+      destinationChainHLBridgeAdapter: 0x7b065E68E70f346B18636Ab86779980287ec73e0,
       currentChainCCIPBridgeAdapter: 0x58489B249BfBCF5ef4B30bdE2792086e83122B6f,
       destinationChainCCIPBridgeAdapter: 0x3d534E8964e7aAcfc702751cc9A2BB6A9fe7d928,
       currentChainLZBridgeAdapter: 0x8410d9BD353b420ebA8C48ff1B0518426C280FCC,
-      destinationChainLZBridgeAdapter: 0xAE93BEa44dcbE52B625169588574d31e36fb3A67,
+      destinationChainLZBridgeAdapter: 0x83BC62fbeA15B7Bfe11e8eEE57997afA5451f38C,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
