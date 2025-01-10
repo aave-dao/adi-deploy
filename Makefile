@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 20000000000 # 53 gwei
+custom_ethereum := --with-gas-price 12000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -164,23 +164,23 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,linea)
+	$(call deploy_fn,InitialDeployments,celo)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,linea)
+	$(call deploy_fn,ccc/DeployCCC,celo)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployCCIP,ethereum)
+	$(call deploy_fn,adapters/DeployCCIPAdapter,ethereum)
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployLZ,ethereum)
+	$(call deploy_fn,adapters/DeployLZ,celo)
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployHL,ethereum)
+	$(call deploy_fn,adapters/DeployHL,celo)
 
 ## Deploy SameChain adapters on ethereum
 deploy-same-chain-adapters-test:
@@ -219,11 +219,11 @@ set-ccf-sender-adapters-test:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,linea)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,celo)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,linea)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,celo)
 
 
 ## Deploy and configure all contracts
@@ -245,7 +245,7 @@ deploy-full-test:
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
 remove-bridge-adapters:
-	$(call deploy_fn,helpers/RemoveBridgeAdapters,ethereum)
+	$(call deploy_fn,helpers/RemoveBridgeAdapters,celo)
 
 send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
@@ -266,7 +266,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,linea)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,celo)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
@@ -281,6 +281,9 @@ deploy-zksync-path-payload:
 	$(call deploy_fn,payloads/adapters/zksync/Network_Deployments,ethereum)
 
 deploy-linea-path-payload:
+	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
+
+deploy-celo-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
 
 update-owners-and-guardians:

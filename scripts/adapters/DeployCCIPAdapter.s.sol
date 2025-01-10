@@ -214,3 +214,26 @@ contract Binance_testnet is DeployCCIPAdapter {
     return remoteCCCByNetwork;
   }
 }
+
+contract Celo is DeployCCIPAdapter {
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return 0xfB48f15480926A4ADf9116Dca468bDd2EE6C5F62;
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return 0xd07294e6E917e07dfDcee882dd1e2565085C2ae0;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.CELO;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}

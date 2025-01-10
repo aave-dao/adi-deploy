@@ -238,3 +238,21 @@ contract Linea is DeployGranularGuardian {
     return ChainIds.LINEA;
   }
 }
+
+contract Celo is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0x1dF462e2712496373A347f8ad10802a5E95f053D; //GovernanceV3Celo.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0xfD3a6E65e470a7D7D730FFD5D36a9354E8F9F4Ea; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x056E4C4E80D1D14a637ccbD0412CDAAEc5B51F4E; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.CELO;
+  }
+}

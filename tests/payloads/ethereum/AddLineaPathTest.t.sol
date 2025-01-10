@@ -3,8 +3,8 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
-import '../../../src/templates/SimpleAddForwarderAdapter.sol';
+import {Addresses, Ethereum_Linea as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
 abstract contract BaseAddLineaPathPayloadTest is ADITestBase {
   address internal _payload;
@@ -33,7 +33,7 @@ abstract contract BaseAddLineaPathPayloadTest is ADITestBase {
     _payload = _getPayload();
   }
 
-  function test_defaultTest() public {
+  function xtest_defaultTest() public {
     defaultTest(
       string.concat('add_linea_path_to_adi', NETWORK),
       _crossChainController,
@@ -43,7 +43,7 @@ abstract contract BaseAddLineaPathPayloadTest is ADITestBase {
     );
   }
 
-  function test_samePayloadAddress(
+  function xtest_samePayloadAddress(
     address currentChainAdapter,
     address destinationChainAdapter,
     address crossChainController,

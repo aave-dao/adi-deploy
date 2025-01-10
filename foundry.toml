@@ -10,7 +10,7 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 metadata="none"
 solc = "0.8.20"
 ffi = true
-
+evm_version = 'paris'
 
 [profile.zksync.zksync]
 fallback_oz = true
