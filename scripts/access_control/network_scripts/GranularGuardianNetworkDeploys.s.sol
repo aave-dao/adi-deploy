@@ -241,7 +241,7 @@ contract Linea is DeployGranularGuardian {
 
 contract Celo is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return 0x1dF462e2712496373A347f8ad10802a5E95f053D; //GovernanceV3Linea.EXECUTOR_LVL_1;
+    return 0x1dF462e2712496373A347f8ad10802a5E95f053D; //GovernanceV3Celo.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
