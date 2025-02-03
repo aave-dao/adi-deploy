@@ -15,6 +15,7 @@ struct Addresses {
   address crossChainController;
   address crossChainControllerImpl;
   address emergencyRegistry;
+  address executor;
   address gnosisAdapter;
   address granularCCCGuardian;
   address guardian;
@@ -65,6 +66,7 @@ library DeployerHelpers {
       sameChainAdapter: abi.decode(persistedJson.parseRaw('.sameChainAdapter'), (address)),
       chainId: abi.decode(persistedJson.parseRaw('.chainId'), (uint256)),
       emergencyRegistry: abi.decode(persistedJson.parseRaw('.emergencyRegistry'), (address)),
+      executor: abi.decode(persistedJson.parseRaw('.executor'), (address)),
       lineaAdapter: abi.decode(persistedJson.parseRaw('.lineaAdapter'), (address)),
       lzAdapter: abi.decode(persistedJson.parseRaw('.lzAdapter'), (address)),
       hlAdapter: abi.decode(persistedJson.parseRaw('.hlAdapter'), (address)),
@@ -96,6 +98,7 @@ library DeployerHelpers {
     json.serialize('crossChainController', addresses.crossChainController);
     json.serialize('crossChainControllerImpl', addresses.crossChainControllerImpl);
     json.serialize('emergencyRegistry', addresses.emergencyRegistry);
+    json.serialize('executor', addresses.executor);
     json.serialize('gnosisAdapter', addresses.gnosisAdapter);
     json.serialize('guardian', addresses.guardian);
     json.serialize('granularCCCGuardian', addresses.granularCCCGuardian);

@@ -32,6 +32,10 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
     return address(0);
   }
 
+  function EXECUTOR() internal virtual returns (address) {
+    return address(0);
+  }
+
   function SALT() internal pure returns (string memory) {
     return 'Proxy Admin';
   }
@@ -40,12 +44,8 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
     addresses.proxyFactory = TRANSPARENT_PROXY_FACTORY() == address(0)
       ? address(new TransparentProxyFactory())
       : TRANSPARENT_PROXY_FACTORY();
-    addresses.proxyAdmin = PROXY_ADMIN() == address(0)
-      ? TransparentProxyFactory(addresses.proxyFactory).createDeterministicProxyAdmin(
-        OWNER(),
-        keccak256(abi.encode(SALT()))
-      )
-      : PROXY_ADMIN();
+    require(EXECUTOR() != address(0), 'Executor is not set');
+    addresses.executor = EXECUTOR();
     addresses.owner = OWNER();
     addresses.guardian = GUARDIAN();
   }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
+import {Ownable} from 'openzeppelin-contracts/contracts/access/Ownable.sol';
 import 'adi-scripts/emergency/Deploy_EmergencyRegistry.sol';
 import '../BaseDeployerScript.sol';
 
