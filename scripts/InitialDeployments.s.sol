@@ -268,6 +268,20 @@ contract Celo is BaseInitialDeployment {
   }
 }
 
+contract Sonic is BaseInitialDeployment {
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xEB0682d148e874553008730f0686ea89db7DA412;
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return 0x0000000000000000000000000000000000000000;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+}
+
 contract Zksync is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return 0x8Ef21C75Ce360078cAD162565ED0c27617eCccE0;
