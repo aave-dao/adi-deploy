@@ -156,6 +156,16 @@ contract Linea is BaseCCCNetworkDeployment {
   }
 }
 
+contract Sonic is BaseCCCNetworkDeployment {
+    function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
+    return address(0); // TODO: add correct address
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

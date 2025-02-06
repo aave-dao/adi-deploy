@@ -356,6 +356,30 @@ contract Linea is BaseSetCCRAdapters {
   }
 }
 
+contract Sonic is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](3);
+    receiverBridgeAdaptersToAllow[0] = addresses.lzAdapter;
+    receiverBridgeAdaptersToAllow[1] = addresses.hlAdapter;
+    receiverBridgeAdaptersToAllow[2] = addresses.ccipAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}
+
 contract Ethereum_testnet is Ethereum {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

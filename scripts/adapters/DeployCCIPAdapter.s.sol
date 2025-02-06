@@ -237,3 +237,26 @@ contract Celo is DeployCCIPAdapter {
     return remoteCCCByNetwork;
   }
 }
+
+contract Sonic is DeployCCIPAdapter {
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return 0xB4e1Ff7882474BB93042be9AD5E1fA387949B860;
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return 0x71052BAe71C25C78E37fD12E5ff1101A71d9018F;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}

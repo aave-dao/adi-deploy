@@ -58,7 +58,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       scroll: _getAddresses(ChainIds.SCROLL),
       celo: _getAddresses(ChainIds.CELO),
       zksync: _getAddresses(ChainIds.ZKSYNC),
-      linea: _getAddresses(ChainIds.LINEA)
+      linea: _getAddresses(ChainIds.LINEA),
+      sonic: _getAddresses(ChainIds.SONIC)
     });
 
     // polygon path
@@ -210,6 +211,24 @@ contract Ethereum is BaseCCFSenderAdapters {
       destinationBridgeAdapter: networkAddresses.linea.lineaAdapter,
       destinationChainId: networkAddresses.linea.chainId
     });
+
+    // Sonic
+    bridgeAdaptersToEnable[25] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.ccipAdapter,
+      destinationBridgeAdapter: networkAddresses.sonic.ccipAdapter,
+      destinationChainId: networkAddresses.sonic.chainId
+    });
+    bridgeAdaptersToEnable[26] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.lzAdapter,
+      destinationBridgeAdapter: networkAddresses.celo.lzAdapter,
+      destinationChainId: networkAddresses.celo.chainId
+    });
+    bridgeAdaptersToEnable[27] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.hlAdapter,
+      destinationBridgeAdapter: networkAddresses.celo.hlAdapter,
+      destinationChainId: networkAddresses.celo.chainId
+    });
+
     return bridgeAdaptersToEnable;
   }
 }

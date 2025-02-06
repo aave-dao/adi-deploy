@@ -256,3 +256,21 @@ contract Celo is DeployGranularGuardian {
     return ChainIds.CELO;
   }
 }
+
+contract Sonic is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return ; //GovernanceV3Sonic.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x7837d7a167732aE41627A3B829871d9e32e2e7f2; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x63C4422D6cc849549daeb600B7EcE52bD18fAd7f; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+}
