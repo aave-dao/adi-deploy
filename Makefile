@@ -164,7 +164,7 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,celo)
+	$(call deploy_fn,InitialDeployments,sonic)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
