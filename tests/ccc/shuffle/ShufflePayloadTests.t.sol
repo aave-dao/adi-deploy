@@ -29,7 +29,7 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
 
     Addresses memory addresses = _getCurrentNetworkAddresses();
     _crossChainController = addresses.crossChainController;
-    _proxyAdmin = addresses.proxyAdmin;
+    _proxyAdmin = addresses.proxyAdminCCC;
 
     _payload = _getPayload();
   }

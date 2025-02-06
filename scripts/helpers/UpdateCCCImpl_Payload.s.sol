@@ -2,9 +2,8 @@
 pragma solidity ^0.8.0;
 
 import '../BaseDeployerScript.sol';
-import {ITransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
-import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
-import {ProxyAdmin} from 'solidity-utils/contracts/transparent-proxy/ProxyAdmin.sol';
+import {ITransparentUpgradeableProxy} from 'openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
+import {ProxyAdmin} from 'openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol';
 
 contract UpdateCCCImpl {
   address public immutable PROXY_ADMIN;
@@ -31,7 +30,7 @@ abstract contract BaseCCCUpdatePayload is BaseDeployerScript {
     address crossChainControllerImpl;
 
     new UpdateCCCImpl(
-      addresses.proxyAdmin,
+      addresses.proxyAdminCCC,
       addresses.crossChainController,
       addresses.crossChainControllerImpl
     );

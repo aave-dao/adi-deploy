@@ -15,6 +15,7 @@ struct Addresses {
   address crossChainController;
   address crossChainControllerImpl;
   address emergencyRegistry;
+  address executor;
   address gnosisAdapter;
   address granularCCCGuardian;
   address guardian;
@@ -26,7 +27,7 @@ struct Addresses {
   address opAdapter;
   address owner;
   address polAdapter;
-  address proxyAdmin;
+  address proxyAdminCCC;
   address proxyFactory;
   address sameChainAdapter;
   address scrollAdapter;
@@ -50,7 +51,7 @@ library DeployerHelpers {
     string memory persistedJson = vm.readFile(path);
 
     Addresses memory addresses = Addresses({
-      proxyAdmin: abi.decode(persistedJson.parseRaw('.proxyAdmin'), (address)),
+      proxyAdminCCC: abi.decode(persistedJson.parseRaw('.proxyAdminCCC'), (address)),
       proxyFactory: abi.decode(persistedJson.parseRaw('.proxyFactory'), (address)),
       owner: abi.decode(persistedJson.parseRaw('.owner'), (address)),
       guardian: abi.decode(persistedJson.parseRaw('.guardian'), (address)),
@@ -65,6 +66,7 @@ library DeployerHelpers {
       sameChainAdapter: abi.decode(persistedJson.parseRaw('.sameChainAdapter'), (address)),
       chainId: abi.decode(persistedJson.parseRaw('.chainId'), (uint256)),
       emergencyRegistry: abi.decode(persistedJson.parseRaw('.emergencyRegistry'), (address)),
+      executor: abi.decode(persistedJson.parseRaw('.executor'), (address)),
       lineaAdapter: abi.decode(persistedJson.parseRaw('.lineaAdapter'), (address)),
       lzAdapter: abi.decode(persistedJson.parseRaw('.lzAdapter'), (address)),
       hlAdapter: abi.decode(persistedJson.parseRaw('.hlAdapter'), (address)),
@@ -96,6 +98,7 @@ library DeployerHelpers {
     json.serialize('crossChainController', addresses.crossChainController);
     json.serialize('crossChainControllerImpl', addresses.crossChainControllerImpl);
     json.serialize('emergencyRegistry', addresses.emergencyRegistry);
+    json.serialize('executor', addresses.executor);
     json.serialize('gnosisAdapter', addresses.gnosisAdapter);
     json.serialize('guardian', addresses.guardian);
     json.serialize('granularCCCGuardian', addresses.granularCCCGuardian);
@@ -107,7 +110,7 @@ library DeployerHelpers {
     json.serialize('opAdapter', addresses.opAdapter);
     json.serialize('owner', addresses.owner);
     json.serialize('polAdapter', addresses.polAdapter);
-    json.serialize('proxyAdmin', addresses.proxyAdmin);
+    json.serialize('proxyAdminCCC', addresses.proxyAdminCCC);
     json.serialize('proxyFactory', addresses.proxyFactory);
     json.serialize('sameChainAdapter', addresses.sameChainAdapter);
     json.serialize('scrollAdapter', addresses.scrollAdapter);

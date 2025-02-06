@@ -57,6 +57,6 @@ abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript {
   }
 
   function _execute(Addresses memory addresses) internal virtual override {
-    _deployPayload(addresses.crossChainController, addresses.proxyAdmin);
+    _deployPayload(addresses.crossChainController, addresses.proxyAdminCCC);
   }
 }

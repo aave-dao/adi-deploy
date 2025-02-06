@@ -2,10 +2,8 @@
 pragma solidity ^0.8.0;
 
 import '../BaseDeployerScript.sol';
-import {TransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
-import {ProxyAdmin} from 'solidity-utils/contracts/transparent-proxy/ProxyAdmin.sol';
 
 abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy {
   function _execute(Addresses memory addresses) internal override {
@@ -15,7 +13,7 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
     if (CL_EMERGENCY_ORACLE() == address(0)) {
       crossChainController = TransparentProxyFactory(addresses.proxyFactory).createDeterministic(
         addresses.crossChainControllerImpl,
-        ProxyAdmin(addresses.proxyAdmin),
+        addresses.executor, // owner of the proxy admin
         abi.encodeWithSelector(
           CrossChainController.initialize.selector,
           addresses.owner,
@@ -31,7 +29,7 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
     } else {
       crossChainController = TransparentProxyFactory(addresses.proxyFactory).createDeterministic(
         addresses.crossChainControllerImpl,
-        ProxyAdmin(addresses.proxyAdmin),
+        addresses.executor,
         abi.encodeWithSelector(
           ICrossChainControllerWithEmergencyMode.initialize.selector,
           addresses.owner,
@@ -49,6 +47,7 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
       addresses.clEmergencyOracle = CL_EMERGENCY_ORACLE();
     }
 
+    addresses.proxyAdminCCC = TransparentProxyFactory(addresses.proxyFactory).getProxyAdmin(crossChainController);
     addresses.crossChainController = crossChainController;
   }
 }
