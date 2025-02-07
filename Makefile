@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 12000000000 # 53 gwei
+custom_ethereum := --with-gas-price 2000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -168,7 +168,7 @@ deploy-proxy-factory-test:
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,celo)
+	$(call deploy_fn,ccc/DeployCCC,mantle)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -212,6 +212,9 @@ deploy-base-adapters-test:
 
 deploy-linea-adapters-test:
 	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum)
+
+deploy-mantle-adapters-test:
+	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:

@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import 'adi-scripts/Adapters/DeployMantleAdapter.sol';
 import '../BaseDeployerScript.sol';
 
-abstract contract DeployMantleAdapter is BaseDeployerScript, BaseDeployMantleAdapter {
+abstract contract DeployMantleAdapter is BaseDeployerScript, BaseMantleAdapter {
   function _execute(Addresses memory addresses) internal override {
     addresses.mantleAdapter = _deployAdapter(addresses.crossChainController);
   }
@@ -12,7 +12,7 @@ abstract contract DeployMantleAdapter is BaseDeployerScript, BaseDeployMantleAda
 
 contract Ethereum is DeployMantleAdapter {
   function OVM() internal pure override returns (address) {
-    return 0x866E82a600A1414e583f7F13623F1aC5d58b0Afa;
+    return 0x676A795fe6E43C17c668de16730c3F690FEB7120;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -24,7 +24,7 @@ contract Ethereum is DeployMantleAdapter {
   }
 }
 
-contract Mantle is DeployCBAdapter {
+contract Mantle is DeployMantleAdapter {
   function OVM() internal pure override returns (address) {
     return 0x4200000000000000000000000000000000000007;
   }
