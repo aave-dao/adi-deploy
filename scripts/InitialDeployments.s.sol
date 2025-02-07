@@ -274,7 +274,7 @@ contract Mantle is BaseInitialDeployment {
   }
   
   function EXECUTOR() internal view override returns (address) {
-    return address(msg.sender);
+    return 0x9390B1735def18560c509E2d0bc090E9d6BA257a; // executor lvl1
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

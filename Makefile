@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 2000000000 # 53 gwei
+custom_ethereum := --with-gas-price 3000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -269,7 +269,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,celo)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,mantle)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)

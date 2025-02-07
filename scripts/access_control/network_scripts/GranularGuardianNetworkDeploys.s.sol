@@ -259,15 +259,15 @@ contract Celo is DeployGranularGuardian {
 
 contract Mantle is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return ; //GovernanceV3Mantle.EXECUTOR_LVL_1;
+    return 0x9390B1735def18560c509E2d0bc090E9d6BA257a; //GovernanceV3Mantle.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
-    return ; //  bgd guardian
+    return 0x0686f59Cc2aEc1ccf891472Dc6C89bB747F6a4A7; //  bgd guardian
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return ; // dao governance guardian
+    return 0x14816fC7f443A9C834d30eeA64daD20C4f56fBCD; // dao governance guardian
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
