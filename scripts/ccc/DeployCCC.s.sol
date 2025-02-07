@@ -156,6 +156,12 @@ contract Linea is BaseCCCNetworkDeployment {
   }
 }
 
+contract Mantle is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MANTLE;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

@@ -256,3 +256,21 @@ contract Celo is DeployGranularGuardian {
     return ChainIds.CELO;
   }
 }
+
+contract Mantle is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return ; //GovernanceV3Mantle.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return ; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return ; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MANTLE;
+  }
+}
