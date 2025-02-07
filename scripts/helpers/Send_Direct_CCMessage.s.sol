@@ -12,7 +12,7 @@ abstract contract BaseSendDirectMessage is BaseDeployerScript {
   }
 
   function getGasLimit() internal view virtual returns (uint256) {
-    return 150_000;
+    return 550_000;
   }
 
   function getMessage() internal view virtual returns (bytes memory) {
@@ -37,7 +37,7 @@ contract Ethereum is BaseSendDirectMessage {
   }
 
   function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.LINEA;
+    return ChainIds.MANTLE;
   }
 }
 

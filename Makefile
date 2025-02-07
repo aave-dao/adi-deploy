@@ -214,7 +214,7 @@ deploy-linea-adapters-test:
 	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum)
 
 deploy-mantle-adapters-test:
-	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
+	$(call deploy_fn,adapters/DeployMantleAdapter,ethereum)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
@@ -222,11 +222,11 @@ set-ccf-sender-adapters-test:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,celo)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,mantle)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,celo)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,mantle)
 
 
 ## Deploy and configure all contracts
@@ -254,7 +254,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,linea)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,mantle)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
