@@ -3,9 +3,8 @@ pragma solidity ^0.8.0;
 
 import 'adi/access_control/GranularGuardianAccessControl.sol';
 import 'adi-tests/BaseTest.sol';
-import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
+import {OwnableWithGuardian} from 'adi/old-oz/OwnableWithGuardian.sol';
 import {TestUtils} from 'adi-tests/utils/TestUtils.sol';
-import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
 import {Ethereum, Polygon, Avalanche, Binance, Gnosis, Metis, Scroll, Optimism, Arbitrum, Base, Linea} from '../../scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol';
 import {IAccessControl} from 'openzeppelin-contracts/contracts/access/IAccessControl.sol';
 
