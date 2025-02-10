@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 1000000000 # 53 gwei
+custom_ethereum := --with-gas-price 2000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -168,7 +168,7 @@ deploy-proxy-factory-test:
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,mantle)
+	$(call deploy_fn,ccc/DeployCCC,sonic)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -176,11 +176,11 @@ deploy-ccip-bridge-adapters-test:
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployLZ,celo)
+	$(call deploy_fn,adapters/DeployLZ,sonic)
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployHL,celo)
+	$(call deploy_fn,adapters/DeployHL,sonic)
 
 ## Deploy SameChain adapters on ethereum
 deploy-same-chain-adapters-test:
@@ -222,11 +222,11 @@ set-ccf-sender-adapters-test:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,mantle)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,sonic)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,mantle)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,sonic)
 
 
 ## Deploy and configure all contracts
@@ -269,7 +269,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,mantle)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,sonic)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)

@@ -259,7 +259,7 @@ contract Celo is DeployGranularGuardian {
 
 contract Sonic is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; //GovernanceV3Sonic.EXECUTOR_LVL_1;
+    return 0x7b62461a3570c6AC8a9f8330421576e417B71EE7; //GovernanceV3Sonic.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
