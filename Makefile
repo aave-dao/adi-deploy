@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 12000000000 # 53 gwei
+custom_ethereum := --with-gas-price 1000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -168,7 +168,7 @@ deploy-proxy-factory-test:
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,celo)
+	$(call deploy_fn,ccc/DeployCCC,mantle)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -213,17 +213,20 @@ deploy-base-adapters-test:
 deploy-linea-adapters-test:
 	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum)
 
+deploy-mantle-adapters-test:
+	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,celo)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,mantle)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,celo)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,mantle)
 
 
 ## Deploy and configure all contracts
@@ -251,7 +254,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,linea)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,mantle)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -266,7 +269,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,celo)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,mantle)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)

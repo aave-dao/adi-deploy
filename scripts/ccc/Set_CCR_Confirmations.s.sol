@@ -284,6 +284,24 @@ contract Linea is BaseSetCCRConfirmations {
   }
 }
 
+contract Mantle is BaseSetCCRConfirmations {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MANTLE;
+  }
+
+  function getConfirmationsByChainIds()
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
+  {
+    ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
+    chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
+
+    return chainIds;
+  }
+}
+
 contract Sonic is BaseSetCCRConfirmations {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return ChainIds.SONIC;

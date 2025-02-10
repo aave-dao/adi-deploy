@@ -274,3 +274,21 @@ contract Sonic is DeployGranularGuardian {
     return ChainIds.SONIC;
   }
 }
+
+contract Mantle is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0x70884634D0098782592111A2A6B8d223be31CB7b; //GovernanceV3Mantle.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x0686f59Cc2aEc1ccf891472Dc6C89bB747F6a4A7; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x14816fC7f443A9C834d30eeA64daD20C4f56fBCD; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MANTLE;
+  }
+}
