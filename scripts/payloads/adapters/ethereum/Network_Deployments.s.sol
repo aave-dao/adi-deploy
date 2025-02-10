@@ -4,10 +4,26 @@ pragma solidity ^0.8.0;
 import '../../../BaseDeployerScript.sol';
 import {Ethereum_Activate_Celo_Bridge_Adapter_Payload} from './Ethereum_Activate_Celo_Bridge_Adapter_Payload.s.sol';
 import {Ethereum_Activate_Lina_Bridge_Adapter_Payload} from './Ethereum_Activate_Lina_Bridge_Adapter_Payload.s.sol';
+import {Ethereum_Activate_Sonic_Bridge_Adapter_Payload} from './Ethereum_Activate_Sonic_Bridge_Adapter_Payload.s.sol';
 import {Ethereum_Celo_Path_Payload} from '../../../../src/adapter_payloads/Ethereum_Celo_Path_Payload.sol';
+import {Ethereum_Sonic_Path_Payload} from '../../../../src/adapter_payloads/Ethereum_Sonic_Path_Payload.sol';
 import {SimpleAddForwarderAdapter} from '../../../../src/templates/SimpleAddForwarderAdapter.sol';
 
-contract Ethereum is Ethereum_Activate_Celo_Bridge_Adapter_Payload {
+contract Ethereum_Sonic is Ethereum_Activate_Sonic_Bridge_Adapter_Payload {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function _getPayloadByteCode() internal pure override returns (bytes memory) {
+    return type(Ethereum_Sonic_Path_Payload).creationCode;
+  }
+
+  function DESTINATION_CHAIN_ID() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+}
+
+contract Ethereum_Celo is Ethereum_Activate_Celo_Bridge_Adapter_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
@@ -34,3 +50,4 @@ contract Ethereum_Linea is Ethereum_Activate_Lina_Bridge_Adapter_Payload {
     return ChainIds.LINEA;
   }
 }
+
