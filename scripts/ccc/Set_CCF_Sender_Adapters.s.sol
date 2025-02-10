@@ -18,6 +18,7 @@ struct NetworkAddresses {
   Addresses celo;
   Addresses zksync;
   Addresses linea;
+  Addresses mantle;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -42,7 +43,7 @@ contract Ethereum is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        25
+        1
       );
 
     NetworkAddresses memory networkAddresses = NetworkAddresses({
@@ -58,7 +59,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       scroll: _getAddresses(ChainIds.SCROLL),
       celo: _getAddresses(ChainIds.CELO),
       zksync: _getAddresses(ChainIds.ZKSYNC),
-      linea: _getAddresses(ChainIds.LINEA)
+      linea: _getAddresses(ChainIds.LINEA),
+      mantle: _getAddresses(ChainIds.MANTLE)
     });
 
     // polygon path
@@ -210,6 +212,14 @@ contract Ethereum is BaseCCFSenderAdapters {
       destinationBridgeAdapter: networkAddresses.linea.lineaAdapter,
       destinationChainId: networkAddresses.linea.chainId
     });
+
+    // Mantle
+    bridgeAdaptersToEnable[25] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.mantleAdapter,
+      destinationBridgeAdapter: networkAddresses.mantle.mantleAdapter,
+      destinationChainId: networkAddresses.mantle.chainId
+    });
+
     return bridgeAdaptersToEnable;
   }
 }

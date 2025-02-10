@@ -94,6 +94,12 @@ contract Linea is BaseMockDestination {
   }
 }
 
+contract Mantle is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MANTLE;
+  }
+}
+
 contract Ethereum_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
