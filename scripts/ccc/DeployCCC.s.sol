@@ -156,6 +156,16 @@ contract Linea is BaseCCCNetworkDeployment {
   }
 }
 
+contract Sonic is BaseCCCNetworkDeployment {
+    function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
+    return 0xECB564e91f620fBFb59d0C4A41d7f10aDb0D1934;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+}
+
 contract Mantle is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.MANTLE;

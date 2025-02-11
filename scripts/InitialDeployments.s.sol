@@ -268,12 +268,26 @@ contract Celo is BaseInitialDeployment {
   }
 }
 
+contract Sonic is BaseInitialDeployment {
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xEB0682d148e874553008730f0686ea89db7DA412;
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return 0x7b62461a3570c6AC8a9f8330421576e417B71EE7;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
+}
+
 contract Mantle is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return 0xEB0682d148e874553008730f0686ea89db7DA412;
   }
   
-  function EXECUTOR() internal view override returns (address) {
+  function EXECUTOR() internal pure override returns (address) {
     return 0x9390B1735def18560c509E2d0bc090E9d6BA257a; // executor lvl1
   }
 

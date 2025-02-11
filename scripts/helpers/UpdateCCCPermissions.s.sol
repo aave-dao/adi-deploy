@@ -39,24 +39,24 @@ abstract contract UpdateCCCPermissions {
 
 
 
-contract UpdateCCCPermissionsCelo is UpdateCCCPermissions {
+contract UpdateCCCPermissionsSonic is UpdateCCCPermissions {
   function targetOwner() public pure override returns (address) {
-    return 0x1dF462e2712496373A347f8ad10802a5E95f053D;
+    return 0x7b62461a3570c6AC8a9f8330421576e417B71EE7; // executor
   }
 
   function targetADIGuardian() public pure override returns (address) {
-    return 0xbE815420A63A413BB8D508d8022C0FF150Ea7C39; // Granular Guardian
+    return 0x10078c1D8E46dd1ed5D8df2C42d5ABb969b11566; // Granular Guardian
   }
 
 
   function aDIContractsToUpdate() public pure override returns (address[] memory) {
     address[] memory contracts = new address[](1);
-    contracts[0] = 0x50F4dAA86F3c747ce15C3C38bD0383200B61d6Dd;
+    contracts[0] = 0x58e003a3C6f2Aeed6a2a6Bc77B504566523cb15c; // CCC
     return contracts;
   }
 }
 
-contract Celo is Script, UpdateCCCPermissionsCelo {
+contract Sonic is Script, UpdateCCCPermissionsSonic {
   function run() external {
     vm.startBroadcast();
     

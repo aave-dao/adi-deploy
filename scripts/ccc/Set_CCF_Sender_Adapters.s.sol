@@ -19,6 +19,7 @@ struct NetworkAddresses {
   Addresses zksync;
   Addresses linea;
   Addresses mantle;
+  Addresses sonic;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -43,7 +44,7 @@ contract Ethereum is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        1
+        29
       );
 
     NetworkAddresses memory networkAddresses = NetworkAddresses({
@@ -60,6 +61,7 @@ contract Ethereum is BaseCCFSenderAdapters {
       celo: _getAddresses(ChainIds.CELO),
       zksync: _getAddresses(ChainIds.ZKSYNC),
       linea: _getAddresses(ChainIds.LINEA),
+      sonic: _getAddresses(ChainIds.SONIC),
       mantle: _getAddresses(ChainIds.MANTLE)
     });
 
@@ -213,8 +215,25 @@ contract Ethereum is BaseCCFSenderAdapters {
       destinationChainId: networkAddresses.linea.chainId
     });
 
-    // Mantle
+    // Sonic
     bridgeAdaptersToEnable[25] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.ccipAdapter,
+      destinationBridgeAdapter: networkAddresses.sonic.ccipAdapter,
+      destinationChainId: networkAddresses.sonic.chainId
+    });
+    bridgeAdaptersToEnable[26] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.lzAdapter,
+      destinationBridgeAdapter: networkAddresses.celo.lzAdapter,
+      destinationChainId: networkAddresses.celo.chainId
+    });
+    bridgeAdaptersToEnable[27] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.hlAdapter,
+      destinationBridgeAdapter: networkAddresses.celo.hlAdapter,
+      destinationChainId: networkAddresses.celo.chainId
+    });
+
+    // Mantle
+    bridgeAdaptersToEnable[28] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.mantleAdapter,
       destinationBridgeAdapter: networkAddresses.mantle.mantleAdapter,
       destinationChainId: networkAddresses.mantle.chainId
