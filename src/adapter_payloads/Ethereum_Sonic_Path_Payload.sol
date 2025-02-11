@@ -69,4 +69,24 @@ contract Ethereum_Sonic_Path_Payload is BaseAdaptersUpdate {
 
     return newForwarders;
   }
+
+  function execute() public override {
+    executeReceiversUpdate(CROSS_CHAIN_CONTROLLER);
+
+    executeForwardersUpdate(CROSS_CHAIN_CONTROLLER);
+
+    _updateOptimalBandwidth();
+  }
+
+  function _updateOptimalBandwidth() public {
+    ICrossChainForwarder.OptimalBandwidthByChain[] memory optimalBandwidthByChain = 
+      new ICrossChainForwarder.OptimalBandwidthByChain[](1);
+    optimalBandwidthByChain[0] = ICrossChainForwarder.OptimalBandwidthByChain({
+      chainId: DESTINATION_CHAIN_ID,
+      optimalBandwidth: 2
+    });
+    ICrossChainForwarder(CROSS_CHAIN_CONTROLLER).updateOptimalBandwidthByChain(
+      optimalBandwidthByChain
+    );
+  }
 }
