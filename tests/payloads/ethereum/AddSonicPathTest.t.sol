@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_Celo as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
-import {Ethereum_Celo_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Celo_Path_Payload.sol';
+import { Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Ethereum_Sonic_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Sonic_Path_Payload.sol';
 
-abstract contract BaseAddCeloPathPayloadTest is ADITestBase {
+abstract contract BaseAddSonicPathPayloadTest is ADITestBase {
   address internal _payload;
   address internal _crossChainController;
 
@@ -35,7 +35,7 @@ abstract contract BaseAddCeloPathPayloadTest is ADITestBase {
 
   function test_defaultTest() public {
     defaultTest(
-      string.concat('add_celo_path_to_adi', NETWORK),
+      string.concat('add_sonic_path_to_adi', NETWORK),
       _crossChainController,
       address(_payload),
       false,
@@ -43,9 +43,10 @@ abstract contract BaseAddCeloPathPayloadTest is ADITestBase {
     );
   }
 
-  function xtest_samePayloadAddress() public {
-    Ethereum_Celo_Path_Payload deployedPayload = Ethereum_Celo_Path_Payload(_getDeployedPayload());
-    Ethereum_Celo_Path_Payload predictedPayload = Ethereum_Celo_Path_Payload(_getPayload());
+  function test_samePayloadAddress(
+  ) public {
+    Ethereum_Sonic_Path_Payload deployedPayload = Ethereum_Sonic_Path_Payload(_getDeployedPayload());
+    Ethereum_Sonic_Path_Payload predictedPayload = Ethereum_Sonic_Path_Payload(_getPayload());
 
     assertEq(predictedPayload.DESTINATION_CHAIN_ID(), deployedPayload.DESTINATION_CHAIN_ID());
     assertEq(predictedPayload.CROSS_CHAIN_CONTROLLER(), deployedPayload.CROSS_CHAIN_CONTROLLER());
@@ -76,12 +77,12 @@ abstract contract BaseAddCeloPathPayloadTest is ADITestBase {
   }
 }
 
-contract EthereumAddCeloPathPayloadTest is
+contract EthereumAddSonicPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddCeloPathPayloadTest('ethereum', 21586373)
-{
+  BaseAddSonicPathPayloadTest('ethereum', 21822220) 
+{ // TODO: add new block number
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0x8F7E2023686B78E148e65004Ca8AcEf9B2B46922;
+    return 0xd16f822737b4e360671B4c2D5cdD811f5Aa6611C;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -94,11 +95,11 @@ contract EthereumAddCeloPathPayloadTest is
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
       currentChainHLBridgeAdapter: 0x01dcb90Cf13b82Cde4A0BAcC655585a83Af3cCC1,
-      destinationChainHLBridgeAdapter: 0x7b065E68E70f346B18636Ab86779980287ec73e0,
-      currentChainCCIPBridgeAdapter: 0x58489B249BfBCF5ef4B30bdE2792086e83122B6f,
-      destinationChainCCIPBridgeAdapter: 0x3d534E8964e7aAcfc702751cc9A2BB6A9fe7d928,
-      currentChainLZBridgeAdapter: 0x8410d9BD353b420ebA8C48ff1B0518426C280FCC,
-      destinationChainLZBridgeAdapter: 0x83BC62fbeA15B7Bfe11e8eEE57997afA5451f38C,
+      destinationChainHLBridgeAdapter: 0x1098F187F5f444Bc1c77cD9beE99e8d460347F5F,
+      currentChainCCIPBridgeAdapter: 0xe3a0d9754aD3452D687cf580Ba3674c2D7D2f7AE,
+      destinationChainCCIPBridgeAdapter: 0x1905fCdDa41241C0871A5eC3f9dcC3E8d247261D,
+      currentChainLZBridgeAdapter: 0x8FD7D8dd557817966181F584f2abB53549B4ABbe,
+      destinationChainLZBridgeAdapter: 0x7B8FaC105A7a85f02C3f31559d2ee7313BDC5d7f,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
