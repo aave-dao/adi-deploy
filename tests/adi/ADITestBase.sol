@@ -8,7 +8,8 @@ import {ChainHelpers, ChainIds} from 'solidity-utils/contracts/utils/ChainHelper
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ProxyHelpers} from 'aave-v3-origin/../tests/utils/ProxyHelpers.sol';
 
-import {ICrossChainReceiver, ICrossChainForwarder} from 'aave-address-book/common/ICrossChainController.sol';
+import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
+import {ICrossChainReceiver} from 'adi/interfaces/ICrossChainReceiver.sol';
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
 import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
 import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
