@@ -45,8 +45,8 @@ abstract contract BaseAddSonicPathPayloadTest is ADITestBase {
 
   function test_samePayloadAddress(
   ) public {
-    Ethereum_Celo_Path_Payload deployedPayload = Ethereum_Celo_Path_Payload(_getDeployedPayload());
-    Ethereum_Celo_Path_Payload predictedPayload = Ethereum_Celo_Path_Payload(_getPayload());
+    Ethereum_Sonic_Path_Payload deployedPayload = Ethereum_Sonic_Path_Payload(_getDeployedPayload());
+    Ethereum_Sonic_Path_Payload predictedPayload = Ethereum_Sonic_Path_Payload(_getPayload());
 
     assertEq(predictedPayload.DESTINATION_CHAIN_ID(), deployedPayload.DESTINATION_CHAIN_ID());
     assertEq(predictedPayload.CROSS_CHAIN_CONTROLLER(), deployedPayload.CROSS_CHAIN_CONTROLLER());
@@ -79,10 +79,10 @@ abstract contract BaseAddSonicPathPayloadTest is ADITestBase {
 
 contract EthereumAddSonicPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddSonicPathPayloadTest('ethereum', 21586373) 
+  BaseAddSonicPathPayloadTest('ethereum', 21822220) 
 { // TODO: add new block number
   function _getDeployedPayload() internal pure override returns (address) {
-    return ; // TODO: add new deployed payload address
+    return 0xd16f822737b4e360671B4c2D5cdD811f5Aa6611C;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {

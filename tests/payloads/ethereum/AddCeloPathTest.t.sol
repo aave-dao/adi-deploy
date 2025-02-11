@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import { Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum_Celo as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {Ethereum_Celo_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Celo_Path_Payload.sol';
 
 abstract contract BaseAddCeloPathPayloadTest is ADITestBase {
@@ -43,8 +43,7 @@ abstract contract BaseAddCeloPathPayloadTest is ADITestBase {
     );
   }
 
-  function xtest_samePayloadAddress(
-  ) public {
+  function xtest_samePayloadAddress() public {
     Ethereum_Celo_Path_Payload deployedPayload = Ethereum_Celo_Path_Payload(_getDeployedPayload());
     Ethereum_Celo_Path_Payload predictedPayload = Ethereum_Celo_Path_Payload(_getPayload());
 

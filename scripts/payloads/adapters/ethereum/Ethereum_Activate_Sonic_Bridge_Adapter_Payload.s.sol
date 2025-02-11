@@ -8,7 +8,7 @@ abstract contract Ethereum_Activate_Sonic_Bridge_Adapter_Payload is BaseDeployer
   function _getPayloadByteCode() internal virtual returns (bytes memory);
 
   function PAYLOAD_SALT() internal pure virtual returns (string memory) {
-    return 'Add Sonic path to a.DI';
+    return 'Add path to a.DI for Sonic';
   }
 
   function DESTINATION_CHAIN_ID() internal pure virtual returns (uint256);
