@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ICrossChainForwarder} from 'aave-address-book/common/ICrossChainController.sol';
+import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 
 /**
  * @title Interface for base forwarder payload.
