@@ -274,7 +274,7 @@ contract Sonic is BaseInitialDeployment {
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19;
+    return 0x7b62461a3570c6AC8a9f8330421576e417B71EE7;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
