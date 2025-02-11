@@ -292,5 +292,5 @@ deploy-celo-path-payload:
 update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
-update-celo-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,celo)
+update-sonic-permissions:
+	$(call deploy_fn,helpers/UpdateCCCPermissions,sonic)
