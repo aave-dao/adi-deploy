@@ -79,10 +79,10 @@ abstract contract BaseAddSonicPathPayloadTest is ADITestBase {
 
 contract EthereumAddSonicPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddSonicPathPayloadTest('ethereum', 21822220) 
-{ // TODO: add new block number
+  BaseAddSonicPathPayloadTest('ethereum', 21824382) 
+{
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0xd16f822737b4e360671B4c2D5cdD811f5Aa6611C;
+    return 0x41FE455778201FB3AC7E41a7b2B4ffC90F08035e;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
