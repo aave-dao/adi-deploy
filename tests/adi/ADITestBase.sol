@@ -42,11 +42,17 @@ contract ADITestBase is Test {
     ICrossChainForwarder.ChainIdBridgeConfig[] forwarders;
   }
 
+  struct OptimalBandwidthByChain {
+    uint256 chainId;
+    uint256 optimalBandwidth;
+  }
+
   struct CCCConfig {
     address crossChainControllerImpl;
     ReceiverConfigByChain[] receiverConfigs;
     ReceiverAdaptersByChain[] receiverAdaptersConfig;
     ForwarderAdaptersByChain[] forwarderAdaptersConfig;
+    OptimalBandwidthByChain[] optimalBandwidthConfig;
   }
 
   struct ForwarderAdapters {
@@ -70,6 +76,7 @@ contract ADITestBase is Test {
     bool receiverAdapterConfigs;
     bool forwarderAdapterConfigs;
     bool cccImplUpdate;
+    bool optimalBandwidth;
     string reportName;
   }
 
@@ -402,10 +409,13 @@ contract ADITestBase is Test {
           receiverAdapterConfigs: true,
           forwarderAdapterConfigs: true,
           cccImplUpdate: true,
+          optimalBandwidth: true,
           reportName: reportName
         })
       );
   }
+
+
 
   function createConfigurationSnapshot(
     SnapshotParams memory snapshotParams
@@ -414,7 +424,7 @@ contract ADITestBase is Test {
     // overwrite with empty json to later be extended
     vm.writeFile(
       path,
-      '{ "cccImplementation": {}, "receiverConfigsByChain": {}, "receiverAdaptersByChain": {}, "forwarderAdaptersByChain": {}}'
+      '{ "cccImplementation": {}, "receiverConfigsByChain": {}, "receiverAdaptersByChain": {}, "forwarderAdaptersByChain": {}, "optimalBandwidthByChain": {}}'
     );
     vm.serializeUint('root', 'chainId', block.chainid);
     CCCConfig memory config = _getCCCConfig(snapshotParams.crossChainController);
@@ -422,8 +432,32 @@ contract ADITestBase is Test {
     if (snapshotParams.receiverAdapterConfigs) _writeReceiverAdapters(path, config);
     if (snapshotParams.forwarderAdapterConfigs) _writeForwarderAdapters(path, config);
     if (snapshotParams.cccImplUpdate) _writeCCCImplUpdate(path, config);
-
+    if (snapshotParams.optimalBandwidth) _writeOptimalBandwidth(path, config);
     return config;
+  }
+
+  function _writeOptimalBandwidth(string memory path, CCCConfig memory config) internal {
+    // keys for json stringification
+    string memory optimalBandwidth = 'optimalBandWidth';
+    string memory content = '{}';
+    vm.serializeJson(optimalBandwidth, '{}');
+    OptimalBandwidthByChain[] memory optimalBandwidthConfig = config.optimalBandwidthConfig;
+
+    for (uint256 i = 0; i < optimalBandwidthConfig.length; i++) {
+      uint256 chainId = optimalBandwidthConfig[i].chainId;
+      string memory key = vm.toString(chainId);
+      vm.serializeJson(key, '{}');
+      string memory object;
+
+      object = vm.serializeString(
+        key,
+        'optimalBandwidth',
+        vm.toString(optimalBandwidthConfig[i].optimalBandwidth)
+      );
+      content = vm.serializeString(optimalBandwidth, key, object);
+    }
+    string memory output = vm.serializeString('root', 'optimalBandwidthByChain', content);
+    vm.writeJson(output, path);
   }
 
   function _writeCCCImplUpdate(string memory path, CCCConfig memory config) internal {
@@ -571,14 +605,22 @@ contract ADITestBase is Test {
     ForwarderAdaptersByChain[] memory forwardersByChain = new ForwarderAdaptersByChain[](
       supportedForwardingNetworks.length
     );
+    OptimalBandwidthByChain[] memory optimalBandwidth = new OptimalBandwidthByChain[](
+      supportedForwardingNetworks.length
+    );
     for (uint256 i = 0; i < supportedForwardingNetworks.length; i++) {
       uint256 chainId = supportedForwardingNetworks[i];
       forwardersByChain[i] = ForwarderAdaptersByChain({
         chainId: chainId,
         forwarders: ICrossChainForwarder(ccc).getForwarderBridgeAdaptersByChain(chainId)
       });
+      optimalBandwidth[i] = OptimalBandwidthByChain({
+        chainId: chainId,
+        optimalBandwidth: ICrossChainForwarder(ccc).getOptimalBandwidthByChain(chainId)
+      });
     }
     config.forwarderAdaptersConfig = forwardersByChain;
+    config.optimalBandwidthConfig = optimalBandwidth;
 
     return config;
   }
