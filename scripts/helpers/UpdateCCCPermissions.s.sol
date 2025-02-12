@@ -39,24 +39,24 @@ abstract contract UpdateCCCPermissions {
 
 
 
-contract UpdateCCCPermissionsSonic is UpdateCCCPermissions {
+contract UpdateCCCPermissionsMantle is UpdateCCCPermissions {
   function targetOwner() public pure override returns (address) {
-    return 0x7b62461a3570c6AC8a9f8330421576e417B71EE7; // executor
+    return 0x70884634D0098782592111A2A6B8d223be31CB7b; // executor
   }
 
   function targetADIGuardian() public pure override returns (address) {
-    return 0x10078c1D8E46dd1ed5D8df2C42d5ABb969b11566; // Granular Guardian
+    return 0xb26670d2800DBB9cfCe2f2660FfDcA48C799c86d; // Granular Guardian
   }
 
 
   function aDIContractsToUpdate() public pure override returns (address[] memory) {
     address[] memory contracts = new address[](1);
-    contracts[0] = 0x58e003a3C6f2Aeed6a2a6Bc77B504566523cb15c; // CCC
+    contracts[0] = 0x1283C5015B1Fb5616FA3aCb0C18e6879a02869cB; // CCC
     return contracts;
   }
 }
 
-contract Sonic is Script, UpdateCCCPermissionsSonic {
+contract Mantle is Script, UpdateCCCPermissionsMantle {
   function run() external {
     vm.startBroadcast();
     
