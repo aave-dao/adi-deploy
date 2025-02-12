@@ -432,7 +432,7 @@ contract ADITestBase is Test {
     if (snapshotParams.receiverAdapterConfigs) _writeReceiverAdapters(path, config);
     if (snapshotParams.forwarderAdapterConfigs) _writeForwarderAdapters(path, config);
     if (snapshotParams.cccImplUpdate) _writeCCCImplUpdate(path, config);
-    if (snapshotParams.optimalBandwidth) _writeOptimalBandwidth(path, config);
+    // if (snapshotParams.optimalBandwidth) _writeOptimalBandwidth(path, config);
     return config;
   }
 
@@ -614,6 +614,7 @@ contract ADITestBase is Test {
         chainId: chainId,
         forwarders: ICrossChainForwarder(ccc).getForwarderBridgeAdaptersByChain(chainId)
       });
+
       optimalBandwidth[i] = OptimalBandwidthByChain({
         chainId: chainId,
         optimalBandwidth: ICrossChainForwarder(ccc).getOptimalBandwidthByChain(chainId)

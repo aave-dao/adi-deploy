@@ -28,6 +28,15 @@ interface IBaseForwarderAdaptersUpdate {
     returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory);
 
   /**
+   * @notice method to get the optimal bandwidth by chain
+   * @return object array with the chainId and the optimal bandwidth
+   */
+  function getOptimalBandwidthByChain() 
+    external 
+    view 
+    returns (ICrossChainForwarder.OptimalBandwidthByChain[] memory);
+
+  /**
    * @notice method to add and remove forwarder adapters
    * @param crossChainController address of the CCC on the networks where the adapters are going to be updated
    */
