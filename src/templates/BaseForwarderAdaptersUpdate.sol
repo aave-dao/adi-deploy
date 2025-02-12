@@ -29,6 +29,11 @@ abstract contract BaseForwarderAdaptersUpdate is IBaseForwarderAdaptersUpdate {
   }
 
   /// @inheritdoc IBaseForwarderAdaptersUpdate
+  function getOptimalBandwidthByChain() public view virtual returns (ICrossChainForwarder.OptimalBandwidthByChain[] memory) {
+    return new ICrossChainForwarder.OptimalBandwidthByChain[](0);
+  }
+
+  /// @inheritdoc IBaseForwarderAdaptersUpdate
   function executeForwardersUpdate(address crossChainController) public virtual {
     // remove forwarding adapters
     ICrossChainForwarder.BridgeAdapterToDisable[]
@@ -42,6 +47,13 @@ abstract contract BaseForwarderAdaptersUpdate is IBaseForwarderAdaptersUpdate {
       memory forwardersToEnable = getForwarderBridgeAdaptersToEnable();
     if (forwardersToEnable.length != 0) {
       ICrossChainForwarder(crossChainController).enableBridgeAdapters(forwardersToEnable);
+    }
+
+    // update optimal bandwidth
+    ICrossChainForwarder.OptimalBandwidthByChain[] 
+      memory optimalBandwidthByChain = getOptimalBandwidthByChain();
+    if (optimalBandwidthByChain.length != 0) {
+      ICrossChainForwarder(crossChainController).updateOptimalBandwidthByChain(optimalBandwidthByChain);
     }
   }
 }
