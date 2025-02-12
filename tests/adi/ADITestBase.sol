@@ -614,7 +614,6 @@ contract ADITestBase is Test {
         chainId: chainId,
         forwarders: ICrossChainForwarder(ccc).getForwarderBridgeAdaptersByChain(chainId)
       });
-
       optimalBandwidth[i] = OptimalBandwidthByChain({
         chainId: chainId,
         optimalBandwidth: ICrossChainForwarder(ccc).getOptimalBandwidthByChain(chainId)
