@@ -12,7 +12,7 @@ test   :; forge test -vvv
 
 # ---------------------------------------------- BASE SCRIPT CONFIGURATION ---------------------------------------------
 
-BASE_LEDGER = --legacy --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
+BASE_LEDGER = --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
 BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
@@ -164,11 +164,11 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,sonic)
+	$(call deploy_fn,InitialDeployments,ink)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,sonic)
+	$(call deploy_fn,ccc/DeployCCC,ink)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -215,6 +215,9 @@ deploy-linea-adapters-test:
 
 deploy-mantle-adapters-test:
 	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
+
+deploy-ink-adapters-test:
+	$(call deploy_fn,adapters/DeployInkAdapter,ink)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
