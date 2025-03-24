@@ -6,14 +6,14 @@ import '../BaseDeployerScript.sol';
 
 abstract contract DeployInkAdapter is BaseDeployerScript, BaseInkAdapter {
   function _execute(Addresses memory addresses) internal override {
-    addresses.baseAdapter = _deployAdapter(addresses.crossChainController);
+    addresses.inkAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
 // @dev addresses taken from https://docs.inkonchain.com/useful-information/contracts
 contract Ethereum is DeployInkAdapter {
   function OVM() internal pure override returns (address) {
-    return 0x69d3cf86b2bf1a9e99875b7e2d9b6a84426c171f;
+    return 0x69d3Cf86B2Bf1a9e99875B7e2D9B6a84426c171f;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

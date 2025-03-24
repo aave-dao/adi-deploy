@@ -217,7 +217,7 @@ deploy-mantle-adapters-test:
 	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
 
 deploy-ink-adapters-test:
-	$(call deploy_fn,adapters/DeployInkAdapter,ink)
+	$(call deploy_fn,adapters/DeployInkAdapter,ethereum)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
@@ -225,11 +225,11 @@ set-ccf-sender-adapters-test:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,sonic)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,ink)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,sonic)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,ink)
 
 
 ## Deploy and configure all contracts
@@ -257,7 +257,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,mantle)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,ink)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
