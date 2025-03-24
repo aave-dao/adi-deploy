@@ -296,4 +296,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,mantle)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,ink)
