@@ -292,3 +292,21 @@ contract Mantle is DeployGranularGuardian {
     return ChainIds.MANTLE;
   }
 }
+
+contract Ink is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; //GovernanceV3Ink.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x0000000000000000000000000000000000000000; //GovernanceV3Ink.RETRY_GUARDIAN;
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x0000000000000000000000000000000000000000; //GovernanceV3Ink.SOLVE_EMERGENCY_GUARDIAN;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.INK;
+  }
+}
