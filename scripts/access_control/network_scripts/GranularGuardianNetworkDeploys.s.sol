@@ -299,11 +299,11 @@ contract Ink is DeployGranularGuardian {
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
-    return 0x0000000000000000000000000000000000000000; //GovernanceV3Ink.RETRY_GUARDIAN;
+    return 0x81D251dA015A0C7bD882918Ca1ec6B7B8E094585; //  bgd guardian
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return 0x0000000000000000000000000000000000000000; //GovernanceV3Ink.SOLVE_EMERGENCY_GUARDIAN;
+    return 0x1bBcC6F0BB563067Ca45450023a13E34fa963Fa9; // dao governance guardian
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
