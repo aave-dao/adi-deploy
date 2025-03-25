@@ -292,6 +292,9 @@ deploy-sonic-path-payload:
 deploy-mantle-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
 
+deploy-ink-path-payload:
+	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
+
 update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 

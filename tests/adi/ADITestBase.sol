@@ -415,8 +415,6 @@ contract ADITestBase is Test {
       );
   }
 
-
-
   function createConfigurationSnapshot(
     SnapshotParams memory snapshotParams
   ) public returns (CCCConfig memory) {
@@ -630,7 +628,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](14);
+      uint256[] memory chainIds = new uint256[](15);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -645,7 +643,8 @@ contract ADITestBase is Test {
       chainIds[11] = ChainIds.CELO;
       chainIds[12] = ChainIds.SONIC;
       chainIds[13] = ChainIds.MANTLE;
-      
+      chainIds[14] = ChainIds.INK;
+
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {
       uint256[] memory chainIds = new uint256[](1);
@@ -728,6 +727,8 @@ contract ADITestBase is Test {
       return 0x58e003a3C6f2Aeed6a2a6Bc77B504566523cb15c;
     } else if (chainId == ChainIds.MANTLE) {
       return 0x1283C5015B1Fb5616FA3aCb0C18e6879a02869cB;
+    } else if (chainId == ChainIds.INK) {
+      return 0x990B75fD1a2345D905a385dBC6e17BEe0Cb2f505;
     }
     revert();
   }
