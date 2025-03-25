@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum_Mantle} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
 abstract contract BaseAddMantlePathPayloadTest is ADITestBase {
@@ -66,7 +66,7 @@ abstract contract BaseAddMantlePathPayloadTest is ADITestBase {
 }
 
 contract EthereumAddMantlePathPayloadTest is
-  PayloadEthereumScript,
+  Ethereum_Mantle,
   BaseAddMantlePathPayloadTest('ethereum', 21830243)
 {
   function _getDeployedPayload() internal pure override returns (address) {

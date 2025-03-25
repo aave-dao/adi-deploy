@@ -10,7 +10,7 @@ import {Ethereum_Celo_Path_Payload} from '../../../../src/adapter_payloads/Ether
 import {Ethereum_Sonic_Path_Payload} from '../../../../src/adapter_payloads/Ethereum_Sonic_Path_Payload.sol';
 import {SimpleAddForwarderAdapter} from '../../../../src/templates/SimpleAddForwarderAdapter.sol';
 
-contract Ethereum is Ethereum_Activate_Mantle_Bridge_Adapter_Payload {
+contract Ethereum_Mantle is Ethereum_Activate_Mantle_Bridge_Adapter_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
