@@ -37,8 +37,6 @@ abstract contract UpdateCCCPermissions {
   }
 }
 
-
-
 contract UpdateCCCPermissionsMantle is UpdateCCCPermissions {
   function targetOwner() public pure override returns (address) {
     return 0x70884634D0098782592111A2A6B8d223be31CB7b; // executor
@@ -47,7 +45,6 @@ contract UpdateCCCPermissionsMantle is UpdateCCCPermissions {
   function targetADIGuardian() public pure override returns (address) {
     return 0xb26670d2800DBB9cfCe2f2660FfDcA48C799c86d; // Granular Guardian
   }
-
 
   function aDIContractsToUpdate() public pure override returns (address[] memory) {
     address[] memory contracts = new address[](1);
@@ -59,9 +56,35 @@ contract UpdateCCCPermissionsMantle is UpdateCCCPermissions {
 contract Mantle is Script, UpdateCCCPermissionsMantle {
   function run() external {
     vm.startBroadcast();
-    
+
     _changeOwnerAndGuardian();
-    
+
+    vm.stopBroadcast();
+  }
+}
+
+contract UpdateCCCPermissionsInk is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; // executor
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return 0xa2bDB2335Faf1940c99654c592B1a80618d79Fc9; // Granular Guardian
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = 0x990B75fD1a2345D905a385dBC6e17BEe0Cb2f505; // CCC
+    return contracts;
+  }
+}
+
+contract Ink is Script, UpdateCCCPermissionsInk {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
     vm.stopBroadcast();
   }
 }

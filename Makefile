@@ -12,7 +12,7 @@ test   :; forge test -vvv
 
 # ---------------------------------------------- BASE SCRIPT CONFIGURATION ---------------------------------------------
 
-BASE_LEDGER = --legacy --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
+BASE_LEDGER = --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
 BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
@@ -164,11 +164,11 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,sonic)
+	$(call deploy_fn,InitialDeployments,ink)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,sonic)
+	$(call deploy_fn,ccc/DeployCCC,ink)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -216,17 +216,20 @@ deploy-linea-adapters-test:
 deploy-mantle-adapters-test:
 	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
 
+deploy-ink-adapters-test:
+	$(call deploy_fn,adapters/DeployInkAdapter,ink)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,sonic)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,ink)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,sonic)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,ink)
 
 
 ## Deploy and configure all contracts
@@ -254,7 +257,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,mantle)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,ink)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -269,7 +272,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,sonic)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,ink)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
@@ -293,4 +296,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,mantle)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,ink)

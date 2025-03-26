@@ -20,6 +20,7 @@ struct Addresses {
   address granularCCCGuardian;
   address guardian;
   address hlAdapter;
+  address inkAdapter;
   address lineaAdapter;
   address lzAdapter;
   address mantleAdapter;
@@ -71,6 +72,7 @@ library DeployerHelpers {
       lineaAdapter: abi.decode(persistedJson.parseRaw('.lineaAdapter'), (address)),
       lzAdapter: abi.decode(persistedJson.parseRaw('.lzAdapter'), (address)),
       hlAdapter: abi.decode(persistedJson.parseRaw('.hlAdapter'), (address)),
+      inkAdapter: abi.decode(persistedJson.parseRaw('.inkAdapter'), (address)),
       opAdapter: abi.decode(persistedJson.parseRaw('.opAdapter'), (address)),
       arbAdapter: abi.decode(persistedJson.parseRaw('.arbAdapter'), (address)),
       metisAdapter: abi.decode(persistedJson.parseRaw('.metisAdapter'), (address)),
@@ -105,6 +107,7 @@ library DeployerHelpers {
     json.serialize('guardian', addresses.guardian);
     json.serialize('granularCCCGuardian', addresses.granularCCCGuardian);
     json.serialize('hlAdapter', addresses.hlAdapter);
+    json.serialize('inkAdapter', addresses.inkAdapter);
     json.serialize('lineaAdapter', addresses.lineaAdapter);
     json.serialize('lzAdapter', addresses.lzAdapter);
     json.serialize('mantleAdapter', addresses.mantleAdapter);

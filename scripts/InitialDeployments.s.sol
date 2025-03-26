@@ -286,7 +286,7 @@ contract Mantle is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return 0xEB0682d148e874553008730f0686ea89db7DA412;
   }
-  
+
   function EXECUTOR() internal pure override returns (address) {
     return 0x9390B1735def18560c509E2d0bc090E9d6BA257a; // executor lvl1
   }
@@ -329,6 +329,20 @@ contract Linea is BaseInitialDeployment {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.LINEA;
+  }
+}
+
+contract Ink is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.INK;
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A;
+  }
+
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xEB0682d148e874553008730f0686ea89db7DA412;
   }
 }
 
