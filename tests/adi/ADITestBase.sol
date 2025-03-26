@@ -20,7 +20,9 @@ import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
 import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
-//import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
+import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
+import {GovernanceV3Sonic} from 'aave-address-book/GovernanceV3Sonic.sol';
+import {GovernanceV3Celo} from 'aave-address-book/GovernanceV3Celo.sol';
 import {IBaseAdapter} from 'aave-address-book/common/IBaseAdapter.sol';
 
 contract ADITestBase is Test {
@@ -415,8 +417,6 @@ contract ADITestBase is Test {
       );
   }
 
-
-
   function createConfigurationSnapshot(
     SnapshotParams memory snapshotParams
   ) public returns (CCCConfig memory) {
@@ -630,7 +630,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](14);
+      uint256[] memory chainIds = new uint256[](15);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -645,7 +645,8 @@ contract ADITestBase is Test {
       chainIds[11] = ChainIds.CELO;
       chainIds[12] = ChainIds.SONIC;
       chainIds[13] = ChainIds.MANTLE;
-      
+      chainIds[14] = ChainIds.INK;
+
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {
       uint256[] memory chainIds = new uint256[](1);
@@ -721,13 +722,15 @@ contract ADITestBase is Test {
     } else if (chainId == ChainIds.SCROLL) {
       return GovernanceV3Scroll.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.LINEA) {
-      return 0x0D3f821e9741C8a8Bcac231162320251Db0cdf52;
+      return GovernanceV3Linea.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.CELO) {
-      return 0x50F4dAA86F3c747ce15C3C38bD0383200B61d6Dd;
+      return GovernanceV3Celo.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.SONIC) {
-      return 0x58e003a3C6f2Aeed6a2a6Bc77B504566523cb15c;
+      return GovernanceV3Sonic.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.MANTLE) {
       return 0x1283C5015B1Fb5616FA3aCb0C18e6879a02869cB;
+    } else if (chainId == ChainIds.INK) {
+      return 0x990B75fD1a2345D905a385dBC6e17BEe0Cb2f505;
     }
     revert();
   }

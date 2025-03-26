@@ -17,6 +17,8 @@ jobs:
     uses: bgd-labs/github-workflows/.github/workflows/foundry-lint-prettier.yml@main
   test:
     uses: bgd-labs/github-workflows/.github/workflows/foundry-test.yml@main
+    with:
+      compareLcov: false
     secrets:
       ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
 # only when the repo has zksync code
