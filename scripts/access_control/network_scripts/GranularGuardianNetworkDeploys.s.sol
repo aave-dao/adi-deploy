@@ -317,11 +317,11 @@ contract Soneium is DeployGranularGuardian {
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
-    return address(0); //  bgd guardian
+    return 0xdc62E0e65b2251Dc66404ca717FD32dcC365Be3A; //  bgd guardian
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return address(0); // dao governance guardian
+    return 0x19CE4363FEA478Aa04B9EA2937cc5A2cbcD44be6; // dao governance guardian
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
