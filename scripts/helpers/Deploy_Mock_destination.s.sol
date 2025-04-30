@@ -106,6 +106,12 @@ contract Ink is BaseMockDestination {
   }
 }
 
+contract Soneium is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.SONEIUM;
+  }
+}
+
 contract Ethereum_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
