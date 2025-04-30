@@ -220,7 +220,7 @@ deploy-ink-adapters-test:
 	$(call deploy_fn,adapters/DeployInkAdapter,ink)
 
 deploy-soneium-adapters-test:
-	$(call deploy_fn,adapters/DeploySoneiumAdapter,ethereum)
+	$(call deploy_fn,adapters/DeploySoneiumAdapter,soneium ethereum)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
