@@ -310,3 +310,21 @@ contract Ink is DeployGranularGuardian {
     return ChainIds.INK;
   }
 }
+
+contract Soneium is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; //GovernanceV3Soneium.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0xdc62E0e65b2251Dc66404ca717FD32dcC365Be3A; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x19CE4363FEA478Aa04B9EA2937cc5A2cbcD44be6; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONEIUM;
+  }
+}

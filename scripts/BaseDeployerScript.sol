@@ -33,6 +33,7 @@ struct Addresses {
   address proxyFactory;
   address sameChainAdapter;
   address scrollAdapter;
+  address soneiumAdapter;
   address wormholeAdapter;
   address zkevmAdapter;
   address zksyncAdapter;
@@ -82,6 +83,7 @@ library DeployerHelpers {
       zkevmAdapter: abi.decode(persistedJson.parseRaw('.zkevmAdapter'), (address)),
       gnosisAdapter: abi.decode(persistedJson.parseRaw('.gnosisAdapter'), (address)),
       scrollAdapter: abi.decode(persistedJson.parseRaw('.scrollAdapter'), (address)),
+      soneiumAdapter: abi.decode(persistedJson.parseRaw('.soneiumAdapter'), (address)),
       wormholeAdapter: abi.decode(persistedJson.parseRaw('.wormholeAdapter'), (address)),
       zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address)),
       mantleAdapter: abi.decode(persistedJson.parseRaw('.mantleAdapter'), (address)),
@@ -120,6 +122,7 @@ library DeployerHelpers {
     json.serialize('proxyFactory', addresses.proxyFactory);
     json.serialize('sameChainAdapter', addresses.sameChainAdapter);
     json.serialize('scrollAdapter', addresses.scrollAdapter);
+    json.serialize('soneiumAdapter', addresses.soneiumAdapter);
     json.serialize('wormholeAdapter', addresses.wormholeAdapter);
     json.serialize('zkevmAdapter', addresses.zkevmAdapter);
     json = json.serialize('zksyncAdapter', addresses.zksyncAdapter);

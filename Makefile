@@ -164,11 +164,11 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,ink)
+	$(call deploy_fn,InitialDeployments,soneium)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,ink)
+	$(call deploy_fn,ccc/DeployCCC,soneium)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -219,17 +219,20 @@ deploy-mantle-adapters-test:
 deploy-ink-adapters-test:
 	$(call deploy_fn,adapters/DeployInkAdapter,ink)
 
+deploy-soneium-adapters-test:
+	$(call deploy_fn,adapters/DeploySoneiumAdapter,soneium ethereum)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,ink)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,soneium)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,ink)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,soneium)
 
 
 ## Deploy and configure all contracts
@@ -257,7 +260,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,ink)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,soneium)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -272,7 +275,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,ink)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,soneium)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
@@ -299,4 +302,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,ink)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,soneium)

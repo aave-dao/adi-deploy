@@ -180,6 +180,12 @@ contract Mantle is BaseCCCNetworkDeployment {
   }
 }
 
+contract Soneium is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONEIUM;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

@@ -88,3 +88,29 @@ contract Ink is Script, UpdateCCCPermissionsInk {
     vm.stopBroadcast();
   }
 }
+
+contract UpdateCCCPermissionsSoneium is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; // executor
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return 0xD8E6956718784B914740267b7A50B952fb516656; // Granular Guardian
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = 0xD92b37a5114b33F668D274Fb48f23b726a854d6E; // CCC
+    return contracts;
+  }
+}
+
+contract Soneium is Script, UpdateCCCPermissionsSoneium {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}
