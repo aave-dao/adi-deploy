@@ -298,6 +298,9 @@ deploy-mantle-path-payload:
 deploy-ink-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
 
+deploy-soneium-path-payload:
+	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
+
 update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
