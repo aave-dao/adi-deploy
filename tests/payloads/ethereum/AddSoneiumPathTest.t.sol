@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_Ink as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
-abstract contract BaseAddInkPathPayloadTest is ADITestBase {
+abstract contract BaseAddSoneiumPathPayloadTest is ADITestBase {
   address internal _payload;
   address internal _crossChainController;
 
@@ -35,7 +35,7 @@ abstract contract BaseAddInkPathPayloadTest is ADITestBase {
 
   function test_defaultTest() public {
     defaultTest(
-      string.concat('add_ink_path_to_adi', NETWORK),
+      string.concat('add_soneium_path_to_adi', NETWORK),
       _crossChainController,
       address(_payload),
       false,
@@ -43,12 +43,7 @@ abstract contract BaseAddInkPathPayloadTest is ADITestBase {
     );
   }
 
-  function test_samePayloadAddress(
-    address currentChainAdapter,
-    address destinationChainAdapter,
-    address crossChainController,
-    uint256 destinationChainId
-  ) public {
+  function test_samePayloadAddress() public {
     SimpleAddForwarderAdapter deployedPayload = SimpleAddForwarderAdapter(_getDeployedPayload());
     SimpleAddForwarderAdapter predictedPayload = SimpleAddForwarderAdapter(_getPayload());
 
@@ -65,12 +60,12 @@ abstract contract BaseAddInkPathPayloadTest is ADITestBase {
   }
 }
 
-contract EthereumAddInkPathPayloadTest is
+contract EthereumAddSoneiumPathPayloadTest is
   Ethereum,
-  BaseAddInkPathPayloadTest('ethereum', 22123500)
+  BaseAddSoneiumPathPayloadTest('ethereum', 22424684)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0x9cdA84ae11d829079EDcCaEd49e473f6fb841b75;
+    return 0xD934A9034C95f9c31e1D6077DFed49B0F4d36FC3;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -83,8 +78,8 @@ contract EthereumAddInkPathPayloadTest is
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: currentAddresses.inkAdapter, // ethereum -> ink bridge adapter
-      destinationChainBridgeAdapter: destinationAddresses.inkAdapter, // ink bridge adapter
+      currentChainBridgeAdapter: currentAddresses.soneiumAdapter, // ethereum -> soneium bridge adapter
+      destinationChainBridgeAdapter: destinationAddresses.soneiumAdapter, // soneium bridge adapter
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
