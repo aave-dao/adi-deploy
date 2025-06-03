@@ -186,6 +186,12 @@ contract Soneium is BaseCCCNetworkDeployment {
   }
 }
 
+contract Bob is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.BOB;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

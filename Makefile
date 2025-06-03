@@ -164,11 +164,11 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,soneium)
+	$(call deploy_fn,InitialDeployments,bob)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,soneium)
+	$(call deploy_fn,ccc/DeployCCC,bob)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:

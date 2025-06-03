@@ -8,6 +8,7 @@ import {ChainHelpers} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 struct Addresses {
   address arbAdapter;
   address baseAdapter;
+  address bobAdapter;
   address ccipAdapter;
   uint256 chainId;
   address clEmergencyOracle;
@@ -87,6 +88,7 @@ library DeployerHelpers {
       wormholeAdapter: abi.decode(persistedJson.parseRaw('.wormholeAdapter'), (address)),
       zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address)),
       mantleAdapter: abi.decode(persistedJson.parseRaw('.mantleAdapter'), (address)),
+      bobAdapter: abi.decode(persistedJson.parseRaw('.bobAdapter'), (address)),
       granularCCCGuardian: abi.decode(persistedJson.parseRaw('.granularCCCGuardian'), (address))
     });
 
@@ -97,6 +99,7 @@ library DeployerHelpers {
     string memory json = 'addresses';
     json.serialize('arbAdapter', addresses.arbAdapter);
     json.serialize('baseAdapter', addresses.baseAdapter);
+    json.serialize('bobAdapter', addresses.bobAdapter);
     json.serialize('ccipAdapter', addresses.ccipAdapter);
     json.serialize('chainId', addresses.chainId);
     json.serialize('clEmergencyOracle', addresses.clEmergencyOracle);
