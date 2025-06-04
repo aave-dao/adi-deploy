@@ -112,6 +112,12 @@ contract Soneium is BaseMockDestination {
   }
 }
 
+contract Bob is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.BOB;
+  }
+}
+
 contract Ethereum_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

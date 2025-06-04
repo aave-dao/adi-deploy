@@ -114,3 +114,30 @@ contract Soneium is Script, UpdateCCCPermissionsSoneium {
     vm.stopBroadcast();
   }
 }
+
+
+contract UpdateCCCPermissionsBob is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; // executor
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return 0x80235F027952d69121d3FCa0b996708AC5aDCB5B; // Granular Guardian
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = 0xef59a4eF559Bc7DA51B4A11E8cE24fC8bA0a8561; // CCC
+    return contracts;
+  }
+}
+
+contract Bob is Script, UpdateCCCPermissionsBob {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}

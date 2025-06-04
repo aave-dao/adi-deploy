@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 1000000000 # 53 gwei
+custom_ethereum := --with-gas-price 2000000000 # 53 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -223,17 +223,20 @@ deploy-ink-adapters-test:
 deploy-soneium-adapters-test:
 	$(call deploy_fn,adapters/DeploySoneiumAdapter,soneium ethereum)
 
+deploy-bob-adapters-test:
+	$(call deploy_fn,adapters/DeployBobAdapter,bob)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,soneium)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,bob)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,soneium)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,bob)
 
 
 ## Deploy and configure all contracts
@@ -261,7 +264,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,soneium)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,bob)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -276,7 +279,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,soneium)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,bob)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
@@ -306,4 +309,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,soneium)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,bob)
