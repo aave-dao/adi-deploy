@@ -331,7 +331,7 @@ contract Soneium is DeployGranularGuardian {
 
 contract Bob is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; //GovernanceV3Bob.EXECUTOR_LVL_1;
+    return 0x90800d1F54384523723eD3962c7Cd59d7866c83d; //GovernanceV3Bob.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {

@@ -26,7 +26,7 @@ custom_ethereum := --with-gas-price 2000000000 # 53 gwei
 custom_zksync := --zksync
 custom_linea-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
 custom_linea :=  --with-gas-price 1000000000 --force # 1 gwei
-custom_bob :=  --with-gas-price 100000000 --force # 0.1 gwei
+# custom_bob :=  --with-gas-price 100000000 --force # 0.1 gwei
 custom_ethereum-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
 
 # params:
