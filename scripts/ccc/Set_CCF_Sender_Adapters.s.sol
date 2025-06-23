@@ -22,6 +22,7 @@ struct NetworkAddresses {
   Addresses sonic;
   Addresses ink;
   Addresses soneium;
+  Addresses bob;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -66,7 +67,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       sonic: _getAddresses(ChainIds.SONIC),
       mantle: _getAddresses(ChainIds.MANTLE),
       ink: _getAddresses(ChainIds.INK),
-      soneium: _getAddresses(ChainIds.SONEIUM)
+      soneium: _getAddresses(ChainIds.SONEIUM),
+      bob: _getAddresses(ChainIds.BOB)
     });
 
     // polygon path
@@ -251,10 +253,17 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // Soneium
+    // bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.soneiumAdapter,
+    //   destinationBridgeAdapter: networkAddresses.soneium.soneiumAdapter,
+    //   destinationChainId: networkAddresses.soneium.chainId
+    // });
+
+    // Bob
     bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
-      currentChainBridgeAdapter: addresses.soneiumAdapter,
-      destinationBridgeAdapter: networkAddresses.soneium.soneiumAdapter,
-      destinationChainId: networkAddresses.soneium.chainId
+      currentChainBridgeAdapter: addresses.bobAdapter,
+      destinationBridgeAdapter: networkAddresses.bob.bobAdapter,
+      destinationChainId: networkAddresses.bob.chainId
     });
     return bridgeAdaptersToEnable;
   }

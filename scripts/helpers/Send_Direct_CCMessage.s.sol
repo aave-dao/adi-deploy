@@ -37,7 +37,7 @@ contract Ethereum is BaseSendDirectMessage {
   }
 
   function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.SONEIUM;
+    return ChainIds.BOB;
   }
 }
 
