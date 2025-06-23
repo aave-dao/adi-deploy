@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_Soneium as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
-abstract contract BaseAddSoneiumPathPayloadTest is ADITestBase {
+abstract contract BaseAddBobPathPayloadTest is ADITestBase {
   address internal _payload;
   address internal _crossChainController;
 
@@ -35,7 +35,7 @@ abstract contract BaseAddSoneiumPathPayloadTest is ADITestBase {
 
   function test_defaultTest() public {
     defaultTest(
-      string.concat('add_soneium_path_to_adi', NETWORK),
+      string.concat('add_bob_path_to_adi', NETWORK),
       _crossChainController,
       address(_payload),
       false,
@@ -43,7 +43,12 @@ abstract contract BaseAddSoneiumPathPayloadTest is ADITestBase {
     );
   }
 
-  function test_samePayloadAddress() public {
+  function test_samePayloadAddress(
+    address currentChainAdapter,
+    address destinationChainAdapter,
+    address crossChainController,
+    uint256 destinationChainId
+  ) public {
     SimpleAddForwarderAdapter deployedPayload = SimpleAddForwarderAdapter(_getDeployedPayload());
     SimpleAddForwarderAdapter predictedPayload = SimpleAddForwarderAdapter(_getPayload());
 
@@ -60,12 +65,12 @@ abstract contract BaseAddSoneiumPathPayloadTest is ADITestBase {
   }
 }
 
-contract EthereumAddSoneiumPathPayloadTest is
+contract EthereumAddBobPathPayloadTest is
   Ethereum,
-  BaseAddSoneiumPathPayloadTest('ethereum', 22424684)
+  BaseAddBobPathPayloadTest('ethereum', 22766645)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0xD934A9034C95f9c31e1D6077DFed49B0F4d36FC3;
+    return 0xb46874c48b8F1d7303bC40F1c9E4bB4f159FCCf9;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -78,8 +83,8 @@ contract EthereumAddSoneiumPathPayloadTest is
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: currentAddresses.soneiumAdapter, // ethereum -> soneium bridge adapter
-      destinationChainBridgeAdapter: destinationAddresses.soneiumAdapter, // soneium bridge adapter
+      currentChainBridgeAdapter: currentAddresses.bobAdapter, // ethereum -> bob bridge adapter
+      destinationChainBridgeAdapter: destinationAddresses.bobAdapter, // bob bridge adapter
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
