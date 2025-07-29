@@ -45,7 +45,7 @@ library DeployerHelpers {
 
   function getPathByChainId(uint256 chainId) internal pure returns (string memory) {
     string memory path = string.concat(
-      './deployments/',
+      './deployments/cc/mainnet/',
       ChainHelpers.getNetworkNameFromId(chainId)
     );
     return string.concat(path, '.json');
