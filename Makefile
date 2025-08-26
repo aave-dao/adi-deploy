@@ -290,19 +290,7 @@ deploy-ccc-update-payload:
 deploy-ccc-shuffle-payload:
 	$(call deploy_fn,payloads/ccc/shuffle/Network_Deployments,metis)
 
-deploy-zksync-path-payload:
-	$(call deploy_fn,payloads/adapters/zksync/Network_Deployments,ethereum)
-
-deploy-sonic-path-payload:
-	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
-
-deploy-mantle-path-payload:
-	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
-
-deploy-ink-path-payload:
-	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
-
-deploy-soneium-path-payload:
+deploy-new-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
 
 update-owners-and-guardians:
