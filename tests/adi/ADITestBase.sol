@@ -97,8 +97,8 @@ contract ADITestBase is Test {
     string memory afterPath = string(abi.encodePacked('./reports/', reportAfter, '.json'));
 
     string[] memory inputs = new string[](7);
-    inputs[0] = 'npx';
-    inputs[1] = '@bgd-labs/aave-cli@^1.4.0';
+    inputs[0] = 'node';
+    inputs[1] = './node_modules/@bgd-labs/aave-cli/dist/cli.js'; //'@bgd-labs/aave-cli@^1.4.0';
     inputs[2] = 'adi-diff-snapshots';
     inputs[3] = beforePath;
     inputs[4] = afterPath;
