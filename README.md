@@ -29,7 +29,7 @@ Here it can also be found some helper templates to use when creating payloads. F
 
 ## License
 
-Copyright © 2024, Aave DAO, represented by its governance smart contracts.
+Copyright © 2025, Aave DAO, represented by its governance smart contracts.
 
 Created by [BGD Labs](https://bgdlabs.com/).
 
