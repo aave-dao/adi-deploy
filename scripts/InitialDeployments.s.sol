@@ -374,6 +374,20 @@ contract Bob is BaseInitialDeployment {
   }
 }
 
+contract Plasma is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
+  }
+
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return address(0); // TODO: deploy proxy factory
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return address(0); // TODO: deploy executor
+  }
+}
+
 contract Ethereum_testnet is BaseInitialDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

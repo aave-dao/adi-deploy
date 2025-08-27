@@ -140,3 +140,29 @@ contract Bob is Script, UpdateCCCPermissionsBob {
     vm.stopBroadcast();
   }
 }
+
+contract UpdateCCCPermissionsPlasma is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return address(0); // executor
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return address(0); // Granular Guardian
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = address(0); // CCC
+    return contracts;
+  }
+}
+
+contract Plasma is Script, UpdateCCCPermissionsPlasma {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}

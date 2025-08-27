@@ -23,6 +23,7 @@ struct NetworkAddresses {
   Addresses ink;
   Addresses soneium;
   Addresses bob;
+  Addresses plasma;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -68,7 +69,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       mantle: _getAddresses(ChainIds.MANTLE),
       ink: _getAddresses(ChainIds.INK),
       soneium: _getAddresses(ChainIds.SONEIUM),
-      bob: _getAddresses(ChainIds.BOB)
+      bob: _getAddresses(ChainIds.BOB),
+      plasma: _getAddresses(ChainIds.PLASMA)
     });
 
     // polygon path
@@ -260,10 +262,27 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // Bob
+    // bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.bobAdapter,
+    //   destinationBridgeAdapter: networkAddresses.bob.bobAdapter,
+    //   destinationChainId: networkAddresses.bob.chainId
+    // });
+
+    // Plasma
     bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
-      currentChainBridgeAdapter: addresses.bobAdapter,
-      destinationBridgeAdapter: networkAddresses.bob.bobAdapter,
-      destinationChainId: networkAddresses.bob.chainId
+      currentChainBridgeAdapter: addresses.ccipAdapter,
+      destinationBridgeAdapter: networkAddresses.plasma.ccipAdapter,
+      destinationChainId: networkAddresses.plasma.chainId
+    });
+    bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.lzAdapter,
+      destinationBridgeAdapter: networkAddresses.plasma.lzAdapter,
+      destinationChainId: networkAddresses.plasma.chainId
+    });
+    bridgeAdaptersToEnable[2] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.hlAdapter,
+      destinationBridgeAdapter: networkAddresses.plasma.hlAdapter,
+      destinationChainId: networkAddresses.plasma.chainId
     });
     return bridgeAdaptersToEnable;
   }

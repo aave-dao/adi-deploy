@@ -288,3 +288,23 @@ contract Sonic is DeployLZAdapter {
     return remoteCCCByNetwork;
   }
 }
+
+// TODO: add plasma adapter
+contract Plasma is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
+    return address(0);
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}

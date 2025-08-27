@@ -6,7 +6,6 @@ import '../BaseDeployerScript.sol';
 
 abstract contract DeployCCIPAdapter is BaseDeployerScript, BaseCCIPAdapter {
   function _execute(Addresses memory addresses) internal override {
-
     addresses.ccipAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
@@ -249,6 +248,30 @@ contract Sonic is DeployCCIPAdapter {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.SONIC;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+// TODO: add plasma adapter
+contract Plasma is DeployCCIPAdapter {
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return address(0);
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return address(0);
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {

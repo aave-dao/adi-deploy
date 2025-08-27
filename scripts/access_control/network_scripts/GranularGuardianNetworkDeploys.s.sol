@@ -346,3 +346,22 @@ contract Bob is DeployGranularGuardian {
     return ChainIds.BOB;
   }
 }
+
+// TODO: add plasma guardian
+contract Plasma is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return address(0); //GovernanceV3Plasma.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return address(0); //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return address(0); // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
+  }
+}
