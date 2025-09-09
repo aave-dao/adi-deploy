@@ -246,10 +246,9 @@ contract Sonic is DeployHLAdapter {
   }
 }
 
-// TODO: add plasma adapter
 contract Plasma is DeployHLAdapter {
   function HL_MAIL_BOX() internal pure override returns (address) {
-    return address(0);
+    return 0x3a464f746D23Ab22155710f44dB16dcA53e0775E;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

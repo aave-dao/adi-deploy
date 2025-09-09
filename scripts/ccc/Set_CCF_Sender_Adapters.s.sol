@@ -48,7 +48,7 @@ contract Ethereum is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        1
+        2
       );
 
     NetworkAddresses memory networkAddresses = NetworkAddresses({
@@ -269,17 +269,17 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // Plasma
+    // bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.ccipAdapter,
+    //   destinationBridgeAdapter: networkAddresses.plasma.ccipAdapter,
+    //   destinationChainId: networkAddresses.plasma.chainId
+    // });
     bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
-      currentChainBridgeAdapter: addresses.ccipAdapter,
-      destinationBridgeAdapter: networkAddresses.plasma.ccipAdapter,
-      destinationChainId: networkAddresses.plasma.chainId
-    });
-    bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.lzAdapter,
       destinationBridgeAdapter: networkAddresses.plasma.lzAdapter,
       destinationChainId: networkAddresses.plasma.chainId
     });
-    bridgeAdaptersToEnable[2] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.hlAdapter,
       destinationBridgeAdapter: networkAddresses.plasma.hlAdapter,
       destinationChainId: networkAddresses.plasma.chainId

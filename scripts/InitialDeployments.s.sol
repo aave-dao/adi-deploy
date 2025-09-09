@@ -380,11 +380,11 @@ contract Plasma is BaseInitialDeployment {
   }
 
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-    return address(0); // TODO: deploy proxy factory
+    return 0xEB0682d148e874553008730f0686ea89db7DA412;
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return address(0); // TODO: deploy executor
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A;
   }
 }
 
