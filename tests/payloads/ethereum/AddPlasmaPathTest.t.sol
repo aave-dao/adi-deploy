@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_Plasma as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {Ethereum_Plasma_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Plasma_Path_Payload.sol';
 
 abstract contract BaseAddPlasmaPathPayloadTest is ADITestBase {
@@ -80,10 +80,10 @@ abstract contract BaseAddPlasmaPathPayloadTest is ADITestBase {
 // TODO: add block number
 contract EthereumAddPlasmaPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddPlasmaPathPayloadTest('ethereum', 21824382)
+  BaseAddPlasmaPathPayloadTest('ethereum', 23343028)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return address(0); // TODO: add deployed payload address
+    return 0xBD770E618C49d151959d596D5d2770F0f3301a7b;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -95,12 +95,12 @@ contract EthereumAddPlasmaPathPayloadTest is
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainHLBridgeAdapter: address(0), // TODO: add current chain hl bridge adapter
-      destinationChainHLBridgeAdapter: address(0), // TODO: add destination chain hl bridge adapter
-      currentChainCCIPBridgeAdapter: address(0), // TODO: add current chain ccip bridge adapter
-      destinationChainCCIPBridgeAdapter: address(0), // TODO: add destination chain ccip bridge adapter
-      currentChainLZBridgeAdapter: address(0), // TODO: add current chain lz bridge adapter
-      destinationChainLZBridgeAdapter: address(0), // TODO: add destination chain lz bridge adapter
+      currentChainHLBridgeAdapter: 0x6bda311748E6542d578b167d791A4130f3FbBc67,
+      destinationChainHLBridgeAdapter: 0x13Dc9eBb19bb1A14aa56215b443B2703A07ba2D5,
+      currentChainCCIPBridgeAdapter: 0x352C71092fB60ce2f94DFF4ACda330DdffD946B0,
+      destinationChainCCIPBridgeAdapter: 0x719e23D7B48Fc5AEa65Cff1bc58865C2b8d89A34,
+      currentChainLZBridgeAdapter: 0xBA0Ee375e9d0c815097D9eB7EB9Db20b59c06792,
+      destinationChainLZBridgeAdapter: 0x99950E7C7eB320A8551916e8676a42b90b058d5D,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);

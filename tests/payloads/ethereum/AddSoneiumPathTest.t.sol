@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum_Soneium as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
 abstract contract BaseAddSoneiumPathPayloadTest is ADITestBase {
