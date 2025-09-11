@@ -260,14 +260,13 @@ contract Sonic is DeployCCIPAdapter {
   }
 }
 
-// TODO: add plasma adapter
 contract Plasma is DeployCCIPAdapter {
   function CCIP_ROUTER() internal pure override returns (address) {
-    return address(0);
+    return 0xcDca5D374e46A6DDDab50bD2D9acB8c796eC35C3;
   }
 
   function LINK_TOKEN() internal pure override returns (address) {
-    return address(0);
+    return 0x76a443768A5e3B8d1AED0105FC250877841Deb40;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
