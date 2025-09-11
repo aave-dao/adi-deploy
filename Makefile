@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 2000000000 # 53 gwei
+custom_ethereum := --with-gas-price 500000000 # 0.5 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -39,7 +39,7 @@ custom_ethereum-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gw
 define deploy_single_fn
 forge script \
  scripts/$(1).s.sol:$(if $(3),$(if $(PROD),$(3),$(3)_testnet),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
- --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify -vvvv \
+ --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify --legacy -vvvv \
  $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
  $(custom_$(if $(PROD),$(2),$(2)-testnet))
 
@@ -169,7 +169,7 @@ deploy-proxy-factory-test:
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,bob)
+	$(call deploy_fn,ccc/DeployCCC,plasma)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -177,11 +177,11 @@ deploy-ccip-bridge-adapters-test:
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployLZ,sonic)
+	$(call deploy_fn,adapters/DeployLZ,ethereum)
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployHL,sonic)
+	$(call deploy_fn,adapters/DeployHL,ethereum)
 
 ## Deploy SameChain adapters on ethereum
 deploy-same-chain-adapters-test:
@@ -232,11 +232,11 @@ set-ccf-sender-adapters-test:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,bob)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,plasma)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,bob)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,plasma)
 
 
 ## Deploy and configure all contracts
@@ -264,7 +264,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,bob)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,plasma)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -279,7 +279,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,bob)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,plasma)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
@@ -297,4 +297,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,bob)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,plasma)

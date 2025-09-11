@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
 import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
 import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
-import {GovernanceV3Binance} from 'aave-address-book/GovernanceV3Binance.sol';
+import {GovernanceV3BNB} from 'aave-address-book/GovernanceV3BNB.sol';
 import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Optimism} from 'aave-address-book/GovernanceV3Optimism.sol';
@@ -79,7 +79,7 @@ contract Polygon is DeployGranularGuardian {
 
 contract Binance is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return GovernanceV3Binance.EXECUTOR_LVL_1;
+    return GovernanceV3BNB.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -347,18 +347,17 @@ contract Bob is DeployGranularGuardian {
   }
 }
 
-// TODO: add plasma guardian
 contract Plasma is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return address(0); //GovernanceV3Plasma.EXECUTOR_LVL_1;
+    return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A; //GovernanceV3Plasma.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
-    return address(0); //  bgd guardian
+    return 0xdc62E0e65b2251Dc66404ca717FD32dcC365Be3A; //  bgd guardian
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return address(0); // dao governance guardian
+    return 0x19CE4363FEA478Aa04B9EA2937cc5A2cbcD44be6; // dao governance guardian
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

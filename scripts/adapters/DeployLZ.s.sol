@@ -289,10 +289,9 @@ contract Sonic is DeployLZAdapter {
   }
 }
 
-// TODO: add plasma adapter
 contract Plasma is DeployLZAdapter {
   function LZ_ENDPOINT() internal pure override returns (address) {
-    return address(0);
+    return 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
