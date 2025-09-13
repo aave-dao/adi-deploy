@@ -227,7 +227,6 @@ contract Celo_testnet is DeployHLAdapter {
   }
 }
 
-
 contract Sonic is DeployHLAdapter {
   function HL_MAIL_BOX() internal pure override returns (address) {
     return 0x3a464f746D23Ab22155710f44dB16dcA53e0775E;
@@ -235,6 +234,25 @@ contract Sonic is DeployHLAdapter {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.SONIC;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+contract Plasma is DeployHLAdapter {
+  function HL_MAIL_BOX() internal pure override returns (address) {
+    return 0x3a464f746D23Ab22155710f44dB16dcA53e0775E;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {

@@ -192,6 +192,16 @@ contract Bob is BaseCCCNetworkDeployment {
   }
 }
 
+contract Plasma is BaseCCCNetworkDeployment {
+  function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
+    return 0xF61FE74Ec1cFbd9Ee8Bd27592D2EDEe0E2aA85Cf;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
