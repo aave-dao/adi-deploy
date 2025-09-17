@@ -45,7 +45,7 @@ library DeployerHelpers {
 
   function getPathByChainId(uint256 chainId) internal pure returns (string memory) {
     string memory path = string.concat(
-      './deployments/cc/mainnet/', // @dev important to maintain this folder structure as governance uses this path to get the adi addresses
+      './deployments/',
       ChainHelpers.getNetworkNameFromId(chainId)
     );
     return string.concat(path, '.json');

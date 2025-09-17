@@ -67,7 +67,7 @@ deploy-emergency-registry:
 	$(call deploy_fn,Deploy_EmergencyRegistry,ethereum)
 
 # Deploy Proxy Factories on all networks
-deploy-proxy-factory:
+deploy-initial:
 	$(call deploy_fn,InitialDeployments,ethereum avalanche polygon optimism arbitrum metis base binance gnosis zkevm)
 
 # Deploy Cross Chain Infra on all networks

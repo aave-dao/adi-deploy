@@ -28,10 +28,6 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
     return address(0);
   }
 
-  function PROXY_ADMIN() internal virtual returns (address) {
-    return address(0);
-  }
-
   function EXECUTOR() internal virtual returns (address) {
     return address(0);
   }
@@ -41,9 +37,8 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
   }
 
   function _execute(Addresses memory addresses) internal override {
-    addresses.proxyFactory = TRANSPARENT_PROXY_FACTORY() == address(0)
-      ? address(new TransparentProxyFactory())
-      : TRANSPARENT_PROXY_FACTORY();
+    require(TRANSPARENT_PROXY_FACTORY() != address(0), 'Executor is not set');
+    addresses.proxyFactory = TRANSPARENT_PROXY_FACTORY();
     require(EXECUTOR() != address(0), 'Executor is not set');
     addresses.executor = EXECUTOR();
     addresses.owner = OWNER();
@@ -54,10 +49,6 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
 contract Ethereum is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return MiscEthereum.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscEthereum.PROXY_ADMIN;
   }
 
   function GUARDIAN() internal pure override returns (address) {
@@ -74,10 +65,6 @@ contract Polygon is BaseInitialDeployment {
     return MiscPolygon.TRANSPARENT_PROXY_FACTORY;
   }
 
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscPolygon.PROXY_ADMIN;
-  }
-
   function GUARDIAN() internal pure override returns (address) {
     return MiscPolygon.PROTOCOL_GUARDIAN;
   }
@@ -90,10 +77,6 @@ contract Polygon is BaseInitialDeployment {
 contract Avalanche is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return MiscAvalanche.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscAvalanche.PROXY_ADMIN;
   }
 
   function GUARDIAN() internal pure override returns (address) {
@@ -110,10 +93,6 @@ contract Optimism is BaseInitialDeployment {
     return MiscOptimism.TRANSPARENT_PROXY_FACTORY;
   }
 
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscOptimism.PROXY_ADMIN;
-  }
-
   function GUARDIAN() internal pure override returns (address) {
     return MiscOptimism.PROTOCOL_GUARDIAN;
   }
@@ -126,10 +105,6 @@ contract Optimism is BaseInitialDeployment {
 contract Arbitrum is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return MiscArbitrum.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscArbitrum.PROXY_ADMIN;
   }
 
   function GUARDIAN() internal pure override returns (address) {
@@ -146,10 +121,6 @@ contract Metis is BaseInitialDeployment {
     return MiscMetis.TRANSPARENT_PROXY_FACTORY;
   }
 
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscMetis.PROXY_ADMIN;
-  }
-
   function GUARDIAN() internal pure override returns (address) {
     return MiscMetis.PROTOCOL_GUARDIAN;
   }
@@ -162,10 +133,6 @@ contract Metis is BaseInitialDeployment {
 contract Binance is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return MiscBNB.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscBNB.PROXY_ADMIN;
   }
 
   function GUARDIAN() internal pure override returns (address) {
@@ -182,10 +149,6 @@ contract Gnosis is BaseInitialDeployment {
     return MiscGnosis.TRANSPARENT_PROXY_FACTORY;
   }
 
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscGnosis.PROXY_ADMIN;
-  }
-
   function GUARDIAN() internal pure override returns (address) {
     return MiscGnosis.PROTOCOL_GUARDIAN;
   }
@@ -198,10 +161,6 @@ contract Gnosis is BaseInitialDeployment {
 contract Base is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return MiscBase.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscBase.PROXY_ADMIN;
   }
 
   function GUARDIAN() internal pure override returns (address) {
@@ -218,10 +177,6 @@ contract Scroll is BaseInitialDeployment {
     return MiscScroll.TRANSPARENT_PROXY_FACTORY;
   }
 
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscScroll.PROXY_ADMIN;
-  }
-
   function GUARDIAN() internal pure override returns (address) {
     return MiscScroll.PROTOCOL_GUARDIAN;
   }
@@ -234,10 +189,6 @@ contract Scroll is BaseInitialDeployment {
 contract Zkevm is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return MiscPolygonZkEvm.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function PROXY_ADMIN() internal pure override returns (address) {
-    return MiscPolygonZkEvm.PROXY_ADMIN;
   }
 
   function GUARDIAN() internal pure override returns (address) {
@@ -253,11 +204,6 @@ contract Celo is BaseInitialDeployment {
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
     return 0xb172a90A7C238969CE9B27cc19D13b60A91e7F00;
   }
-
-  //
-  //  function PROXY_ADMIN() internal pure override returns (address) {
-  //    return 0x01d678F1bbE148C96e7501F1Ac41661904F84F61;
-  //  }
 
   //  function GUARDIAN() internal pure override returns (address) {
   //    return;
@@ -385,77 +331,5 @@ contract Plasma is BaseInitialDeployment {
 
   function EXECUTOR() internal pure override returns (address) {
     return 0x47aAdaAE1F05C978E6aBb7568d11B7F6e0FC4d6A;
-  }
-}
-
-contract Ethereum_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-}
-
-contract Polygon_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_AMOY;
-  }
-}
-
-contract Avalanche_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.AVALANCHE_FUJI;
-  }
-}
-
-contract Arbitrum_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ARBITRUM_SEPOLIA;
-  }
-}
-
-contract Optimism_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.OPTIMISM_SEPOLIA;
-  }
-}
-
-contract Metis_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.METIS_TESTNET;
-  }
-}
-
-contract Binance_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.BNB_TESTNET;
-  }
-}
-
-contract Base_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.BASE_SEPOLIA;
-  }
-}
-
-contract Gnosis_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.GNOSIS_CHIADO;
-  }
-}
-
-contract Scroll_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.SCROLL_SEPOLIA;
-  }
-}
-
-contract Celo_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.CELO_ALFAJORES;
-  }
-}
-
-contract Linea_testnet is BaseInitialDeployment {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }
