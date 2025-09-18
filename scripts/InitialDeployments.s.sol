@@ -13,7 +13,6 @@ import {MiscMetis} from 'aave-address-book/MiscMetis.sol';
 import {MiscGnosis} from 'aave-address-book/MiscGnosis.sol';
 import {MiscBNB} from 'aave-address-book/MiscBNB.sol';
 import {MiscScroll} from 'aave-address-book/MiscScroll.sol';
-import {MiscPolygonZkEvm} from 'aave-address-book/MiscPolygonZkEvm.sol';
 
 abstract contract BaseInitialDeployment is BaseDeployerScript {
   function OWNER() internal virtual returns (address) {
@@ -183,20 +182,6 @@ contract Scroll is BaseInitialDeployment {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.SCROLL;
-  }
-}
-
-contract Zkevm is BaseInitialDeployment {
-  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-    return MiscPolygonZkEvm.TRANSPARENT_PROXY_FACTORY;
-  }
-
-  function GUARDIAN() internal pure override returns (address) {
-    return MiscPolygonZkEvm.PROTOCOL_GUARDIAN;
-  }
-
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.POLYGON_ZK_EVM;
   }
 }
 

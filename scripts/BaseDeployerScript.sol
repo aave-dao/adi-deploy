@@ -36,7 +36,6 @@ struct Addresses {
   address scrollAdapter;
   address soneiumAdapter;
   address wormholeAdapter;
-  address zkevmAdapter;
   address zksyncAdapter;
 }
 
@@ -81,7 +80,6 @@ library DeployerHelpers {
       polAdapter: abi.decode(persistedJson.parseRaw('.polAdapter'), (address)),
       mockDestination: abi.decode(persistedJson.parseRaw('.mockDestination'), (address)),
       baseAdapter: abi.decode(persistedJson.parseRaw('.baseAdapter'), (address)),
-      zkevmAdapter: abi.decode(persistedJson.parseRaw('.zkevmAdapter'), (address)),
       gnosisAdapter: abi.decode(persistedJson.parseRaw('.gnosisAdapter'), (address)),
       scrollAdapter: abi.decode(persistedJson.parseRaw('.scrollAdapter'), (address)),
       soneiumAdapter: abi.decode(persistedJson.parseRaw('.soneiumAdapter'), (address)),
@@ -127,7 +125,6 @@ library DeployerHelpers {
     json.serialize('scrollAdapter', addresses.scrollAdapter);
     json.serialize('soneiumAdapter', addresses.soneiumAdapter);
     json.serialize('wormholeAdapter', addresses.wormholeAdapter);
-    json.serialize('zkevmAdapter', addresses.zkevmAdapter);
     json = json.serialize('zksyncAdapter', addresses.zksyncAdapter);
     vm.writeJson(json, path);
   }

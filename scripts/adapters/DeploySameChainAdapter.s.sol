@@ -21,13 +21,3 @@ contract Ethereum is DeploySameChainAdapter {
     return new RemoteCCC[](0);
   }
 }
-
-contract Ethereum_testnet is DeploySameChainAdapter {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
-    return new RemoteCCC[](0);
-  }
-}

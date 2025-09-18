@@ -64,12 +64,6 @@ contract Gnosis is BaseMockDestination {
   }
 }
 
-contract Zkevm is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return ChainIds.POLYGON_ZK_EVM;
-  }
-}
-
 contract Celo is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return ChainIds.CELO;
@@ -121,71 +115,5 @@ contract Bob is BaseMockDestination {
 contract Plasma is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return ChainIds.PLASMA;
-  }
-}
-
-contract Ethereum_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-}
-
-contract Arbitrum_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.ARBITRUM_SEPOLIA;
-  }
-}
-
-contract Avalanche_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.AVALANCHE_FUJI;
-  }
-}
-
-contract Optimism_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.OPTIMISM_SEPOLIA;
-  }
-}
-
-contract Polygon_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.POLYGON_AMOY;
-  }
-}
-
-contract Metis_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.METIS_TESTNET;
-  }
-}
-
-contract Binance_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.BNB_TESTNET;
-  }
-}
-
-contract Base_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.BASE_SEPOLIA;
-  }
-}
-
-contract Scroll_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.SCROLL_SEPOLIA;
-  }
-}
-
-contract Celo_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.CELO_ALFAJORES;
-  }
-}
-
-contract Linea_testnet is BaseMockDestination {
-  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.LINEA_SEPOLIA;
   }
 }
