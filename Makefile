@@ -123,6 +123,18 @@ deploy-zksync-adapters:
 deploy-linea-adapters:
 	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum linea)
 
+deploy-mantle-adapters:
+	$(call deploy_fn,adapters/DeployMantleAdapter,ethereum mantle)
+
+deploy-ink-adapters:
+	$(call deploy_fn,adapters/DeployInkAdapter,ethereum ink)
+
+deploy-soneium-adapters:
+	$(call deploy_fn,adapters/DeploySoneiumAdapter,soneium ethereum)
+
+deploy-bob-adapters:
+	$(call deploy_fn,adapters/DeployBobAdapter,ethereum bob)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
@@ -135,127 +147,14 @@ set-ccr-receiver-adapters:
 set-ccr-confirmations:
 	$(call deploy_fn,CCC/Set_CCR_Confirmations,ethereum polygon avalanche optimism arbitrum metis base binance gnosis zkevm)
 
-# Generate Addresses Json
-write-json-addresses :; forge script scripts/WriteAddresses.s.sol:WriteDeployedAddresses -vvvv
 
+# ------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------- ACCESS CONTROL SCRIPTS ---------------------------------------------------------
 
-## Deploy and configure all contracts
-deploy-full:
-		make deploy-proxy-factory
-		make deploy-cross-chain-infra
-		make deploy-ccip-bridge-adapters
-		make deploy-lz-bridge-adapters
-		make deploy-hl-bridge-adapters
-		make deploy-same-chain-adapters
-		make deploy-optimism-adapters
-		make deploy-arbitrum-adapters
-		make deploy-metis-adapters
-		make deploy-polygon-adapters
-		make set-ccf-approved-senders
-		make set-ccf-sender-adapters
-		make set-ccr-receiver-adapters
-		make set-ccr-confirmations
-		make fund-crosschain
-		make write-json-addresses
+deploy_ccc_granular_guardian:
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,plasma)
 
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-# ----------------------------------------- TESTNET DEPLOYMENT SCRIPTS ---------------------------------------------------------
-
-# Deploy Proxy Factories on all networks
-deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,plasma)
-
-# Deploy Cross Chain Infra on all networks
-deploy-cross-chain-infra-test:
-	$(call deploy_fn,ccc/DeployCCC,plasma)
-
-## Deploy CCIP bridge adapters on all networks
-deploy-ccip-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployCCIPAdapter,ethereum)
-
-## Deploy LayerZero bridge adapters on all networks
-deploy-lz-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployLZ,ethereum)
-
-## Deploy HyperLane bridge adapters on all networks
-deploy-hl-bridge-adapters-test:
-	$(call deploy_fn,adapters/DeployHL,ethereum)
-
-## Deploy SameChain adapters on ethereum
-deploy-same-chain-adapters-test:
-	$(call deploy_fn,adapters/DeploySameChainAdapter,ethereum)
-
-deploy-scroll-adapters-test:
-	$(call deploy_fn,adapters/DeployScrollAdapter,ethereum)
-
-deploy-wormhole-adapters-test:
-	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum)
-
-deploy-polygon-adapters-test:
-	$(call deploy_fn,adapters/DeployPolygon,ethereum)
-
-deploy-gnosis-adapters-test:
-	$(call deploy_fn,adapters/DeployGnosisChain,ethereum)
-
-deploy-arbitrum-adapters-test:
-	$(call deploy_fn,adapters/DeployArbAdapter,ethereum)
-
-deploy-optimism-adapters-test:
-	$(call deploy_fn,adapters/DeployOpAdapter,ethereum)
-
-deploy-metis-adapters-test:
-	$(call deploy_fn,adapters/DeployMetisAdapter,ethereum)
-
-deploy-base-adapters-test:
-	$(call deploy_fn,adapters/DeployCBaseAdapter,ethereum)
-
-deploy-linea-adapters-test:
-	$(call deploy_fn,adapters/DeployLineaAdapter,ethereum)
-
-deploy-mantle-adapters-test:
-	$(call deploy_fn,adapters/DeployMantleAdapter,mantle)
-
-deploy-ink-adapters-test:
-	$(call deploy_fn,adapters/DeployInkAdapter,ink)
-
-deploy-soneium-adapters-test:
-	$(call deploy_fn,adapters/DeploySoneiumAdapter,soneium ethereum)
-
-deploy-bob-adapters-test:
-	$(call deploy_fn,adapters/DeployBobAdapter,bob)
-
-## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
-set-ccf-sender-adapters-test:
-	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
-
-# Set the bridge adapters allowed to receive messages
-set-ccr-receiver-adapters-test:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,plasma)
-
-# Sets the required confirmations
-set-ccr-confirmations-test:
-	$(call deploy_fn,ccc/Set_CCR_Confirmations,plasma)
-
-
-## Deploy and configure all contracts
-deploy-full-test:
-		#make deploy-proxy-factory-test
-		make deploy-cross-chain-infra-test
-		make deploy-ccip-bridge-adapters-test
-		make deploy-lz-bridge-adapters-test
-		make deploy-hl-bridge-adapters-test
-		make deploy-same-chain-adapters-test
-		make set-ccf-sender-adapters-test
-		make set-ccr-receiver-adapters-test
-		make set-ccr-confirmations-test
-		make fund-crosschain-test
-		make write-json-addresses
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
 remove-bridge-adapters:
 	$(call deploy_fn,helpers/RemoveBridgeAdapters,celo)
@@ -277,18 +176,6 @@ deploy_mock_ccc:
 
 send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
-
-deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,plasma)
-
-deploy-ccc-revision-and-update:
-	$(call deploy_fn,CCC/UpdateCCC,ethereum)
-
-deploy-ccc-update-payload:
-	$(call deploy_fn,helpers/UpdateCCCImpl_Payload,celo)
-
-deploy-ccc-shuffle-payload:
-	$(call deploy_fn,payloads/ccc/shuffle/Network_Deployments,metis)
 
 deploy-new-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
