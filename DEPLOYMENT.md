@@ -48,29 +48,51 @@ As previously said, you should add the new network script to `InitialDeployments
 
 ## Emergency
 
+To be able to signal the different connected networks of an emergency so that the allowed entity can do the necessary changes and solve the situation, an Emergency Registry contract is needed in Ethereum (Central hub of the system).
+You can set the OWNER address, which is the one that will be able to set the emergencies on the selected networks (defaults to msg.sender), should be given to executor lvl 1 to delegate the responsibility to the Aave Governance.
+
+On all the necessary networks (that need Emergency solving), normally determined by the networks that use 3rd party bridge providers (instead of native (L2) bridges), an Emergency Oracle needs to be deployed (Contract that will check Emergency Registry to determine if current network has emergency flag activated). The deployment and maintenance of the Emergency Oracle has been delegated to [Chainlink](https://dev.chain.link/)
+
 ### Scripts
+
+To deploy the Emergency Registry the following script is needed:
+
+- [DeployEmergencyRegistry.s.sol](./scripts/emergency/DeployEmergencyRegistry.s.sol)
 
 ### Makefile
 
 Remember to specify the networks needed on the Makefile.
 
-- `make PROD=true LEDGER=true`:
-- `make PROD=true LEDGER=true`:
-- `make PROD=true LEDGER=true`:
-
+- `make deploy-emergency-registry PROD=true LEDGER=true`: Deploys emergency registry.
 
 ## CCC
 
+The CrossChainController is the central part of aDI. It is where all the adapters and configurations will be set, and where all communications are managed. 
+Depending on the network you will need to pass the EmergencyOracle deployed by Chainlink.
+
+To be able to send a message to a destination network, the address initiating the process needs to be approved beforehand.
+To enable communication between two networks, adapters need to be set in origin and destination CCCs.
+To enable passing a message received to the specified destination contract, a number of confirmations needs to be set (which effectively sets the minimum number of adapters needed to receive / validate a message).
+
 ### Scripts
+
+To deploy and set the configurations, the following scripts are needed:
+
+- [DeployCCC.s.sol](./scripts/ccc/DeployCCC.s.sol): Deploys CCC. Depending on if you pass an EmergencyOracle or not it will deploy different implementation contract. Sets executor lvl 1 as the owner of the proxy admin. Ownership should be moved to executor once all configurations are done (as by default it sets it to msg.sender). Guardian should be moved to GranularGuardian once all the configurations are done (as by default it sets it to msg.sender).
+- [Set_CCF_Approved_Senders.s.sol](./scripts/ccc/Set_CCF_Approved_Senders.s.sol): Sets a list of addresses as allowed senders (meaning that those addresses will be able to initiate cross-chain messaging)
+- [Remove_CCF_Sender_Adapters.s.sol](./scripts/ccc/Remove_CCF_Sender_Adapters.s.sol): Sets a list of pairs origin / destination adapters for specified networks, allowing cross-chain sending of messages.
+- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): Sets a list of receiver adapters, allowing the cross-chain messaging from origin network.
+- [Set_CCR_Confirmations.s.sol](./scripts/ccc/Set_CCR_Confirmations.s.sol): Sets a minimum number of confirmations to mark a message as valid and forward it to the specified address.
 
 ### Makefile
 
 Remember to specify the networks needed on the Makefile.
 
-- `make PROD=true LEDGER=true`:
-- `make PROD=true LEDGER=true`:
-- `make PROD=true LEDGER=true`:
-
+- `make deploy-cross-chain-infra PROD=true LEDGER=true`: deploys CCC
+- `make set-approved-ccf-senders PROD=true LEDGER=true`: sets approved senders to CCC
+- `make set-ccf-sender-adapters PROD=true LEDGER=true`: sets adapter pairs for specified network paths
+- `make set-ccr-receiver-adapters PROD=true LEDGER=true`: sets receiver adapters for specified origin networks
+- `make set-ccr-confirmations PROD=true LEDGER=true`: sets confirmations for specified origin networks
 
 ## Access Control
 
