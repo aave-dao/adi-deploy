@@ -2,16 +2,16 @@
 
 In this document we will specify the different steps needed to deploy the different parts of the Aave Delivery Infrastructure (aDI), consisting on:
 
-- [Access Control](./DEPLOYMENT.md)
-- [Adapters](./DEPLOYMENT.md)
-- [CCC](./DEPLOYMENT.md)
-- [Emergency](./DEPLOYMENT.md)
+- [Emergency](./DEPLOYMENT.md#emergency)
+- [CCC](./DEPLOYMENT.md#ccc)
+- [Access Control](./DEPLOYMENT.md#access-control)
+- [Adapters](./DEPLOYMENT.md#adapters)
 
 All of these scripts inherit from the base scripts found on the [Aave Delivery Infrastucture](https://github.com/aave-dao/aave-delivery-infrastructure) repository. An explanation on how they work can be found [here](https://github.com/aave-dao/aave-delivery-infrastructure/blob/main/scripts/README.md)
 
 In this repository we can also find the scripts to deploy the necessary payloads to maintain and update the aDI system:
 
-- [Payloads](./DEPLOYMENT.md)
+- [Payloads](./DEPLOYMENT.md#payloads)
 
 
 ## Setup
@@ -149,16 +149,51 @@ Remember that for communication to work between two networks, you have to deploy
 
 ## Payloads
 
+On this repository you can also find all the tooling needed to create and test payloads for adding / upgrading aDI. The correct flow would be to create this payloads in this repository add the tests, create the diffs (which will show additions / removals) and then use the deployed payload address in the Aave Proposals V3 repository.
+
+### Templates
+
+There are a few templates which help with the most used cases for aDI updates / new paths. This are used as inheritance, so that when used you will only need to pass certain previously deployed addresses:
+
+- [SimpleAddForwarderAdapter](./src/templates/SimpleAddForwarderAdapter.sol): Adds one network to network path, by providing the origin CCC, the origin / destination bridge adapter pair.
+- [SimpleOneToManyAdapterUpdate](./src/templates/SimpleOneToManyAdapterUpdate.sol): Adds a one to many network to network paths. by providing a new origin adapter and multiple destinations.
+- [SimpleReceiverAdapterUpdate](./src/templates/SimpleReceiverAdapterUpdate.sol): Adds or remove a receiver adapter from a specified CCC.
+- [BaseCCCUpdate](./src/templates/BaseCCCUpdate.sol): Has the logic to update the CCC implementation, with the specified signature call for initialization.
+
+There are a few base contracts that can be used to create other common use cases as needed.
+If the use case is more complex or needs more than just the templates inheritance, it can be created under the src folder. Some examples are addition of multiple bridges for one path, or specific CCC implementation updates.
+
 ### Scripts
+
+You can find / create the scripts to deploy the aDI payloads under [payloads](./scripts/payloads/) folder:
+
+- [adapters](./scripts/payloads/adapters/): This folder contains the scripts to deploy / update network to network paths. As for new networks we only need to set the path on Ethereum CCC (as receivers are done on the aDI (destination) deployment stage), this scripts consist only on adding the origin / destination adapter pairs for Ethereum network. For every deployment you will need to update [Network_Deployments](./scripts/payloads/adapters/ethereum/Network_Deployments.s.sol) with the correct script import.
+- [ccc](./scripts/payloads/ccc/): This folder contains the script to update CCC implementations. You will need to update the [Network_Deployment](./scripts/payloads/ccc/shuffle/Network_Deployments.s.sol) script with the needed deployment script import.
 
 ### Tests
 
+For every new payload you need to create a test under the [tests](./tests/payloads/) folder. These tests are based on a [Base test](./tests/adi/ADITestBase.sol) which contains all the necessary tests to check all the functionality. By inheriting from this contract you then can call the `test_defaultTest`.
+
 ### Diffs
+
+By calling `test_defaultTest` from the ADITestBase, diffs will be generated under the [diffs](./diffs/) folder. These diffs will contain all the new / removed addresses and configurations from the different parts of the aDI system (forwarder adapters, optimal bandwidth, etc).
 
 ### Makefile
 
 Remember to specify the networks needed on the Makefile.
 
-- `make PROD=true LEDGER=true`:
-- `make PROD=true LEDGER=true`:
-- `make PROD=true LEDGER=true`:
+- `make deploy-new-path-payload PROD=true LEDGER=true`: deploys new path payload.
+
+## Helpers
+
+In [helpers](./scripts/helpers/) you can find other scripts that can help (serve as example) in aDI maintenance.
+
+- [UpdateCCCPermissions.s.sol](./scripts/helpers/UpdateCCCPermissions.s.sol): Script that will update the permissions of CCC to the previously deployed GranularGuardian. (Should be done after everything is set up).
+
+## Pre Production
+
+To test new paths, we deploy on a new network mainnet first (instead of deploying on testnet). Once deployment is done, we send a cross chain message that will execute on a mock destination. This test intends to check that all configured adapters work as intended. Once the cross chain message delivery success is validated, we can proceed to production deployment (do not forget to change the json file to `pre-prod-<network>` before production deployment)
+
+
+- `make deploy_mock_destination PROD=true LEDGER=true`: deploys new mock destination to test cross chain messaging. (Add network script on [Deploy_Mock_destination](./scripts/helpers/Deploy_Mock_destination.s.sol))
+- `make send-direct-message PROD=true LEDGER=true`: sends a message from ccc ethereum to the specified destination. (Destination network should be updated [here](./scripts/helpers/Send_Direct_CCMessage.s.sol)).
