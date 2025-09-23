@@ -49,9 +49,9 @@ As previously said, add the new network script to `InitialDeployments` and execu
 ## Emergency
 
 An Emergency Registry contract must be deployed on Ethereum (the system's central hub) to signal emergencies across connected networks, enabling authorized entities to implement necessary changes and resolve situations.
-You can set the OWNER address, which is the one that will be able to set the emergencies on the selected networks (defaults to msg.sender), should be given to executor lvl 1 to delegate the responsibility to the Aave Governance.
+Set the OWNER address to let the entity trigger emergencies on selected networks (defaults to msg.sender). This ownership should be assigned to executor level 1 to delegate responsibility to Aave Governance.
 
-On all the necessary networks (that need Emergency solving), normally determined by the networks that use 3rd party bridge providers (instead of native (L2) bridges), an Emergency Oracle needs to be deployed (Contract that will check Emergency Registry to determine if current network has emergency flag activated). The deployment and maintenance of the Emergency Oracle has been delegated to [Chainlink](https://dev.chain.link/)
+Networks requiring emergency resolution need Emergency Oracle deployment. These are typically networks using third-party bridge providers instead of native L2 bridges. The Emergency Oracle is a contract that monitors the Emergency Registry to determine if the current network has an activated emergency flag. The deployment and maintenance of the Emergency Oracle has been delegated to [Chainlink](https://dev.chain.link/).
 
 ### Scripts
 
@@ -61,32 +61,33 @@ To deploy the Emergency Registry the following script is needed:
 
 ### Makefile
 
-Remember to specify the networks needed on the Makefile.
+Specify the required networks in the Makefile:
 
-- `make deploy-emergency-registry PROD=true LEDGER=true`: Deploys emergency registry.
+- `make deploy-emergency-registry PROD=true LEDGER=true`: Deploys Emergency Registry.
 
 ## CCC
 
-The CrossChainController is the central part of aDI. It is where all the adapters and configurations will be set, and where all communications are managed. 
+The CrossChainController serves as the central component of aDI, setting adapters and configurations and managing communications.
 Depending on the network you will need to pass the EmergencyOracle deployed by Chainlink.
 
-To be able to send a message to a destination network, the address initiating the process needs to be approved beforehand.
-To enable communication between two networks, adapters need to be set in origin and destination CCCs.
-To enable passing a message received to the specified destination contract, a number of confirmations needs to be set (which effectively sets the minimum number of adapters needed to receive / validate a message).
+- Approve the address that can initiate message sending to a destination network
+- Set adapters in both origin and destination CCCs to enable communication between networks
+- Set the number of confirmations to forward received message to a destination contract (this sets the minimum number of adapters needed to receive and validate messages)
 
 ### Scripts
 
 To deploy and set the configurations, the following scripts are needed:
 
-- [DeployCCC.s.sol](./scripts/ccc/DeployCCC.s.sol): Deploys CCC. Depending on if you pass an EmergencyOracle or not it will deploy different implementation contract. Sets executor lvl 1 as the owner of the proxy admin. Ownership should be moved to executor once all configurations are done (as by default it sets it to msg.sender). Guardian should be moved to GranularGuardian once all the configurations are done (as by default it sets it to msg.sender).
-- [Set_CCF_Approved_Senders.s.sol](./scripts/ccc/Set_CCF_Approved_Senders.s.sol): Sets a list of addresses as allowed senders (meaning that those addresses will be able to initiate cross-chain messaging)
-- [Remove_CCF_Sender_Adapters.s.sol](./scripts/ccc/Remove_CCF_Sender_Adapters.s.sol): Sets a list of pairs origin / destination adapters for specified networks, allowing cross-chain sending of messages.
-- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): Sets a list of receiver adapters, allowing the cross-chain messaging from origin network.
+- [DeployCCC.s.sol](./scripts/ccc/DeployCCC.s.sol): Deploys CCC. Deploys different implementation contracts depending on whether an EmergencyOracle is passed. Sets executor level 1 as the proxy admin owner.
+Move ownership to executor after completing all configurations (defaults to msg.sender). Move Guardian to GranularGuardian after completing all configurations (defaults to msg.sender).
+- [Set_CCF_Approved_Senders.s.sol](./scripts/ccc/Set_CCF_Approved_Senders.s.sol): Sets a list of addresses as allowed senders to let them initiate cross-chain messaging.
+- [Remove_CCF_Sender_Adapters.s.sol](./scripts/ccc/Remove_CCF_Sender_Adapters.s.sol): Sets a list of origin/destination adapter pairs for specified networks to allow cross-chain message sending.
+- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): Sets a list of receiver adapters to allow cross-chain messaging from origin network.
 - [Set_CCR_Confirmations.s.sol](./scripts/ccc/Set_CCR_Confirmations.s.sol): Sets a minimum number of confirmations to mark a message as valid and forward it to the specified address.
 
 ### Makefile
 
-Remember to specify the networks needed on the Makefile.
+Remember to specify the networks needed in the Makefile.
 
 - `make deploy-cross-chain-infra PROD=true LEDGER=true`: deploys CCC
 - `make set-approved-ccf-senders PROD=true LEDGER=true`: sets approved senders to CCC
@@ -96,64 +97,70 @@ Remember to specify the networks needed on the Makefile.
 
 ## Access Control
 
-The access control scripts consists on deploying the GranularGuardian contract. For this you will need to specify:
+The access control scripts consist of deploying the GranularGuardian contract. You need to specify the following roles:
 
-- DEFAULT_ADMIN: This role can set other roles, so should be granted to the executor lvl 1.
-- RETRY_GUARDIAN: This role can retry transactions and envelopes. Should be granted to entity with expertise of the system. Normally granted to BGD guardian.
-- SOLVE_EMERGENCY_GUARDIAN: This role can change ccc configuration on emergency. Should be granted to the Aave Governance guardian.
+- DEFAULT_ADMIN: This role can set other roles and should be granted to the executor level 1.
+- RETRY_GUARDIAN: This role can retry transactions and envelopes. Grant this to an entity with system expertise, typically the BGD guardian.
+- SOLVE_EMERGENCY_GUARDIAN: This role can change CCC configuration during emergencies. Grant this to the Aave Governance guardian.
 
 ### Scripts
 
-To correctly deploy the Granular Guardian you will need to add the network script to:
-(These scripts depend on Governance (executor) to be deployed beforehand. It also needs CCC to be deployed, as GG is directly tied with it).
+Prerequisites: These scripts require prior Governance (executor) and CCC deployment, since Granular Guardian connects directly to CCC.
 
-- [DeployGranularGuardian.s.sol](./scripts/access_control/DeployGranularGuardian.s.sol): Base script that calls the granular guardian base deployment script, passing the CCC.
-- [GranularGuardianNetworkDeploys.s.sol](./scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol): Script file where the network scripts are added. Here you need to define the different addresses for the different roles needed.
+To deploy the Granular Guardian correctly, add the network script to:
+
+- [DeployGranularGuardian.s.sol](./scripts/access_control/DeployGranularGuardian.s.sol): Base script that calls the Granular Guardian base deployment script, passing the CCC.
+- [GranularGuardianNetworkDeploys.s.sol](./scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol): Script file where network scripts are added. Define the addresses for the different roles here.
 
 ### Makefile
 
-Remember to specify the networks needed on the Makefile.
+Specify the required networks in the Makefile.
 
-- `make deploy_ccc_granular_guardian PROD=true LEDGER=true`: deploy granular guardian.
+- `make deploy_ccc_granular_guardian PROD=true LEDGER=true`: deploy Granular Guardian.
 
 ## Adapters
 
-There is one Adapter script for every bridge provider integration. For L2 there is the native network adapter (which uses the network native bridging), and for other networks, we have 3rd party bridge providers (CCIP, LZ, HL, Wormhole) which can be used for multiple networks at the same time. On these, you will need to make sure the bridging path is supported (by the provider, and configured in the contract side).
-It is important to note that the adapters need the origin ccc address to be able to accept messages, and the current CCC address to deliver the messages received.
-For every adapter there can be extra configurations needed, like the GasLimit to be paid on message delivery (in destination network), or different addresses of the bridge providers (used for provider communication).
+There is one Adapter script per bridge provider integration. L2 networks use native network adapters for network-native bridging, while other networks use third-party bridge providers (CCIP, LZ, HL, Wormhole) that can serve multiple networks simultaneously. For these providers, ensure the bridging path is supported by the provider and configured on the contract side.
+Adapters require the origin CCC address to accept messages and the current CCC address to deliver received messages.
+Each adapter may need additional configurations, such as the GasLimit for message delivery on the destination network or different bridge provider addresses for provider communication.
 
 ### Setters
 
 Once adapters are deployed, the need to be set on both sides of the path, so that the networks are correctly connected.
-- To set the sender adapters, you have to set the pair (origin / destination) adapters, so that CCC knows where to send the messages.
-- To receive messages, you need to set the receiver adapters (which need the origin CCC to verify that the message has correct origin).
+- To send messages, configure the origin/destination adapter pairs so CCC knows where to send messages.
+- To receive messages, set the receiver adapters (which need the origin CCC to verify that messages have the correct origin).
 
 ### Scripts
 
 The scripts to deploy the bridge adapters, and set them on CCC are located here:
 (The adapters depend on having deployed CCC in current and origin chain beforehand).
 
-- [Adapters](./scripts/adapters/): folder containing the adapter deploying scripts.
-- [Set_CCF_Sender_Adapters.s.sol](./scripts/ccc/Set_CCF_Sender_Adapters.s.sol): Script that sets the pair of origin / destination adapters, enabling sending of messages from origin network to destination network.
-- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): Scripts that sets the receiver adapters. These adapters need the correct origin CCC to enable receiving messages from the specified network.
+- [Adapters](./scripts/adapters/): folder containing adapter deploying scripts.
+- [Set_CCF_Sender_Adapters.s.sol](./scripts/ccc/Set_CCF_Sender_Adapters.s.sol): Script that configures origin/destination adapter pairs, enabling message sending from origin to a destination network.
+- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): SScript that configures receiver adapters. These adapters need the correct origin CCC to enable message reception from a specified network.
 
 ### Makefile
 
-Remember to specify the networks needed on the Makefile.
+Specify the required networks in the Makefile.
 
 - `make deploy-optimism-adapters PROD=true LEDGER=true`: deploy optimism bridge adapter (There is one make command for each adapter).
-- `make set-ccf-sender-adapters PROD=true LEDGER=true`: set sender adapters. Currently we only need to set adapters on Ethereum, and the voting chains.
-- `make set-ccr-receiver-adapters PROD=true LEDGER=true`: set receiver adapters. All networks should have receiver adapters (either to receive voting results, voting start messages, or payload execution messages).
+- `make set-ccf-sender-adapters PROD=true LEDGER=true`: set sender adapters. Currently adapters only need to be set on Ethereum and voting chains.
+- `make set-ccr-receiver-adapters PROD=true LEDGER=true`: set receiver adapters. All networks should have them to receive voting results, voting start messages, or payload execution messages.
 
-Remember that for communication to work between two networks, you have to deploy the adapter on the origin network and the destination network.
+Remember that the communication between two networks requires deployment on both origin and destination networks.
 
 ## Payloads
 
-On this repository you can also find all the tooling needed to create and test payloads for adding / upgrading aDI. The correct flow would be to create this payloads in this repository add the tests, create the diffs (which will show additions / removals) and then use the deployed payload address in the Aave Proposals V3 repository.
+This repository also contains all necessary tooling for creating and testing payloads that add or upgrade aDI. The correct workflow:
+
+1. Create payloads in this repository
+2. Add tests
+3. Generate diffs (showing additions and removals)
+4. Use the deployed payload address in the Aave Proposals V3 repository
 
 ### Templates
 
-There are a few templates which help with the most used cases for aDI updates / new paths. This are used as inheritance, so that when used you will only need to pass certain previously deployed addresses:
+There are a few templates which help with the most used cases for aDI updates/new paths. This are used as inheritance, so that when used you will only need to pass certain previously deployed addresses:
 
 - [SimpleAddForwarderAdapter](./src/templates/SimpleAddForwarderAdapter.sol): Adds one network to network path, by providing the origin CCC, the origin / destination bridge adapter pair.
 - [SimpleOneToManyAdapterUpdate](./src/templates/SimpleOneToManyAdapterUpdate.sol): Adds a one to many network to network paths. by providing a new origin adapter and multiple destinations.
