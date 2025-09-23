@@ -1,20 +1,38 @@
+
 # Deployment of the Aave Delivery Infrastructure contracts
 
-This document outlines deployment steps for various parts of the Aave Delivery Infrastructure (aDI), consisting of:
+This document outlines deployment steps for various parts of the Aave Delivery Infrastructure (aDI).
+All of these scripts inherit from base scripts in the [Aave Delivery Infrastructure](https://github.com/aave-dao/aave-delivery-infrastructure) repository. An explanation on how they work can be found [here](https://github.com/aave-dao/aave-delivery-infrastructure/blob/main/scripts/README.md).
 
-- [Emergency](./DEPLOYMENT.md#emergency)
-- [CCC](./DEPLOYMENT.md#ccc)
-- [Access Control](./DEPLOYMENT.md#access-control)
-- [Adapters](./DEPLOYMENT.md#adapters)
+# aDI Deployment Order
 
-All of these scripts inherit from base scripts in the [Aave Delivery Infrastucture](https://github.com/aave-dao/aave-delivery-infrastructure) repository. An explanation on how they work can be found [here](https://github.com/aave-dao/aave-delivery-infrastructure/blob/main/scripts/README.md).
+## Prerequisites
+1. [Setup Environment](./DEPLOYMENT.md#setup) - Configure `.env`, `foundry.toml`, and scripts
+2. [Initial Scripts](./DEPLOYMENT.md#initial-scripts) - Generate network address JSON files
+   
+## Core Infrastructure Deployment
+
+3. [Emergency Registry](./DEPLOYMENT.md#emergency) - Deploy on Ethereum (central hub)
+4. [CrossChainController (CCC)](./DEPLOYMENT.md#ccc) - Deploy on all target networks
+5. [Access Control](./DEPLOYMENT.md#access-control) - Deploy Granular Guardian (requires CCC)
+   
+## Network Connectivity
+6. [Adapters](./DEPLOYMENT.md#adapters) - Deploy bridge adapters (requires CCC)
+   
+## Configuration
+7. [CCC Configuration](./DEPLOYMENT.md#ccc) - Configure cross-chain communications
+
+## Post Deployment
+- [Permissions Transfer](./DEPLOYMENT.md#helpers) - Transfer ownership from deployer to proper governance
+- [Pre-Production Testing](./DEPLOYMENT.md#pre-production) - Test with mock destinations
+
+## Maintanance 
 
 This repository also contains scripts for deploying payloads to maintain and update the aDI system:
-
 - [Payloads](./DEPLOYMENT.md#payloads)
 
 
-## Setup
+# Setup
 
 Several configuration items require updates or modifications for deployments across different networks:
 
@@ -36,36 +54,36 @@ Include only your target network(s) in this command. Multiple networks will depl
 
 Execution command example: `make deploy-initial PROD=true LEDGER=true`
 
-### Notes
+## Notes
 
 - Some contracts require addresses from previously deployed contracts (including those on other networks) for proper communication. Therefore, follow the specified deployment order strictly.
 
-## Initial Scripts
+# Initial Scripts
 
 As previously said, add the new network script to `InitialDeployments` and execute the initial script only for a new network (since doing it for existing ones would overwrite the addresses JSON of the specified network with address(0)). The initial script creates a new addresses JSON for the new network.
 
 - execution command: `make deploy-initial PROD=true LEDGER=true` 
 
-## Emergency
+# Emergency
 
 An Emergency Registry contract must be deployed on Ethereum (the system's central hub) to signal emergencies across connected networks, enabling authorized entities to implement necessary changes and resolve situations.
 Set the OWNER address to let the entity trigger emergencies on selected networks (defaults to msg.sender). This ownership should be assigned to executor level 1 to delegate responsibility to Aave Governance.
 
 Networks requiring emergency resolution need Emergency Oracle deployment. These are typically networks using third-party bridge providers instead of native L2 bridges. The Emergency Oracle is a contract that monitors the Emergency Registry to determine if the current network has an activated emergency flag. The deployment and maintenance of the Emergency Oracle has been delegated to [Chainlink](https://dev.chain.link/).
 
-### Scripts
+## Scripts
 
 To deploy the Emergency Registry the following script is needed:
 
 - [DeployEmergencyRegistry.s.sol](./scripts/emergency/DeployEmergencyRegistry.s.sol)
 
-### Makefile
+## Makefile
 
 Specify the required networks in the Makefile:
 
 - `make deploy-emergency-registry PROD=true LEDGER=true`: Deploys Emergency Registry.
 
-## CCC
+# CCC
 
 The CrossChainController serves as the central component of aDI, setting adapters and configurations and managing communications.
 Depending on the network you will need to pass the EmergencyOracle deployed by Chainlink.
@@ -74,7 +92,7 @@ Depending on the network you will need to pass the EmergencyOracle deployed by C
 - Set adapters in both origin and destination CCCs to enable communication between networks
 - Set the number of confirmations to forward received message to a destination contract (this sets the minimum number of adapters needed to receive and validate messages)
 
-### Scripts
+## Scripts
 
 To deploy and set the configurations, the following scripts are needed:
 
@@ -85,7 +103,7 @@ Move ownership to executor after completing all configurations (defaults to msg.
 - [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): Sets a list of receiver adapters to allow cross-chain messaging from origin network.
 - [Set_CCR_Confirmations.s.sol](./scripts/ccc/Set_CCR_Confirmations.s.sol): Sets a minimum number of confirmations to mark a message as valid and forward it to the specified address.
 
-### Makefile
+## Makefile
 
 Remember to specify the networks needed in the Makefile.
 
@@ -95,7 +113,7 @@ Remember to specify the networks needed in the Makefile.
 - `make set-ccr-receiver-adapters PROD=true LEDGER=true`: sets receiver adapters for specified origin networks
 - `make set-ccr-confirmations PROD=true LEDGER=true`: sets confirmations for specified origin networks
 
-## Access Control
+# Access Control
 
 The access control scripts consist of deploying the GranularGuardian contract. You need to specify the following roles:
 
@@ -103,7 +121,7 @@ The access control scripts consist of deploying the GranularGuardian contract. Y
 - RETRY_GUARDIAN: This role can retry transactions and envelopes. Grant this to an entity with system expertise, typically the BGD guardian.
 - SOLVE_EMERGENCY_GUARDIAN: This role can change CCC configuration during emergencies. Grant this to the Aave Governance guardian.
 
-### Scripts
+## Scripts
 
 Prerequisites: These scripts require prior Governance (executor) and CCC deployment, since Granular Guardian connects directly to CCC.
 
@@ -112,34 +130,34 @@ To deploy the Granular Guardian correctly, add the network script to:
 - [DeployGranularGuardian.s.sol](./scripts/access_control/DeployGranularGuardian.s.sol): Base script that calls the Granular Guardian base deployment script, passing the CCC.
 - [GranularGuardianNetworkDeploys.s.sol](./scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol): Script file where network scripts are added. Define the addresses for the different roles here.
 
-### Makefile
+## Makefile
 
 Specify the required networks in the Makefile.
 
 - `make deploy_ccc_granular_guardian PROD=true LEDGER=true`: deploy Granular Guardian.
 
-## Adapters
+# Adapters
 
 There is one Adapter script per bridge provider integration. L2 networks use native network adapters for network-native bridging, while other networks use third-party bridge providers (CCIP, LZ, HL, Wormhole) that can serve multiple networks simultaneously. For these providers, ensure the bridging path is supported by the provider and configured on the contract side.
 Adapters require the origin CCC address to accept messages and the current CCC address to deliver received messages.
 Each adapter may need additional configurations, such as the GasLimit for message delivery on the destination network or different bridge provider addresses for provider communication.
 
-### Setters
+## Setters
 
-Once adapters are deployed, the need to be set on both sides of the path, so that the networks are correctly connected.
+Once adapters are deployed, they need to be set on both sides of the path, so that the networks are correctly connected.
 - To send messages, configure the origin/destination adapter pairs so CCC knows where to send messages.
 - To receive messages, set the receiver adapters (which need the origin CCC to verify that messages have the correct origin).
 
-### Scripts
+## Scripts
 
 The scripts to deploy the bridge adapters, and set them on CCC are located here:
 (The adapters depend on having deployed CCC in current and origin chain beforehand).
 
 - [Adapters](./scripts/adapters/): folder containing adapter deploying scripts.
 - [Set_CCF_Sender_Adapters.s.sol](./scripts/ccc/Set_CCF_Sender_Adapters.s.sol): Script that configures origin/destination adapter pairs, enabling message sending from origin to a destination network.
-- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): SScript that configures receiver adapters. These adapters need the correct origin CCC to enable message reception from a specified network.
+- [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol): Script that configures receiver adapters. These adapters need the correct origin CCC to enable message reception from a specified network.
 
-### Makefile
+## Makefile
 
 Specify the required networks in the Makefile.
 
@@ -149,7 +167,7 @@ Specify the required networks in the Makefile.
 
 Remember that the communication between two networks requires deployment on both origin and destination networks.
 
-## Payloads
+# Payloads
 
 This repository also contains all necessary tooling for creating and testing payloads that add or upgrade aDI. The correct workflow:
 
@@ -158,49 +176,49 @@ This repository also contains all necessary tooling for creating and testing pay
 3. Generate diffs (showing additions and removals)
 4. Use the deployed payload address in the Aave Proposals V3 repository
 
-### Templates
+## Templates
 
-There are a few templates which help with the most used cases for aDI updates/new paths. This are used as inheritance, so that when used you will only need to pass certain previously deployed addresses:
+There are a few templates which help with the most used cases for aDI updates/new paths. These are used as inheritance, so you only need to pass certain previously deployed addresses:
 
-- [SimpleAddForwarderAdapter](./src/templates/SimpleAddForwarderAdapter.sol): Adds one network to network path, by providing the origin CCC, the origin / destination bridge adapter pair.
-- [SimpleOneToManyAdapterUpdate](./src/templates/SimpleOneToManyAdapterUpdate.sol): Adds a one to many network to network paths. by providing a new origin adapter and multiple destinations.
-- [SimpleReceiverAdapterUpdate](./src/templates/SimpleReceiverAdapterUpdate.sol): Adds or remove a receiver adapter from a specified CCC.
-- [BaseCCCUpdate](./src/templates/BaseCCCUpdate.sol): Has the logic to update the CCC implementation, with the specified signature call for initialization.
+- [SimpleAddForwarderAdapter](./src/templates/SimpleAddForwarderAdapter.sol): Adds one network-to-network path, by providing the origin CCC, the origin/destination bridge adapter pair.
+- [SimpleOneToManyAdapterUpdate](./src/templates/SimpleOneToManyAdapterUpdate.sol): Adds one to many network-to-network paths. by providing a new origin adapter and multiple destinations.
+- [SimpleReceiverAdapterUpdate](./src/templates/SimpleReceiverAdapterUpdate.sol): Adds or removes a receiver adapter from a specified CCC.
+- [BaseCCCUpdate](./src/templates/BaseCCCUpdate.sol): Updates the CCC implementation, with the specified signature call for initialization.
 
-There are a few base contracts that can be used to create other common use cases as needed.
-If the use case is more complex or needs more than just the templates inheritance, it can be created under the src folder. Some examples are addition of multiple bridges for one path, or specific CCC implementation updates.
+There are a few base contracts that can be used to create other common use cases.
+For complex use cases beyond template inheritance, create custom ones in the src folder. Examples: addition of multiple bridges for one path, specific CCC implementation updates.
 
-### Scripts
+## Scripts
 
-You can find / create the scripts to deploy the aDI payloads under [payloads](./scripts/payloads/) folder:
+Find and create aDI payload deployment scripts in the [payloads](./scripts/payloads/) folder:
 
-- [adapters](./scripts/payloads/adapters/): This folder contains the scripts to deploy / update network to network paths. As for new networks we only need to set the path on Ethereum CCC (as receivers are done on the aDI (destination) deployment stage), this scripts consist only on adding the origin / destination adapter pairs for Ethereum network. For every deployment you will need to update [Network_Deployments](./scripts/payloads/adapters/ethereum/Network_Deployments.s.sol) with the correct script import.
-- [ccc](./scripts/payloads/ccc/): This folder contains the script to update CCC implementations. You will need to update the [Network_Deployment](./scripts/payloads/ccc/shuffle/Network_Deployments.s.sol) script with the needed deployment script import.
+- [adapters](./scripts/payloads/adapters/): Contains scripts to deploy or update network-to-network paths. For new networks, only set the path on Ethereum CCC (receivers are configured during the aDI destination deployment). These scripts add origin/destination adapter pairs for the Ethereum network. Update [Network_Deployments](./scripts/payloads/adapters/ethereum/Network_Deployments.s.sol) with the correct script import for each deployment.
+- [ccc](./scripts/payloads/ccc/): Contains a script to update CCC implementations. Update [Network_Deployment](./scripts/payloads/ccc/shuffle/Network_Deployments.s.sol) script with the required deployment script import.
 
-### Tests
+## Tests
 
-For every new payload you need to create a test under the [tests](./tests/payloads/) folder. These tests are based on a [Base test](./tests/adi/ADITestBase.sol) which contains all the necessary tests to check all the functionality. By inheriting from this contract you then can call the `test_defaultTest`.
+Create a test for every new payload in the [tests](./tests/payloads/) folder. These tests are based on a [Base test](./tests/adi/ADITestBase.sol) which contains all necessary functionality tests. Inherit from this contract and call `test_defaultTest`.
 
-### Diffs
+## Diffs
 
-By calling `test_defaultTest` from the ADITestBase, diffs will be generated under the [diffs](./diffs/) folder. These diffs will contain all the new / removed addresses and configurations from the different parts of the aDI system (forwarder adapters, optimal bandwidth, etc).
+Calling `test_defaultTest` from the ADITestBase generates diffs in the [diffs](./diffs/) folder. These diffs contain all the new/removed addresses and configurations from the different parts of the aDI system (forwarder adapters, optimal bandwidth, etc).
 
-### Makefile
+## Makefile
 
-Remember to specify the networks needed on the Makefile.
+Specify the required networks in the Makefile.
 
 - `make deploy-new-path-payload PROD=true LEDGER=true`: deploys new path payload.
 
-## Helpers
+# Helpers
 
-In [helpers](./scripts/helpers/) you can find other scripts that can help (serve as example) in aDI maintenance.
+The [helpers](./scripts/helpers/) folder contains scripts that help with aDI maintenance.
 
-- [UpdateCCCPermissions.s.sol](./scripts/helpers/UpdateCCCPermissions.s.sol): Script that will update the permissions of CCC to the previously deployed GranularGuardian. (Should be done after everything is set up).
+- [UpdateCCCPermissions.s.sol](./scripts/helpers/UpdateCCCPermissions.s.sol): Updates CCC permissions to the previously deployed Granular Guardian. Run this after completing all setup.
 
-## Pre Production
+# Pre Production
 
-To test new paths, we deploy on a new network mainnet first (instead of deploying on testnet). Once deployment is done, we send a cross chain message that will execute on a mock destination. This test intends to check that all configured adapters work as intended. Once the cross chain message delivery success is validated, we can proceed to production deployment (do not forget to change the json file to `pre-prod-<network>` before production deployment)
+To test new paths, deploy on the new network mainnet first (instead of testnet). After deployment, send a cross-chain message that executes on a mock destination. This test verifies that all configured adapters work correctly. Once cross-chain message delivery is validated, proceed to production deployment (change the JSON file to `pre-prod-<network>` before production deployment)
 
 
-- `make deploy_mock_destination PROD=true LEDGER=true`: deploys new mock destination to test cross chain messaging. (Add network script on [Deploy_Mock_destination](./scripts/helpers/Deploy_Mock_destination.s.sol))
-- `make send-direct-message PROD=true LEDGER=true`: sends a message from ccc ethereum to the specified destination. (Destination network should be updated [here](./scripts/helpers/Send_Direct_CCMessage.s.sol)).
+- `make deploy_mock_destination PROD=true LEDGER=true`: deploys new mock destination to test cross-chain messaging. (Add network script to [Deploy_Mock_destination](./scripts/helpers/Deploy_Mock_destination.s.sol))
+- `make send-direct-message PROD=true LEDGER=true`: sends a message from Ethereum CCC to the specified destination. (Update the destination network in [Send_Direct_CCMessage](./scripts/helpers/Send_Direct_CCMessage.s.sol)).
