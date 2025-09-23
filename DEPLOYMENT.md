@@ -90,7 +90,7 @@ Depending on the network you will need to pass the EmergencyOracle deployed by C
 
 - Approve the address that can initiate message sending to a destination network
 - Set adapters in both origin and destination CCCs to enable communication between networks
-- Set the number of confirmations to forward received message to a destination contract (this sets the minimum number of adapters needed to receive and validate messages)
+- Set the number of confirmations on the destination CCC to validate messages. This sets how many receiver bridge adapters must agree on the same message before it's considered valid and forwarded to the destination contract
 
 ## Scripts
 
@@ -105,7 +105,7 @@ Move ownership to executor after completing all configurations (defaults to msg.
 
 ## Makefile
 
-Remember to specify the networks needed in the Makefile.
+Specify the required networks in the Makefile:
 
 - `make deploy-cross-chain-infra PROD=true LEDGER=true`: deploys CCC
 - `make set-approved-ccf-senders PROD=true LEDGER=true`: sets approved senders to CCC
