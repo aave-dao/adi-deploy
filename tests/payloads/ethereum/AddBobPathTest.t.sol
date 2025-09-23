@@ -67,7 +67,7 @@ abstract contract BaseAddBobPathPayloadTest is ADITestBase {
 
 contract EthereumAddBobPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddBobPathPayloadTest('ethereum', 22766645)
+  BaseAddBobPathPayloadTest('ethereum', 23424414)
 {
   function _getDeployedPayload() internal pure override returns (address) {
     return 0xb46874c48b8F1d7303bC40F1c9E4bB4f159FCCf9;
