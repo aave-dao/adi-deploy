@@ -37,37 +37,6 @@ contract Ethereum is DeployCCIPAdapter {
   }
 }
 
-contract Ethereum_testnet is DeployCCIPAdapter {
-  function CCIP_ROUTER() internal pure override returns (address) {
-    return 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59;
-  }
-
-  function LINK_TOKEN() internal pure override returns (address) {
-    return 0x779877A7B0D9E8603169DdbD7836e478b4624789;
-  }
-
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-
-  function isTestnet() internal pure override returns (bool) {
-    return true;
-  }
-
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](2);
-    remoteCCCByNetwork[0].chainId = TestNetChainIds.POLYGON_AMOY;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.POLYGON_AMOY)
-      .crossChainController;
-
-    remoteCCCByNetwork[1].chainId = TestNetChainIds.AVALANCHE_FUJI;
-    remoteCCCByNetwork[1].crossChainController = _getAddresses(TestNetChainIds.AVALANCHE_FUJI)
-      .crossChainController;
-
-    return remoteCCCByNetwork;
-  }
-}
-
 contract Avalanche is DeployCCIPAdapter {
   function CCIP_ROUTER() internal pure override returns (address) {
     return 0xF4c7E640EdA248ef95972845a62bdC74237805dB;
@@ -85,33 +54,6 @@ contract Avalanche is DeployCCIPAdapter {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
-      .crossChainController;
-
-    return remoteCCCByNetwork;
-  }
-}
-
-contract Avalanche_testnet is DeployCCIPAdapter {
-  function CCIP_ROUTER() internal pure override returns (address) {
-    return 0xF694E193200268f9a4868e4Aa017A0118C9a8177;
-  }
-
-  function LINK_TOKEN() internal pure override returns (address) {
-    return 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
-  }
-
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.AVALANCHE_FUJI;
-  }
-
-  function isTestnet() internal pure override returns (bool) {
-    return true;
-  }
-
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
       .crossChainController;
 
     return remoteCCCByNetwork;
@@ -141,33 +83,6 @@ contract Polygon is DeployCCIPAdapter {
   }
 }
 
-contract Polygon_testnet is DeployCCIPAdapter {
-  function CCIP_ROUTER() internal pure override returns (address) {
-    return 0x1035CabC275068e0F4b745A29CEDf38E13aF41b1;
-  }
-
-  function LINK_TOKEN() internal pure override returns (address) {
-    return 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
-  }
-
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_AMOY;
-  }
-
-  function isTestnet() internal pure override returns (bool) {
-    return true;
-  }
-
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
-      .crossChainController;
-
-    return remoteCCCByNetwork;
-  }
-}
-
 contract Binance is DeployCCIPAdapter {
   function CCIP_ROUTER() internal pure override returns (address) {
     return 0x34B03Cb9086d7D758AC55af71584F81A598759FE;
@@ -185,29 +100,6 @@ contract Binance is DeployCCIPAdapter {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
-      .crossChainController;
-
-    return remoteCCCByNetwork;
-  }
-}
-
-contract Binance_testnet is DeployCCIPAdapter {
-  function CCIP_ROUTER() internal pure override returns (address) {
-    return 0xE1053aE1857476f36A3C62580FF9b016E8EE8F6f;
-  }
-
-  function LINK_TOKEN() internal pure override returns (address) {
-    return 0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06;
-  }
-
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.BNB_TESTNET;
-  }
-
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
       .crossChainController;
 
     return remoteCCCByNetwork;

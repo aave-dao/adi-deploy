@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum_Plasma as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {Ethereum_Plasma_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Plasma_Path_Payload.sol';
 
 abstract contract BaseAddPlasmaPathPayloadTest is ADITestBase {

@@ -60,33 +60,3 @@ contract Polygon is BaseSendDirectMessage {
     return ChainIds.ETHEREUM;
   }
 }
-
-contract Ethereum_testnet is BaseSendDirectMessage {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-
-  function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.LINEA_SEPOLIA;
-  }
-}
-
-contract Avalanche_testnet is BaseSendDirectMessage {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.AVALANCHE_FUJI;
-  }
-
-  function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-}
-
-contract Polygon_testnet is BaseSendDirectMessage {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_AMOY;
-  }
-
-  function DESTINATION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-}
