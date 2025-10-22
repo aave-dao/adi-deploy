@@ -36,6 +36,7 @@ struct Addresses {
   address scrollAdapter;
   address soneiumAdapter;
   address wormholeAdapter;
+  address xlayerAdapter;
   address zksyncAdapter;
 }
 
@@ -87,7 +88,8 @@ library DeployerHelpers {
       zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address)),
       mantleAdapter: abi.decode(persistedJson.parseRaw('.mantleAdapter'), (address)),
       bobAdapter: abi.decode(persistedJson.parseRaw('.bobAdapter'), (address)),
-      granularCCCGuardian: abi.decode(persistedJson.parseRaw('.granularCCCGuardian'), (address))
+      granularCCCGuardian: abi.decode(persistedJson.parseRaw('.granularCCCGuardian'), (address)),
+      xlayerAdapter: abi.decode(persistedJson.parseRaw('.xlayerAdapter'), (address))
     });
 
     return addresses;
@@ -125,7 +127,8 @@ library DeployerHelpers {
     json.serialize('scrollAdapter', addresses.scrollAdapter);
     json.serialize('soneiumAdapter', addresses.soneiumAdapter);
     json.serialize('wormholeAdapter', addresses.wormholeAdapter);
-    json = json.serialize('zksyncAdapter', addresses.zksyncAdapter);
+    json.serialize('xlayerAdapter', addresses.xlayerAdapter);
+    json.serialize('zksyncAdapter', addresses.zksyncAdapter);
     vm.writeJson(json, path);
   }
 }

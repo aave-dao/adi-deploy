@@ -21,6 +21,7 @@ import {MiscLinea} from 'aave-address-book/MiscLinea.sol';
 import {MiscInk} from 'aave-address-book/MiscInk.sol';
 import {MiscSoneium} from 'aave-address-book/MiscSoneium.sol';
 import {MiscPlasma} from 'aave-address-book/MiscPlasma.sol';
+import {MiscBob} from 'aave-address-book/MiscBob.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
 import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
@@ -39,6 +40,7 @@ import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
 import {GovernanceV3Ink} from 'aave-address-book/GovernanceV3Ink.sol';
 import {GovernanceV3Soneium} from 'aave-address-book/GovernanceV3Soneium.sol';
 import {GovernanceV3Plasma} from 'aave-address-book/GovernanceV3Plasma.sol';
+import {GovernanceV3Bob} from 'aave-address-book/GovernanceV3Bob.sol';
 
 abstract contract BaseInitialDeployment is BaseDeployerScript {
   function OWNER() internal virtual returns (address) {
@@ -323,11 +325,11 @@ contract Bob is BaseInitialDeployment {
   }
 
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-    return 0xEB0682d148e874553008730f0686ea89db7DA412;
+    return MiscBob.TRANSPARENT_PROXY_FACTORY;
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return 0x90800d1F54384523723eD3962c7Cd59d7866c83d;
+    return GovernanceV3Bob.EXECUTOR_LVL_1;
   }
 }
 
@@ -342,5 +344,19 @@ contract Plasma is BaseInitialDeployment {
 
   function EXECUTOR() internal pure override returns (address) {
     return GovernanceV3Plasma.EXECUTOR_LVL_1;
+  }
+}
+
+contract Xlayer is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.XLAYER;
+  }
+
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xEB0682d148e874553008730f0686ea89db7DA412; //MiscXlayer.TRANSPARENT_PROXY_FACTORY;
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return address(0); // GovernanceV3Xlayer.EXECUTOR_LVL_1; // TODO: add address when deployed
   }
 }

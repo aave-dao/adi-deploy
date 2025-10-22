@@ -364,3 +364,21 @@ contract Plasma is DeployGranularGuardian {
     return ChainIds.PLASMA;
   }
 }
+
+contract Xlayer is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return address(0); //GovernanceV3XLayer.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x734c3fF8DE95c3745770df69053A31FDC92F2526; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0xeB55A63bf9993d80c86D47f819B5eC958c7C127B; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.XLAYER;
+  }
+}

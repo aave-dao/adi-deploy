@@ -166,3 +166,30 @@ contract Plasma is Script, UpdateCCCPermissionsPlasma {
     vm.stopBroadcast();
   }
 }
+
+// TODO: add addresses when deployed
+contract UpdateCCCPermissionsXlayer is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return address(0); // executor
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return address(0); // Granular Guardian
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = address(0); // CCC
+    return contracts;
+  }
+}
+
+contract Xlayer is Script, UpdateCCCPermissionsXlayer {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}
