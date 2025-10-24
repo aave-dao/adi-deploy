@@ -68,11 +68,11 @@ deploy-emergency-registry:
 
 # Deploy Proxy Factories on all networks
 deploy-initial:
-	$(call deploy_fn,InitialDeployments,ethereum avalanche polygon optimism arbitrum metis base binance gnosis zkevm)
+	$(call deploy_fn,InitialDeployments,xlayer)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra:
-	$(call deploy_fn,ccc/Deploy_CCC,ethereum avalanche polygon optimism arbitrum metis base binance gnosis zkevm)
+	$(call deploy_fn,ccc/Deploy_CCC,xlayer)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters:
@@ -135,24 +135,27 @@ deploy-soneium-adapters:
 deploy-bob-adapters:
 	$(call deploy_fn,adapters/DeployBobAdapter,ethereum bob)
 
+deploy-xlayer-adapters:
+	$(call deploy_fn,adapters/DeployXLayerAdapter,ethereum xlayer)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,ethereum polygon avalanche binance arbitrum optimism base metis gnosis zkevm)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,xlayer)
 
 # Sets the required confirmations
 set-ccr-confirmations:
-	$(call deploy_fn,CCC/Set_CCR_Confirmations,ethereum polygon avalanche optimism arbitrum metis base binance gnosis zkevm)
+	$(call deploy_fn,CCC/Set_CCR_Confirmations,xlayer)
 
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- ACCESS CONTROL SCRIPTS ---------------------------------------------------------
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,plasma)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,xlayer)
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
@@ -163,7 +166,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,plasma)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,xlayer)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -181,4 +184,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,plasma)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,xlayer)
