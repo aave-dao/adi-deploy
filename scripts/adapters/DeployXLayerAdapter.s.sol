@@ -31,7 +31,7 @@ contract Xlayer is DeployXLayerAdapter {
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.INK;
+    return ChainIds.XLAYER;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
