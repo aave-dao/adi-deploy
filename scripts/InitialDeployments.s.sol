@@ -70,6 +70,7 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
     addresses.executor = EXECUTOR();
     addresses.owner = OWNER();
     addresses.guardian = GUARDIAN();
+    addresses.chainId = TRANSACTION_NETWORK();
   }
 }
 
