@@ -10,10 +10,9 @@ abstract contract DeployXLayerAdapter is BaseDeployerScript, BaseXLayerAdapter {
   }
 }
 
-// @dev addresses taken from TODO: add link to docs
 contract Ethereum is DeployXLayerAdapter {
   function OVM() internal pure override returns (address) {
-    return address(0); // TODO: add address when deployed
+    return 0xF94B553F3602a03931e5D10CaB343C0968D793e3;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

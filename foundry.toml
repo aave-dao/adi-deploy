@@ -69,6 +69,7 @@ ink="${RPC_INK}"
 soneium="${RPC_SONEIUM}"
 bob="${RPC_BOB}"
 plasma="${RPC_PLASMA}"
+xlayer="${RPC_XLAYER}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY}", chain=1 }
@@ -108,6 +109,7 @@ mantle-testnet={key="${ETHERSCAN_API_KEY}", chain=5003, url='https://explorer.te
 ink={key="${ETHERSCAN_API_KEY}", chain=57073, url='https://api.routescan.io/v2/network/mainnet/evm/57073/etherscan'}
 soneium={key="${ETHERSCAN_API_KEY}", chain=1868, url='https://soneium.blockscout.com/api/'}
 bob={key="${ETHERSCAN_API_KEY}", chain=60808, url='https://explorer.gobob.xyz/api/'}
+xlayer={key="any", chain=196, url='https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/xlayer'}
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
 [fuzz]

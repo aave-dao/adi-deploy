@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
+import 'forge-std/Vm.sol';
 import 'forge-std/Script.sol';
 import 'adi-scripts/BaseScript.sol';
 import {ChainHelpers} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
@@ -128,24 +129,20 @@ library DeployerHelpers {
     json.serialize('soneiumAdapter', addresses.soneiumAdapter);
     json.serialize('wormholeAdapter', addresses.wormholeAdapter);
     json.serialize('xlayerAdapter', addresses.xlayerAdapter);
-    json.serialize('zksyncAdapter', addresses.zksyncAdapter);
+    json = json.serialize('zksyncAdapter', addresses.zksyncAdapter);
     vm.writeJson(json, path);
   }
 }
 
-abstract contract BaseDeployerScript is BaseScript, Script {
-  function getAddresses(uint256 networkId) external view returns (Addresses memory) {
+contract _AddrReader {
+  function get(uint256 networkId, Vm vm) external view returns (Addresses memory) {
     return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(networkId), vm);
   }
+}
 
+abstract contract BaseDeployerScript is BaseScript, Script {
   function _getAddresses(uint256 networkId) internal view returns (Addresses memory) {
-    try this.getAddresses(networkId) returns (Addresses memory addresses) {
-      return addresses;
-    } catch (bytes memory) {
-      Addresses memory empty;
-      empty.chainId = TRANSACTION_NETWORK();
-      return empty;
-    }
+    return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(networkId), vm);
   }
 
   function _execute(Addresses memory addresses) internal virtual;
@@ -155,9 +152,17 @@ abstract contract BaseDeployerScript is BaseScript, Script {
   }
 
   function run() public virtual {
+    // helper exists only in the dry-run VM context (pre-broadcast)
+    _AddrReader reader = new _AddrReader();
+
+    Addresses memory addresses;
+    try reader.get(TRANSACTION_NETWORK(), vm) returns (Addresses memory a) {
+      addresses = a;
+    } catch {
+      // default zeroed struct
+    }
+
     vm.startBroadcast();
-    // ----------------- Persist addresses -----------------------------------------------------------------------------
-    Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
     // -----------------------------------------------------------------------------------------------------------------
     _execute(addresses);
     // ----------------- Persist addresses -----------------------------------------------------------------------------
