@@ -357,6 +357,6 @@ contract Xlayer is BaseInitialDeployment {
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return address(0); // GovernanceV3Xlayer.EXECUTOR_LVL_1; // TODO: add address when deployed
+    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // GovernanceV3Xlayer.EXECUTOR_LVL_1;
   }
 }
