@@ -198,7 +198,7 @@ contract Plasma is BaseCCCNetworkDeployment {
 
 contract Xlayer is BaseCCCNetworkDeployment {
   function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-    return address(0); // TODO: add address when deployed
+    return 0x8a86927E3cf7309D74E504EBDb866903DBD11a1f;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

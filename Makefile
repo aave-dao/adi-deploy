@@ -136,7 +136,7 @@ deploy-bob-adapters:
 	$(call deploy_fn,adapters/DeployBobAdapter,ethereum bob)
 
 deploy-xlayer-adapters:
-	$(call deploy_fn,adapters/DeployXLayerAdapter,ethereum)
+	$(call deploy_fn,adapters/DeployXLayerAdapter,ethereum xlayer)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
