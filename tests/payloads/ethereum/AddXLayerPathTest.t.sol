@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_Bob as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
-abstract contract BaseAddBobPathPayloadTest is ADITestBase {
+abstract contract BaseAddXLayerPathPayloadTest is ADITestBase {
   address internal _payload;
   address internal _crossChainController;
 
@@ -35,7 +35,7 @@ abstract contract BaseAddBobPathPayloadTest is ADITestBase {
 
   function test_defaultTest() public {
     defaultTest(
-      string.concat('add_bob_path_to_adi', NETWORK),
+      string.concat('add_xlayer_path_to_adi', NETWORK),
       _crossChainController,
       address(_payload),
       false,
@@ -65,12 +65,12 @@ abstract contract BaseAddBobPathPayloadTest is ADITestBase {
   }
 }
 
-contract EthereumAddBobPathPayloadTest is
-  PayloadEthereumScript,
-  BaseAddBobPathPayloadTest('ethereum', 23424414)
+contract EthereumAddXLayerPathPayloadTest is
+  Ethereum,
+  BaseAddXLayerPathPayloadTest('ethereum', 23726764)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0xb46874c48b8F1d7303bC40F1c9E4bB4f159FCCf9;
+    return 0x90345B3f6d25684EB921c056Fad6CCf6360ceA5B;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -83,8 +83,8 @@ contract EthereumAddBobPathPayloadTest is
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: currentAddresses.bobAdapter, // ethereum -> bob bridge adapter
-      destinationChainBridgeAdapter: destinationAddresses.bobAdapter, // bob bridge adapter
+      currentChainBridgeAdapter: currentAddresses.xlayerAdapter, // ethereum -> xlayer bridge adapter
+      destinationChainBridgeAdapter: destinationAddresses.xlayerAdapter, // xlayer bridge adapter
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
