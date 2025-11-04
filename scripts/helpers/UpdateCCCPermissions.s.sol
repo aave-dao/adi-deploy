@@ -167,19 +167,18 @@ contract Plasma is Script, UpdateCCCPermissionsPlasma {
   }
 }
 
-// TODO: add addresses when deployed
 contract UpdateCCCPermissionsXlayer is UpdateCCCPermissions {
   function targetOwner() public pure override returns (address) {
-    return address(0); // executor
+    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // executor
   }
 
   function targetADIGuardian() public pure override returns (address) {
-    return address(0); // Granular Guardian
+    return 0xD6727ec503A8d0C10a0EAA4e76eAf9A628188b25; // Granular Guardian
   }
 
   function aDIContractsToUpdate() public pure override returns (address[] memory) {
     address[] memory contracts = new address[](1);
-    contracts[0] = address(0); // CCC
+    contracts[0] = 0xFdd46155fD3DA5B907AD3B9f9395366290f58097; // CCC
     return contracts;
   }
 }
