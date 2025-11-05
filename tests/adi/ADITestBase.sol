@@ -23,6 +23,11 @@ import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
 import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
 import {GovernanceV3Sonic} from 'aave-address-book/GovernanceV3Sonic.sol';
 import {GovernanceV3Celo} from 'aave-address-book/GovernanceV3Celo.sol';
+import {GovernanceV3Bob} from 'aave-address-book/GovernanceV3Bob.sol';
+import {GovernanceV3Soneium} from 'aave-address-book/GovernanceV3Soneium.sol';
+import {GovernanceV3Plasma} from 'aave-address-book/GovernanceV3Plasma.sol';
+import {GovernanceV3Mantle} from 'aave-address-book/GovernanceV3Mantle.sol';
+import {GovernanceV3Ink} from 'aave-address-book/GovernanceV3Ink.sol';
 import {IBaseAdapter} from 'aave-address-book/common/IBaseAdapter.sol';
 
 contract ADITestBase is Test {
@@ -630,7 +635,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](18);
+      uint256[] memory chainIds = new uint256[](19);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -649,6 +654,7 @@ contract ADITestBase is Test {
       chainIds[15] = ChainIds.SONEIUM;
       chainIds[16] = ChainIds.BOB;
       chainIds[17] = ChainIds.PLASMA;
+      chainIds[18] = ChainIds.XLAYER;
 
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {
@@ -731,15 +737,17 @@ contract ADITestBase is Test {
     } else if (chainId == ChainIds.SONIC) {
       return GovernanceV3Sonic.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.MANTLE) {
-      return 0x1283C5015B1Fb5616FA3aCb0C18e6879a02869cB;
+      return GovernanceV3Mantle.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.INK) {
-      return 0x990B75fD1a2345D905a385dBC6e17BEe0Cb2f505;
+      return GovernanceV3Ink.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.SONEIUM) {
-      return 0xD92b37a5114b33F668D274Fb48f23b726a854d6E;
+      return GovernanceV3Soneium.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.BOB) {
-      return 0xBd28fb717A779e9a5E4CB8023D46C5d0d708d91f;
+      return GovernanceV3Bob.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.PLASMA) {
-      return 0x643441742f73e270e565619be6DE5f4D55E08cd6;
+      return GovernanceV3Plasma.CROSS_CHAIN_CONTROLLER;
+    } else if (chainId == ChainIds.XLAYER) {
+      return 0xFdd46155fD3DA5B907AD3B9f9395366290f58097;
     }
     revert();
   }
