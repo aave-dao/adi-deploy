@@ -2,7 +2,9 @@
 pragma solidity ^0.8.0;
 
 import './BaseDeployerScript.sol';
-import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
+import {
+  TransparentProxyFactory
+} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
 import {MiscAvalanche} from 'aave-address-book/MiscAvalanche.sol';
 import {MiscBase} from 'aave-address-book/MiscBase.sol';
@@ -359,5 +361,19 @@ contract Xlayer is BaseInitialDeployment {
 
   function EXECUTOR() internal pure override returns (address) {
     return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // GovernanceV3Xlayer.EXECUTOR_LVL_1;
+  }
+}
+
+contract Megaeth is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MEGAETH;
+  }
+
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0x0000000000000000000000000000000000000000; // MiscMegaeth.TRANSPARENT_PROXY_FACTORY;
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return 0x0000000000000000000000000000000000000000; // GovernanceV3Megaeth.EXECUTOR_LVL_1;
   }
 }
