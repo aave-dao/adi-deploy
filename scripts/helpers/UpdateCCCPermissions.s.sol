@@ -2,7 +2,10 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
-import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
+import {
+  OwnableWithGuardian,
+  IWithGuardian
+} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
 
 abstract contract UpdateCCCPermissions {
   function targetOwner() public pure virtual returns (address);
@@ -184,6 +187,32 @@ contract UpdateCCCPermissionsXlayer is UpdateCCCPermissions {
 }
 
 contract Xlayer is Script, UpdateCCCPermissionsXlayer {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}
+
+contract UpdateCCCPermissionsMegaeth is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return address(0); // executor // TODO: add correct address
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return address(0); // Granular Guardian // TODO: add correct address
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = address(0); // CCC // TODO: add correct address
+    return contracts;
+  }
+}
+
+contract Megaeth is Script, UpdateCCCPermissionsMegaeth {
   function run() external {
     vm.startBroadcast();
 

@@ -70,7 +70,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       soneium: _getAddresses(ChainIds.SONEIUM),
       bob: _getAddresses(ChainIds.BOB),
       plasma: _getAddresses(ChainIds.PLASMA),
-      xlayer: _getAddresses(ChainIds.XLAYER)
+      xlayer: _getAddresses(ChainIds.XLAYER),
+      megaeth: _getAddresses(ChainIds.MEGAETH)
     });
 
     // polygon path
@@ -279,10 +280,17 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // XLayer
-    bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
-      currentChainBridgeAdapter: addresses.xlayerAdapter,
-      destinationBridgeAdapter: networkAddresses.xlayer.xlayerAdapter,
-      destinationChainId: networkAddresses.xlayer.chainId
+    // bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.xlayerAdapter,
+    //   destinationBridgeAdapter: networkAddresses.xlayer.xlayerAdapter,
+    //   destinationChainId: networkAddresses.xlayer.chainId
+    // });
+
+    // Megaeth
+    bridgeAdaptersToEnable[4] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.megaethAdapter,
+      destinationBridgeAdapter: networkAddresses.megaeth.megaethAdapter,
+      destinationChainId: networkAddresses.megaeth.chainId
     });
 
     return bridgeAdaptersToEnable;

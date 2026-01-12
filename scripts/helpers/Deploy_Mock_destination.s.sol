@@ -123,3 +123,9 @@ contract Xlayer is BaseMockDestination {
     return ChainIds.XLAYER;
   }
 }
+
+contract Megaeth is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MEGAETH;
+  }
+}

@@ -370,10 +370,10 @@ contract Megaeth is BaseInitialDeployment {
   }
 
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-    return 0x0000000000000000000000000000000000000000; // MiscMegaeth.TRANSPARENT_PROXY_FACTORY;
+    return 0xEB0682d148e874553008730f0686ea89db7DA412;
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return 0x0000000000000000000000000000000000000000; // GovernanceV3Megaeth.EXECUTOR_LVL_1;
+    return 0x0000000000000000000000000000000000000000; // TODO: add correct address
   }
 }
