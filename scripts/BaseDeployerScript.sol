@@ -26,6 +26,7 @@ struct Addresses {
   address lineaAdapter;
   address lzAdapter;
   address mantleAdapter;
+  address megaethAdapter;
   address metisAdapter;
   address mockDestination;
   address opAdapter;
@@ -90,7 +91,8 @@ library DeployerHelpers {
       mantleAdapter: abi.decode(persistedJson.parseRaw('.mantleAdapter'), (address)),
       bobAdapter: abi.decode(persistedJson.parseRaw('.bobAdapter'), (address)),
       granularCCCGuardian: abi.decode(persistedJson.parseRaw('.granularCCCGuardian'), (address)),
-      xlayerAdapter: abi.decode(persistedJson.parseRaw('.xlayerAdapter'), (address))
+      xlayerAdapter: abi.decode(persistedJson.parseRaw('.xlayerAdapter'), (address)),
+      megaethAdapter: abi.decode(persistedJson.parseRaw('.megaethAdapter'), (address))
     });
 
     return addresses;
@@ -117,6 +119,7 @@ library DeployerHelpers {
     json.serialize('lineaAdapter', addresses.lineaAdapter);
     json.serialize('lzAdapter', addresses.lzAdapter);
     json.serialize('mantleAdapter', addresses.mantleAdapter);
+    json.serialize('megaethAdapter', addresses.megaethAdapter);
     json.serialize('metisAdapter', addresses.metisAdapter);
     json.serialize('mockDestination', addresses.mockDestination);
     json.serialize('opAdapter', addresses.opAdapter);
@@ -161,7 +164,6 @@ abstract contract BaseDeployerScript is BaseScript, Script {
     } catch {
       // default zeroed struct
     }
-
     vm.startBroadcast();
     // -----------------------------------------------------------------------------------------------------------------
     _execute(addresses);

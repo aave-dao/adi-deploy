@@ -68,11 +68,11 @@ deploy-emergency-registry:
 
 # Deploy Proxy Factories on all networks
 deploy-initial:
-	$(call deploy_fn,InitialDeployments,xlayer)
+	$(call deploy_fn,InitialDeployments,megaeth)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra:
-	$(call deploy_fn,ccc/DeployCCC,xlayer)
+	$(call deploy_fn,ccc/DeployCCC,megaeth)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters:
@@ -138,24 +138,27 @@ deploy-bob-adapters:
 deploy-xlayer-adapters:
 	$(call deploy_fn,adapters/DeployXLayerAdapter,ethereum xlayer)
 
+deploy-megaeth-adapters:
+	$(call deploy_fn,adapters/DeployMegaethAdapter,ethereum megaeth)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
 	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,xlayer)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,megaeth)
 
 # Sets the required confirmations
 set-ccr-confirmations:
-	$(call deploy_fn,CCC/Set_CCR_Confirmations,xlayer)
+	$(call deploy_fn,CCC/Set_CCR_Confirmations,megaeth)
 
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- ACCESS CONTROL SCRIPTS ---------------------------------------------------------
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,xlayer)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,megaeth)
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
@@ -166,7 +169,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,xlayer)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,megaeth)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -184,4 +187,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,xlayer)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,megaeth)

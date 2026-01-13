@@ -491,3 +491,25 @@ contract Xlayer is BaseSetCCRAdapters {
     return receiverBridgeAdaptersToAllow;
   }
 }
+
+contract Megaeth is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MEGAETH;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](1);
+    receiverBridgeAdaptersToAllow[0] = addresses.megaethAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}

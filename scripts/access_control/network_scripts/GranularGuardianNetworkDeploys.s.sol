@@ -382,3 +382,21 @@ contract Xlayer is DeployGranularGuardian {
     return ChainIds.XLAYER;
   }
 }
+
+contract Megaeth is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return address(0); //GovernanceV3Megaeth.EXECUTOR_LVL_1; // TODO: add correct address
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x58528Cd7B8E84520df4D3395249D24543f431c21; //  bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x5a578ee1dA2c798Be60036AdDD223Ac164d948Af; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MEGAETH;
+  }
+}
