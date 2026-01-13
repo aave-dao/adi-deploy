@@ -374,6 +374,6 @@ contract Megaeth is BaseInitialDeployment {
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return 0x0000000000000000000000000000000000000000; // TODO: add correct address
+    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // GovernanceV3MegaEth.EXECUTOR_LVL_1;
   }
 }

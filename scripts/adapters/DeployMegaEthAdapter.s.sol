@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import 'adi-scripts/Adapters/DeployMegaEthAdapter.sol';
 import '../BaseDeployerScript.sol';
 
-abstract contract DeployMegaethAdapter is BaseDeployerScript, BaseMegaethAdapter {
+abstract contract DeployMegaethAdapter is BaseDeployerScript, BaseMegaEthAdapter {
   function _execute(Addresses memory addresses) internal override {
     addresses.megaethAdapter = _deployAdapter(addresses.crossChainController);
   }
