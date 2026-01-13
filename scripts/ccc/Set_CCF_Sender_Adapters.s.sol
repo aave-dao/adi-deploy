@@ -287,7 +287,7 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // Megaeth
-    bridgeAdaptersToEnable[4] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.megaethAdapter,
       destinationBridgeAdapter: networkAddresses.megaeth.megaethAdapter,
       destinationChainId: networkAddresses.megaeth.chainId
