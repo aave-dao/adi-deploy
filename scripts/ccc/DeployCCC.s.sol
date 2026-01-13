@@ -209,9 +209,9 @@ contract Xlayer is BaseCCCNetworkDeployment {
 }
 
 contract Megaeth is BaseCCCNetworkDeployment {
-  // function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-  //   return 0x4978E504322a18204bd3F90Af4f9C351741a8FF4;
-  // }
+  function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
+    return 0x4978E504322a18204bd3F90Af4f9C351741a8FF4;
+  }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.MEGAETH;

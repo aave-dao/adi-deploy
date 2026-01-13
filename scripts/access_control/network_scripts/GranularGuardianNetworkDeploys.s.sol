@@ -385,7 +385,7 @@ contract Xlayer is DeployGranularGuardian {
 
 contract Megaeth is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return address(0); //GovernanceV3Megaeth.EXECUTOR_LVL_1; // TODO: add correct address
+    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; //GovernanceV3Megaeth.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {

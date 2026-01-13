@@ -198,16 +198,16 @@ contract Xlayer is Script, UpdateCCCPermissionsXlayer {
 
 contract UpdateCCCPermissionsMegaeth is UpdateCCCPermissions {
   function targetOwner() public pure override returns (address) {
-    return address(0); // executor // TODO: add correct address
+    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // executor
   }
 
   function targetADIGuardian() public pure override returns (address) {
-    return address(0); // Granular Guardian // TODO: add correct address
+    return 0x8Fa22D09b13486A40cd6b04398b948AA8bD5853A; // Granular Guardian
   }
 
   function aDIContractsToUpdate() public pure override returns (address[] memory) {
     address[] memory contracts = new address[](1);
-    contracts[0] = address(0); // CCC // TODO: add correct address
+    contracts[0] = 0x5EE63ACb37AeCDc7e23ACA283098f8ffD9677BBe; // CCC
     return contracts;
   }
 }
