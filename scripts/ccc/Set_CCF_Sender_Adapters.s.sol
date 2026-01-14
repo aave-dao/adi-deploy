@@ -24,6 +24,7 @@ struct NetworkAddresses {
   Addresses bob;
   Addresses plasma;
   Addresses xlayer;
+  Addresses megaeth;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {

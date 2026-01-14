@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 900000000 # 0.5 gwei
+custom_ethereum := --with-gas-price 300000000 # 0.5 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -28,6 +28,7 @@ custom_linea-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
 custom_linea :=  --with-gas-price 1000000000 --force # 1 gwei
 # custom_bob :=  --with-gas-price 100000000 --force # 0.1 gwei
 custom_ethereum-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
+custom_megaeth := --skip-simulation
 
 # params:
 #  1 - path/file_name
@@ -139,7 +140,7 @@ deploy-xlayer-adapters:
 	$(call deploy_fn,adapters/DeployXLayerAdapter,ethereum xlayer)
 
 deploy-megaeth-adapters:
-	$(call deploy_fn,adapters/DeployMegaethAdapter,ethereum megaeth)
+	$(call deploy_fn,adapters/DeployMegaethAdapter,megaeth)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
