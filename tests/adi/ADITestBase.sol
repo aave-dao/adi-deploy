@@ -635,7 +635,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](19);
+      uint256[] memory chainIds = new uint256[](20);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -655,6 +655,7 @@ contract ADITestBase is Test {
       chainIds[16] = ChainIds.BOB;
       chainIds[17] = ChainIds.PLASMA;
       chainIds[18] = ChainIds.XLAYER;
+      chainIds[19] = ChainIds.MEGAETH;
 
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {
@@ -748,6 +749,8 @@ contract ADITestBase is Test {
       return GovernanceV3Plasma.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.XLAYER) {
       return 0xFdd46155fD3DA5B907AD3B9f9395366290f58097;
+    } else if (chainId == ChainIds.MEGAETH) {
+      return 0x5EE63ACb37AeCDc7e23ACA283098f8ffD9677BBe;
     }
     revert();
   }

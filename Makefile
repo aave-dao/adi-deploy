@@ -17,7 +17,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 300000000 # 0.5 gwei
+custom_ethereum := --with-gas-price 400000000 # 0.5 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
