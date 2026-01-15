@@ -73,7 +73,7 @@ abstract contract BaseAddMegaEthPathPayloadTest is ADITestBase {
 
 contract EthereumAddMegaEthPathPayloadTest is
   Ethereum,
-  BaseAddMegaEthPathPayloadTest('ethereum', 24239622)
+  BaseAddMegaEthPathPayloadTest('ethereum', 24239650)
 {
   function _getDeployedPayload() internal pure override returns (address) {
     return 0x790E087A98C0552F6Ca5b85be513551a8DE188d4;
