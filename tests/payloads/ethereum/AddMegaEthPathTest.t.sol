@@ -3,10 +3,16 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_XLayer as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
-import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
+import {
+  Addresses,
+  Ethereum as Ethereum
+} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {
+  SimpleAddForwarderAdapter,
+  AddForwarderAdapterArgs
+} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
-abstract contract BaseAddXLayerPathPayloadTest is ADITestBase {
+abstract contract BaseAddMegaEthPathPayloadTest is ADITestBase {
   address internal _payload;
   address internal _crossChainController;
 
@@ -35,7 +41,7 @@ abstract contract BaseAddXLayerPathPayloadTest is ADITestBase {
 
   function test_defaultTest() public {
     defaultTest(
-      string.concat('add_xlayer_path_to_adi', NETWORK),
+      string.concat('add_megaeth_path_to_adi', NETWORK),
       _crossChainController,
       address(_payload),
       false,
@@ -65,12 +71,12 @@ abstract contract BaseAddXLayerPathPayloadTest is ADITestBase {
   }
 }
 
-contract EthereumAddXLayerPathPayloadTest is
+contract EthereumAddMegaEthPathPayloadTest is
   Ethereum,
-  BaseAddXLayerPathPayloadTest('ethereum', 23726764)
+  BaseAddMegaEthPathPayloadTest('ethereum', 24239622)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0x90345B3f6d25684EB921c056Fad6CCf6360ceA5B;
+    return 0x790E087A98C0552F6Ca5b85be513551a8DE188d4;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -83,8 +89,8 @@ contract EthereumAddXLayerPathPayloadTest is
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: currentAddresses.xlayerAdapter, // ethereum -> xlayer bridge adapter
-      destinationChainBridgeAdapter: destinationAddresses.xlayerAdapter, // xlayer bridge adapter
+      currentChainBridgeAdapter: currentAddresses.megaethAdapter, // ethereum -> megaeth bridge adapter
+      destinationChainBridgeAdapter: destinationAddresses.megaethAdapter, // megaeth bridge adapter
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
