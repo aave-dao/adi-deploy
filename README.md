@@ -1,31 +1,77 @@
 # a.DI Deploy
 
-This repository has the scripts necessary to deploy a.DI on all networks supported by Aave.
+Deployment and maintenance framework for the [Aave Delivery Infrastructure](https://github.com/bgd-labs/aave-delivery-infrastructure) (a.DI) — the cross-chain communication layer that powers Aave governance across 20+ networks.
 
-It also hosts the necessary scripts and payloads for a.DI maintenance
+This repository contains:
+- **Deployment scripts** for all a.DI components (CrossChainController, bridge adapters, access control)
+- **Governance payloads** to add new bridge paths and update configurations
+- **Payload templates** for common operations (add forwarder, update receiver, upgrade CCC)
+- **Testing infrastructure** with automatic before/after diff generation
 
-## Deployments
+## Quick Start
 
-[This](/deployments) directory contains the current deployed addresses for the different supported networks.
+```bash
+# Install dependencies
+forge install && npm install
 
-## Diffs
+# Build
+make build
 
-[This](/diffs) directory contains the generated diffs for the different payloads. Comparing current state with the state after payload execution.
+# Run tests
+make test
+```
 
-## Scripts
+For the full deployment guide, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
-[This](scripts) directory contains the necessary scripts to deploy a.DI on a network. It also has the specific scripts to
-deploy payloads
+## Repository Structure
 
-## Src
+### [scripts/](./scripts/)
 
-[This](src) directory contains the source code of specific payloads. a.DI code is imported from the [aave-delivery-infrastructure](https://github.com/bgd-labs/aave-delivery-infrastructure) repository.
+Foundry deployment scripts for all a.DI components:
 
-Here it can also be found some helper templates to use when creating payloads. For example, to add a new bridge adapter or to update CrossChainController implementation.
+| Directory | Description |
+|-----------|-------------|
+| [scripts/InitialDeployments.s.sol](./scripts/InitialDeployments.s.sol) | Proxy factory and initial address JSON generation |
+| [scripts/ccc/](./scripts/ccc/) | CrossChainController deployment and configuration (sender adapters, receiver adapters, confirmations) |
+| [scripts/adapters/](./scripts/adapters/) | Bridge adapter deployment — one script per provider (CCIP, LayerZero, Hyperlane, Wormhole, and native L2 bridges) |
+| [scripts/access_control/](./scripts/access_control/) | GranularGuardian deployment with role-based access control |
+| [scripts/payloads/](./scripts/payloads/) | Governance payload deployment scripts |
+| [scripts/helpers/](./scripts/helpers/) | Maintenance utilities (permission transfers, test messaging, mock destinations) |
 
-## Tests
+### [src/](./src/)
 
-[This](tests) directory contains the tests for the payloads. To generate the diffs, inherit from [ADITestBase.sol](/tests/adi/ADITestBase.sol) and call `defaultTest` method.
+Solidity source code for payloads and reusable templates:
+
+| File | Description |
+|------|-------------|
+| [templates/SimpleAddForwarderAdapter.sol](./src/templates/SimpleAddForwarderAdapter.sol) | Add a single network-to-network bridge path |
+| [templates/SimpleOneToManyAdapterUpdate.sol](./src/templates/SimpleOneToManyAdapterUpdate.sol) | Add one-to-many bridge paths with a single adapter |
+| [templates/SimpleReceiverAdapterUpdate.sol](./src/templates/SimpleReceiverAdapterUpdate.sol) | Add or replace a receiver adapter |
+| [templates/BaseCCCUpdate.sol](./src/templates/BaseCCCUpdate.sol) | Upgrade the CrossChainController implementation |
+| [templates/BaseAdaptersUpdate.sol](./src/templates/BaseAdaptersUpdate.sol) | Base contract for combined receiver + forwarder updates |
+| [adapter_payloads/](./src/adapter_payloads/) | Custom payloads for complex multi-bridge paths |
+
+### [tests/](./tests/)
+
+Payload tests with automatic diff generation. Inherit from [ADITestBase.sol](./tests/adi/ADITestBase.sol) and call `defaultTest` to snapshot CCC state before and after payload execution.
+
+### [deployments/](./deployments/)
+
+JSON files containing deployed contract addresses per network. These are read and updated automatically by the deployment scripts.
+
+### [diffs/](./diffs/)
+
+Generated markdown diffs showing configuration changes introduced by each payload (forwarder adapters, receiver adapters, optimal bandwidth, confirmations).
+
+## Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for:
+- Requirements and environment setup
+- Full deployment order (initial setup → CCC → adapters → configuration → access control)
+- Bridge adapter reference (all Makefile commands)
+- Payload creation workflow with template examples
+- Pre-production testing process
+- Step-by-step guide for adding a new network
 
 ## License
 

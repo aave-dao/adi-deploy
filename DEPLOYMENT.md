@@ -4,6 +4,38 @@
 This document outlines deployment steps for various parts of the Aave Delivery Infrastructure (aDI).
 All of these scripts inherit from base scripts in the [Aave Delivery Infrastructure](https://github.com/aave-dao/aave-delivery-infrastructure) repository. An explanation on how they work can be found [here](https://github.com/aave-dao/aave-delivery-infrastructure/blob/main/scripts/README.md).
 
+# Requirements
+
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) (forge, cast)
+- Node.js and npm (for diff generation via `@bgd-labs/aave-cli`)
+- A Ledger hardware wallet (for production deployments) or a private key (for automated/test deployments)
+- RPC endpoints for target networks
+- Etherscan API key (for contract verification)
+
+Install dependencies:
+
+```bash
+forge install
+npm install
+```
+
+# Build & Test
+
+```bash
+# Build all contracts (with optimizer and IR pipeline)
+make build
+
+# Run all tests
+make test
+
+# Run a specific test file
+forge test --match-path tests/payloads/ethereum/AddMegaEthPathTest.t.sol -vvv
+
+# Dry-run a script (simulation without broadcasting)
+forge script scripts/adapters/DeployMegaEthAdapter.s.sol:Megaeth \
+  --rpc-url megaeth -vvvv
+```
+
 # aDI Deployment Order
 
 ## Prerequisites
@@ -26,7 +58,7 @@ All of these scripts inherit from base scripts in the [Aave Delivery Infrastruct
 - [Permissions Transfer](./DEPLOYMENT.md#helpers) - Transfer ownership from deployer to proper governance
 - [Pre-Production Testing](./DEPLOYMENT.md#pre-production) - Test with mock destinations
 
-## Maintanance 
+## Maintenance
 
 This repository also contains scripts for deploying payloads to maintain and update the aDI system:
 - [Payloads](./DEPLOYMENT.md#payloads)
@@ -159,13 +191,44 @@ The scripts to deploy the bridge adapters, and set them on CCC are located here:
 
 ## Makefile
 
-Specify the required networks in the Makefile.
+Specify the required networks in the Makefile. Remember that the communication between two networks requires deployment on both origin and destination networks.
 
-- `make deploy-optimism-adapters PROD=true LEDGER=true`: deploy optimism bridge adapter (There is one make command for each adapter).
+**Third-party bridge adapters (multi-network):**
+
+| Command | Provider |
+|---------|----------|
+| `make deploy-ccip-bridge-adapters` | Chainlink CCIP |
+| `make deploy-lz-bridge-adapters` | LayerZero |
+| `make deploy-hl-bridge-adapters` | Hyperlane |
+| `make deploy-wormhole-adapters` | Wormhole |
+| `make deploy-same-chain-adapters` | Same-chain |
+
+**Native L2 bridge adapters:**
+
+| Command | L2 Network |
+|---------|------------|
+| `make deploy-optimism-adapters` | Optimism |
+| `make deploy-arbitrum-adapters` | Arbitrum |
+| `make deploy-polygon-adapters` | Polygon |
+| `make deploy-base-adapters` | Base |
+| `make deploy-metis-adapters` | Metis |
+| `make deploy-gnosis-adapters` | Gnosis |
+| `make deploy-scroll-adapters` | Scroll |
+| `make deploy-zksync-adapters` | ZkSync |
+| `make deploy-linea-adapters` | Linea |
+| `make deploy-mantle-adapters` | Mantle |
+| `make deploy-ink-adapters` | Ink |
+| `make deploy-soneium-adapters` | Soneium |
+| `make deploy-bob-adapters` | BOB |
+| `make deploy-xlayer-adapters` | XLayer |
+| `make deploy-megaeth-adapters` | MegaEth |
+
+All commands accept `PROD=true LEDGER=true`.
+
+**Setter commands:**
+
 - `make set-ccf-sender-adapters PROD=true LEDGER=true`: set sender adapters. Currently adapters only need to be set on Ethereum and voting chains.
 - `make set-ccr-receiver-adapters PROD=true LEDGER=true`: set receiver adapters. All networks should have them to receive voting results, voting start messages, or payload execution messages.
-
-Remember that the communication between two networks requires deployment on both origin and destination networks.
 
 # Payloads
 
@@ -188,6 +251,48 @@ There are a few templates which help with the most used cases for aDI updates/ne
 There are a few base contracts that can be used to create other common use cases.
 For complex use cases beyond template inheritance, create custom ones in the src folder. Examples: addition of multiple bridges for one path, specific CCC implementation updates.
 
+### Template Usage Examples
+
+**SimpleAddForwarderAdapter** -- single network-to-network path:
+```solidity
+import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from 'src/templates/SimpleAddForwarderAdapter.sol';
+
+contract MyPayload is SimpleAddForwarderAdapter(
+  AddForwarderAdapterArgs({
+    crossChainController: ETHEREUM_CCC,
+    currentChainBridgeAdapter: ETHEREUM_ADAPTER,
+    destinationChainBridgeAdapter: DESTINATION_ADAPTER,
+    destinationChainId: DESTINATION_CHAIN_ID
+  })
+) {}
+```
+
+**SimpleReceiverAdapterUpdate** -- add or replace a receiver adapter:
+```solidity
+import {SimpleReceiverAdapterUpdate} from 'src/templates/SimpleReceiverAdapterUpdate.sol';
+
+contract MyPayload is SimpleReceiverAdapterUpdate {
+  constructor(...) SimpleReceiverAdapterUpdate(...) {}
+
+  function getChainsToReceive() public pure override
+    returns (uint256[] memory) { /* return chain IDs */ }
+}
+```
+
+**BaseCCCUpdate** -- upgrade CCC implementation:
+```solidity
+import {BaseCCCUpdate} from 'src/templates/BaseCCCUpdate.sol';
+
+contract MyPayload is BaseCCCUpdate {
+  constructor(...) BaseCCCUpdate(...) {}
+
+  function getInitializeSignature() public override
+    returns (bytes memory) { /* return initialization calldata */ }
+}
+```
+
+For multi-adapter paths (e.g., multiple bridge providers for redundancy), create a custom payload inheriting from [BaseAdaptersUpdate](./src/templates/BaseAdaptersUpdate.sol). See [Ethereum_Sonic_Path_Payload.sol](./src/adapter_payloads/Ethereum_Sonic_Path_Payload.sol) for an example using three bridges (Hyperlane, CCIP, LayerZero).
+
 ## Scripts
 
 Find and create aDI payload deployment scripts in the [payloads](./scripts/payloads/) folder:
@@ -199,9 +304,42 @@ Find and create aDI payload deployment scripts in the [payloads](./scripts/paylo
 
 Create a test for every new payload in the [tests](./tests/payloads/) folder. These tests are based on a [Base test](./tests/adi/ADITestBase.sol) which contains all necessary functionality tests. Inherit from this contract and call `test_defaultTest`.
 
+Example test structure:
+```solidity
+import {ADITestBase} from 'tests/adi/ADITestBase.sol';
+
+contract MyPayloadTest is ADITestBase {
+  address internal _payload;
+  address internal _crossChainController;
+
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('ethereum'), BLOCK_NUMBER);
+    // deploy or reference your payload
+    _crossChainController = CROSS_CHAIN_CONTROLLER;
+    _payload = address(new MyPayload(...));
+  }
+
+  function test_defaultTest() public {
+    defaultTest(
+      'my_payload_diff_name',  // name used for diff file
+      _crossChainController,
+      _payload,
+      false,  // true if this is a CCC implementation update
+      vm
+    );
+  }
+}
+```
+
+The `defaultTest` method:
+1. Takes a snapshot of CCC state **before** payload execution
+2. Executes the payload via governance
+3. Takes a snapshot of CCC state **after** payload execution
+4. Generates a markdown diff comparing both states
+
 ## Diffs
 
-Calling `test_defaultTest` from the ADITestBase generates diffs in the [diffs](./diffs/) folder. These diffs contain all the new/removed addresses and configurations from the different parts of the aDI system (forwarder adapters, optimal bandwidth, etc).
+Calling `test_defaultTest` from the ADITestBase generates diffs in the [diffs](./diffs/) folder. These diffs contain all the new/removed addresses and configurations from the different parts of the aDI system (forwarder adapters, receiver adapters, optimal bandwidth, confirmations, etc).
 
 ## Makefile
 
@@ -213,7 +351,28 @@ Specify the required networks in the Makefile.
 
 The [helpers](./scripts/helpers/) folder contains scripts that help with aDI maintenance.
 
-- [UpdateCCCPermissions.s.sol](./scripts/helpers/UpdateCCCPermissions.s.sol): Updates CCC permissions to the previously deployed Granular Guardian. Run this after completing all setup.
+## Scripts
+
+- [UpdateCCCPermissions.s.sol](./scripts/helpers/UpdateCCCPermissions.s.sol): Updates CCC owner and guardian to the previously deployed Granular Guardian. Run this after completing all setup.
+- [Update_Ownership.s.sol](./scripts/helpers/Update_Ownership.s.sol): Changes ownership of aDI contracts during permission transfer phase.
+- [RemoveBridgeAdapters.s.sol](./scripts/helpers/RemoveBridgeAdapters.s.sol): Removes bridge adapters from CCC configuration.
+- [Send_Direct_CCMessage.s.sol](./scripts/helpers/Send_Direct_CCMessage.s.sol): Sends a test cross-chain message to validate adapter configuration.
+- [Deploy_Mock_destination.s.sol](./scripts/helpers/Deploy_Mock_destination.s.sol): Deploys a mock destination contract for testing.
+
+## Makefile
+
+| Command | Description |
+|---------|-------------|
+| `make update-ccc-permissions` | Transfer CCC owner/guardian from deployer to governance |
+| `make update-owners-and-guardians` | Update ownership of aDI contracts |
+| `make remove-bridge-adapters` | Remove bridge adapters from CCC |
+| `make send-direct-message` | Send a test cross-chain message from Ethereum |
+| `make deploy_mock_destination` | Deploy a mock destination for testing |
+| `make set-approved-ccf-senders` | Set approved senders on the CCC |
+| `make send-message` | Send a testnet forwarded message |
+| `make send-message-via-adapter` | Send a message through a specific adapter |
+
+All commands accept `PROD=true LEDGER=true`.
 
 # Pre Production
 
@@ -222,3 +381,69 @@ To test new paths, deploy on the new network mainnet first (instead of testnet).
 
 - `make deploy_mock_destination PROD=true LEDGER=true`: deploys new mock destination to test cross-chain messaging. (Add network script to [Deploy_Mock_destination](./scripts/helpers/Deploy_Mock_destination.s.sol))
 - `make send-direct-message PROD=true LEDGER=true`: sends a message from Ethereum CCC to the specified destination. (Update the destination network in [Send_Direct_CCMessage](./scripts/helpers/Send_Direct_CCMessage.s.sol)).
+
+# Adding a New Network
+
+Checklist for adding a new network to aDI:
+
+## 1. Verify Chain Support
+
+Ensure the network exists in [Solidity Utils ChainHelpers](https://github.com/bgd-labs/solidity-utils/blob/main/src/contracts/utils/ChainHelpers.sol). If not, add it there first.
+
+## 2. Configuration Files
+
+- **`.env`**: Add `RPC_<NETWORK>=` endpoint
+- **`foundry.toml`**: Add `rpc_endpoints` entry and `etherscan` config. For non-standard EVM networks, add a profile with the correct `evm_version`
+- **`Makefile`**: Add deployment targets for the new network
+
+## 3. Script Files to Update
+
+Add a per-network contract to each script file following the existing pattern:
+
+```solidity
+contract NewNetwork is BaseDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.NEW_NETWORK;
+  }
+  // ... network-specific overrides
+}
+```
+
+Files to update:
+
+| File | Purpose |
+|------|---------|
+| [InitialDeployments.s.sol](./scripts/InitialDeployments.s.sol) | Proxy factory and address JSON |
+| [DeployCCC.s.sol](./scripts/ccc/DeployCCC.s.sol) | CrossChainController |
+| `scripts/adapters/Deploy<Provider>Adapter.s.sol` | Bridge adapter (create new file for native L2 adapters) |
+| [Set_CCF_Sender_Adapters.s.sol](./scripts/ccc/Set_CCF_Sender_Adapters.s.sol) | Sender config (Ethereum side) |
+| [Set_CCR_Receivers_Adapters.s.sol](./scripts/ccc/Set_CCR_Receivers_Adapters.s.sol) | Receiver config |
+| [Set_CCR_Confirmations.s.sol](./scripts/ccc/Set_CCR_Confirmations.s.sol) | Required confirmations |
+| [GranularGuardianNetworkDeploys.s.sol](./scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol) | Access control roles |
+| [UpdateCCCPermissions.s.sol](./scripts/helpers/UpdateCCCPermissions.s.sol) | Permission transfer |
+| [Deploy_Mock_destination.s.sol](./scripts/helpers/Deploy_Mock_destination.s.sol) | Test destination |
+
+## 4. Deploy
+
+Follow the [deployment order](#adi-deployment-order) using the Makefile commands.
+
+## 5. Ethereum Activation Payload
+
+Create a payload to activate the path from Ethereum:
+
+1. Create a payload contract in `src/adapter_payloads/` (or use a template like `SimpleAddForwarderAdapter`)
+2. Create a deployment script in `scripts/payloads/adapters/ethereum/`
+3. Update [Network_Deployments.s.sol](./scripts/payloads/adapters/ethereum/Network_Deployments.s.sol) with the import
+4. Write tests in `tests/payloads/ethereum/`
+5. Run tests and verify generated diffs
+
+## 6. Validate
+
+```bash
+# Run tests and generate diffs
+make test
+
+# Pre-production test with mock destination
+make deploy_mock_destination PROD=true LEDGER=true
+make send-direct-message PROD=true LEDGER=true
+```
