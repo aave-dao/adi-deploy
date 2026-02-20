@@ -3,6 +3,9 @@
     "rev": "8e0fc4e4e49045d808a35ffcf5b536b4147ded5b"
   },
   "lib/aave-helpers": {
-    "rev": "bf2206bc6ae5a32fccfc4a10f51b76894ab73c36"
+    "branch": {
+      "name": "main",
+      "rev": "0459d4ef721c6306a194a36a559a8462f9b19633"
+    }
   }
 }
