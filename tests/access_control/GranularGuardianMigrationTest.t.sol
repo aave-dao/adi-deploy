@@ -4,6 +4,7 @@ pragma solidity ^0.8.22;
 import 'forge-std/Test.sol';
 import 'adi/access_control/GranularGuardianAccessControl.sol';
 import {OwnableWithGuardian} from 'adi/old-oz/OwnableWithGuardian.sol';
+import {IWithGuardian} from 'solidity-utils/contracts/access-control/interfaces/IWithGuardian.sol';
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
 import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
 import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
@@ -62,6 +63,66 @@ abstract contract BaseGranularGuardianMigrationTest is Test {
       OwnableWithGuardian(ccc).guardian(),
       granularGuardian,
       'CCC guardian should be granular guardian after migration'
+    );
+  }
+
+  function test_migrationViaCalldata() public {
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    address granularGuardian = GRANULAR_GUARDIAN();
+    address currentGuardian = OwnableWithGuardian(ccc).guardian();
+
+    // Build the exact calldata the script generates
+    bytes memory callData = abi.encodeWithSelector(
+      IWithGuardian.updateGuardian.selector,
+      granularGuardian
+    );
+
+    // Execute the calldata as the current guardian (Safe)
+    vm.prank(currentGuardian);
+    (bool success, ) = ccc.call(callData);
+    assertTrue(success, 'Calldata execution should succeed');
+
+    // Verify guardian was updated
+    assertEq(
+      OwnableWithGuardian(ccc).guardian(),
+      granularGuardian,
+      'CCC guardian should be granular guardian after calldata execution'
+    );
+
+    // Verify granular guardian roles are intact after migration
+    GranularGuardianAccessControl gg = GranularGuardianAccessControl(granularGuardian);
+    assertEq(
+      gg.getRoleMember(gg.RETRY_ROLE(), 0),
+      currentGuardian,
+      'Retry role should still be the original guardian'
+    );
+    assertEq(
+      gg.getRoleMember(gg.SOLVE_EMERGENCY_ROLE(), 0),
+      AAVE_GOVERNANCE_GUARDIAN(),
+      'Solve emergency role should still be aave governance guardian'
+    );
+  }
+
+  function test_migrationCalldataRevertsIfNotGuardian() public {
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    address granularGuardian = GRANULAR_GUARDIAN();
+
+    bytes memory callData = abi.encodeWithSelector(
+      IWithGuardian.updateGuardian.selector,
+      granularGuardian
+    );
+
+    // Should revert when called by a random address
+    address randomCaller = address(0xdead);
+    vm.prank(randomCaller);
+    (bool success, ) = ccc.call(callData);
+    assertFalse(success, 'Calldata execution should revert for non-guardian');
+
+    // Guardian should remain unchanged
+    assertNotEq(
+      OwnableWithGuardian(ccc).guardian(),
+      granularGuardian,
+      'Guardian should not have changed'
     );
   }
 }
