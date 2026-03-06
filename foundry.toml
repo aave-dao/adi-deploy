@@ -24,6 +24,9 @@ fallback_oz = true
 mode = "3"
 zksolc="1.4.1"
 
+[profile.test]
+solc = "0.8.27"
+
 [profile.linea]
 evm_version = 'london'
 
