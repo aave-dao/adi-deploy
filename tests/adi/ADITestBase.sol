@@ -434,7 +434,7 @@ contract ADITestBase is Test {
           cccImplUpdate: true,
           optimalBandwidth: true,
           guardian: true,
-          granularGuardianRoles: false, // TODO: enable once all guardians are migrated to granular guardian
+          granularGuardianRoles: true,
           owner: true,
           reportName: reportName
         })

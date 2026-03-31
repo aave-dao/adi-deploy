@@ -189,3 +189,6 @@ update-owners-and-guardians:
 
 update-ccc-permissions:
 	$(call deploy_fn,helpers/UpdateCCCPermissions,megaeth)
+
+gg-retry-role-migration:
+	$(call deploy_fn,payloads/gg/GG_retry_role_migration,ethereum)
