@@ -8,6 +8,7 @@ import {ChainHelpers, ChainIds} from 'solidity-utils/contracts/utils/ChainHelper
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ProxyHelpers} from 'aave-v3-origin/../tests/utils/ProxyHelpers.sol';
 
+import {GranularGuardianAccessControl} from 'adi/access_control/GranularGuardianAccessControl.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {ICrossChainReceiver} from 'adi/interfaces/ICrossChainReceiver.sol';
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
@@ -54,8 +55,16 @@ contract ADITestBase is Test {
     uint256 optimalBandwidth;
   }
 
+  struct GranularGuardianRoles {
+    address[] retryGuardians;
+    address[] solveEmergencyGuardians;
+    address defaultAdmin;
+  }
+
   struct CCCConfig {
+    address guardian;
     address crossChainControllerImpl;
+    GranularGuardianRoles granularGuardianRoles;
     ReceiverConfigByChain[] receiverConfigs;
     ReceiverAdaptersByChain[] receiverAdaptersConfig;
     ForwarderAdaptersByChain[] forwarderAdaptersConfig;
@@ -84,6 +93,9 @@ contract ADITestBase is Test {
     bool forwarderAdapterConfigs;
     bool cccImplUpdate;
     bool optimalBandwidth;
+    bool guardian;
+    bool granularGuardianRoles;
+    bool owner;
     string reportName;
   }
 
@@ -417,6 +429,8 @@ contract ADITestBase is Test {
           forwarderAdapterConfigs: true,
           cccImplUpdate: true,
           optimalBandwidth: true,
+          guardian: true,
+          owner: true,
           reportName: reportName
         })
       );
@@ -438,7 +452,46 @@ contract ADITestBase is Test {
     if (snapshotParams.forwarderAdapterConfigs) _writeForwarderAdapters(path, config);
     if (snapshotParams.cccImplUpdate) _writeCCCImplUpdate(path, config);
     if (snapshotParams.optimalBandwidth) _writeOptimalBandwidth(path, config);
+    if (snapshotParams.guardian) _writeGuardian(path, config);
+    if (snapshotParams.granularGuardianRoles) _writeGranularGuardianRoles(path, config);
+    if (snapshotParams.owner) _writeOwner(path, config);
     return config;
+  }
+
+  function _writeGuardian(string memory path, CCCConfig memory config) internal {
+    string memory output = vm.serializeAddress('root', 'guardian', config.guardian);
+    vm.writeJson(output, path);
+  }
+
+  function _writeGranularGuardianRoles(string memory path, CCCConfig memory config) internal {
+    string memory granularGuardianRoles = 'granularGuardianRoles';
+    string memory content = '{}';
+    vm.serializeJson(granularGuardianRoles, '{}');
+    GranularGuardianRoles memory roles = config.granularGuardianRoles;
+    for (uint256 i = 0; i < roles.retryGuardians.length; i++) {
+      string memory key = vm.toString(roles.retryGuardians[i]);
+      vm.serializeJson(key, '{}');
+      string memory object;
+
+      object = vm.serializeString(key, 'retryGuardians', roles.retryGuardians[i]);
+      content = vm.serializeString(granularGuardianRoles, key, object);
+    }
+    for (uint256 i = 0; i < roles.solveEmergencyGuardians.length; i++) {
+      string memory key = vm.toString(roles.solveEmergencyGuardians[i]);
+      vm.serializeJson(key, '{}');
+      string memory object;
+      object = vm.serializeString(key, 'solveEmergencyGuardians', roles.solveEmergencyGuardians[i]);
+      content = vm.serializeString(granularGuardianRoles, key, object);
+    }
+
+    string memory defaultAdminKey = vm.toString(roles.defaultAdmin);
+    vm.serializeJson(defaultAdminKey, '{}');
+    string memory object;
+    object = vm.serializeString(defaultAdminKey, 'defaultAdmin', roles.defaultAdmin);
+    content = vm.serializeString(granularGuardianRoles, defaultAdminKey, object);
+
+    string memory output = vm.serializeString('root', 'granularGuardianRoles', content);
+    vm.writeJson(output, path);
   }
 
   function _writeOptimalBandwidth(string memory path, CCCConfig memory config) internal {
@@ -571,8 +624,32 @@ contract ADITestBase is Test {
     vm.writeJson(output, path);
   }
 
+  function _writeOwner(string memory path, CCCConfig memory config) internal {
+    string memory output = vm.serializeAddress('root', 'owner', config.owner);
+    vm.writeJson(output, path);
+  }
+
   function _getCCCConfig(address ccc) internal view returns (CCCConfig memory) {
     CCCConfig memory config;
+
+    // get guardian
+    config.guardian = OwnableWithGuardian(ccc).guardian();
+
+    // get granular guardian roles
+    address[] memory retryGuardians = GranularGuardianAccessControl(ccc).getRoleMembers(
+      GranularGuardianAccessControl.RETRY_ROLE()
+    );
+    address[] memory solveEmergencyGuardians = GranularGuardianAccessControl(ccc).getRoleMembers(
+      GranularGuardianAccessControl.SOLVE_EMERGENCY_ROLE()
+    );
+    address defaultAdmin = GranularGuardianAccessControl(ccc).getRoleAdmin(
+      GranularGuardianAccessControl.DEFAULT_ADMIN_ROLE()
+    );
+    config.granularGuardianRoles = GranularGuardianRoles({
+      retryGuardians: retryGuardians,
+      solveEmergencyGuardians: solveEmergencyGuardians,
+      defaultAdmin: defaultAdmin
+    });
 
     // get crossChainController implementation
     config.crossChainControllerImpl = ProxyHelpers
