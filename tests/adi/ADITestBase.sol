@@ -7,6 +7,7 @@ import {IBaseAdaptersUpdate} from '../../src/templates/interfaces/IBaseAdaptersU
 import {ChainHelpers, ChainIds} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ProxyHelpers} from 'aave-v3-origin/../tests/utils/ProxyHelpers.sol';
+import {OwnableWithGuardian} from 'adi/old-oz/OwnableWithGuardian.sol';
 
 import {GranularGuardianAccessControl} from 'adi/access_control/GranularGuardianAccessControl.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
@@ -29,6 +30,8 @@ import {GovernanceV3Soneium} from 'aave-address-book/GovernanceV3Soneium.sol';
 import {GovernanceV3Plasma} from 'aave-address-book/GovernanceV3Plasma.sol';
 import {GovernanceV3Mantle} from 'aave-address-book/GovernanceV3Mantle.sol';
 import {GovernanceV3Ink} from 'aave-address-book/GovernanceV3Ink.sol';
+import {GovernanceV3XLayer} from 'aave-address-book/GovernanceV3XLayer.sol';
+import {GovernanceV3MegaEth} from 'aave-address-book/GovernanceV3MegaEth.sol';
 import {IBaseAdapter} from 'aave-address-book/common/IBaseAdapter.sol';
 
 contract ADITestBase is Test {
@@ -63,6 +66,7 @@ contract ADITestBase is Test {
 
   struct CCCConfig {
     address guardian;
+    address owner;
     address crossChainControllerImpl;
     GranularGuardianRoles granularGuardianRoles;
     ReceiverConfigByChain[] receiverConfigs;
@@ -430,6 +434,7 @@ contract ADITestBase is Test {
           cccImplUpdate: true,
           optimalBandwidth: true,
           guardian: true,
+          granularGuardianRoles: false, // TODO: enable once all guardians are migrated to granular guardian
           owner: true,
           reportName: reportName
         })
@@ -460,37 +465,6 @@ contract ADITestBase is Test {
 
   function _writeGuardian(string memory path, CCCConfig memory config) internal {
     string memory output = vm.serializeAddress('root', 'guardian', config.guardian);
-    vm.writeJson(output, path);
-  }
-
-  function _writeGranularGuardianRoles(string memory path, CCCConfig memory config) internal {
-    string memory granularGuardianRoles = 'granularGuardianRoles';
-    string memory content = '{}';
-    vm.serializeJson(granularGuardianRoles, '{}');
-    GranularGuardianRoles memory roles = config.granularGuardianRoles;
-    for (uint256 i = 0; i < roles.retryGuardians.length; i++) {
-      string memory key = vm.toString(roles.retryGuardians[i]);
-      vm.serializeJson(key, '{}');
-      string memory object;
-
-      object = vm.serializeString(key, 'retryGuardians', roles.retryGuardians[i]);
-      content = vm.serializeString(granularGuardianRoles, key, object);
-    }
-    for (uint256 i = 0; i < roles.solveEmergencyGuardians.length; i++) {
-      string memory key = vm.toString(roles.solveEmergencyGuardians[i]);
-      vm.serializeJson(key, '{}');
-      string memory object;
-      object = vm.serializeString(key, 'solveEmergencyGuardians', roles.solveEmergencyGuardians[i]);
-      content = vm.serializeString(granularGuardianRoles, key, object);
-    }
-
-    string memory defaultAdminKey = vm.toString(roles.defaultAdmin);
-    vm.serializeJson(defaultAdminKey, '{}');
-    string memory object;
-    object = vm.serializeString(defaultAdminKey, 'defaultAdmin', roles.defaultAdmin);
-    content = vm.serializeString(granularGuardianRoles, defaultAdminKey, object);
-
-    string memory output = vm.serializeString('root', 'granularGuardianRoles', content);
     vm.writeJson(output, path);
   }
 
@@ -562,6 +536,41 @@ contract ADITestBase is Test {
     vm.writeJson(output, path);
   }
 
+  function _writeGranularGuardianRoles(string memory path, CCCConfig memory config) internal {
+    string memory granularGuardianRoles = 'granularGuardianRoles';
+    string memory content = '{}';
+    vm.serializeJson(granularGuardianRoles, '{}');
+    GranularGuardianRoles memory roles = config.granularGuardianRoles;
+    for (uint256 i = 0; i < roles.retryGuardians.length; i++) {
+      string memory key = vm.toString(roles.retryGuardians[i]);
+      vm.serializeJson(key, '{}');
+      string memory object;
+
+      object = vm.serializeString(key, 'retryGuardians', vm.toString(roles.retryGuardians[i]));
+      content = vm.serializeString(granularGuardianRoles, key, object);
+    }
+    for (uint256 i = 0; i < roles.solveEmergencyGuardians.length; i++) {
+      string memory key = vm.toString(roles.solveEmergencyGuardians[i]);
+      vm.serializeJson(key, '{}');
+      string memory object;
+      object = vm.serializeString(
+        key,
+        'solveEmergencyGuardians',
+        vm.toString(roles.solveEmergencyGuardians[i])
+      );
+      content = vm.serializeString(granularGuardianRoles, key, object);
+    }
+
+    string memory defaultAdminKey = vm.toString(roles.defaultAdmin);
+    vm.serializeJson(defaultAdminKey, '{}');
+    string memory object;
+    object = vm.serializeString(defaultAdminKey, 'defaultAdmin', vm.toString(roles.defaultAdmin));
+    content = vm.serializeString(granularGuardianRoles, defaultAdminKey, object);
+
+    string memory output = vm.serializeString('root', 'granularGuardianRoles', content);
+    vm.writeJson(output, path);
+  }
+
   function _writeReceiverAdapters(string memory path, CCCConfig memory config) internal {
     // keys for json stringification
     string memory receiverAdaptersKey = 'receiverAdapters';
@@ -629,27 +638,45 @@ contract ADITestBase is Test {
     vm.writeJson(output, path);
   }
 
-  function _getCCCConfig(address ccc) internal view returns (CCCConfig memory) {
-    CCCConfig memory config;
+  function _getGranularGuardianRoles(
+    address guardian
+  ) internal view returns (GranularGuardianRoles memory) {
+    GranularGuardianAccessControl granularGuardian = GranularGuardianAccessControl(guardian);
 
-    // get guardian
-    config.guardian = OwnableWithGuardian(ccc).guardian();
-
-    // get granular guardian roles
-    address[] memory retryGuardians = GranularGuardianAccessControl(ccc).getRoleMembers(
-      GranularGuardianAccessControl.RETRY_ROLE()
+    address[] memory retryGuardians = new address[](
+      granularGuardian.getRoleMemberCount(granularGuardian.RETRY_ROLE())
     );
-    address[] memory solveEmergencyGuardians = GranularGuardianAccessControl(ccc).getRoleMembers(
-      GranularGuardianAccessControl.SOLVE_EMERGENCY_ROLE()
+    for (uint256 i = 0; i < retryGuardians.length; i++) {
+      retryGuardians[i] = granularGuardian.getRoleMember(granularGuardian.RETRY_ROLE(), i);
+    }
+    address[] memory solveEmergencyGuardians = new address[](
+      granularGuardian.getRoleMemberCount(granularGuardian.SOLVE_EMERGENCY_ROLE())
     );
-    address defaultAdmin = GranularGuardianAccessControl(ccc).getRoleAdmin(
-      GranularGuardianAccessControl.DEFAULT_ADMIN_ROLE()
-    );
-    config.granularGuardianRoles = GranularGuardianRoles({
+    for (uint256 i = 0; i < solveEmergencyGuardians.length; i++) {
+      solveEmergencyGuardians[i] = granularGuardian.getRoleMember(
+        granularGuardian.SOLVE_EMERGENCY_ROLE(),
+        i
+      );
+    }
+    address defaultAdmin = granularGuardian.getRoleMember(granularGuardian.DEFAULT_ADMIN_ROLE(), 0);
+    GranularGuardianRoles memory granularGuardianRoles = GranularGuardianRoles({
       retryGuardians: retryGuardians,
       solveEmergencyGuardians: solveEmergencyGuardians,
       defaultAdmin: defaultAdmin
     });
+
+    return granularGuardianRoles;
+  }
+
+  function _getCCCConfig(address ccc) internal view returns (CCCConfig memory) {
+    CCCConfig memory config;
+
+    // get owner and guardian
+    config.guardian = OwnableWithGuardian(ccc).guardian();
+    config.owner = OwnableWithGuardian(ccc).owner();
+
+    // get granular guardian roles
+    config.granularGuardianRoles = _getGranularGuardianRoles(config.guardian);
 
     // get crossChainController implementation
     config.crossChainControllerImpl = ProxyHelpers
@@ -825,9 +852,9 @@ contract ADITestBase is Test {
     } else if (chainId == ChainIds.PLASMA) {
       return GovernanceV3Plasma.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.XLAYER) {
-      return 0xFdd46155fD3DA5B907AD3B9f9395366290f58097;
+      return GovernanceV3XLayer.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.MEGAETH) {
-      return 0x5EE63ACb37AeCDc7e23ACA283098f8ffD9677BBe;
+      return GovernanceV3MegaEth.CROSS_CHAIN_CONTROLLER;
     }
     revert();
   }
