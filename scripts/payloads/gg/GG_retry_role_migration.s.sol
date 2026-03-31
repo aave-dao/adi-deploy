@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-
 import '../../BaseDeployerScript.sol';
 import {
   RetryRoleMigrationPayload,
@@ -25,7 +24,6 @@ import {GovernanceV3Mantle} from 'aave-address-book/GovernanceV3Mantle.sol';
 import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
 import {GovernanceV3Ink} from 'aave-address-book/GovernanceV3Ink.sol';
 import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
-
 
 abstract contract GG_retry_role_migration is BaseDeployerScript {
   function PAYLOAD_SALT() internal pure virtual returns (string memory) {
@@ -61,6 +59,10 @@ contract Arbitrum is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ARBITRUM;
+  }
 }
 
 contract Avalanche is GG_retry_role_migration {
@@ -70,6 +72,10 @@ contract Avalanche is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.AVALANCHE;
   }
 }
 
@@ -81,6 +87,10 @@ contract Base is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.BASE;
+  }
 }
 
 contract Binance is GG_retry_role_migration {
@@ -90,6 +100,10 @@ contract Binance is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.BNB;
   }
 }
 
@@ -101,6 +115,10 @@ contract Bob is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.BOB;
+  }
 }
 
 contract Celo is GG_retry_role_migration {
@@ -110,6 +128,10 @@ contract Celo is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.CELO;
   }
 }
 
@@ -121,6 +143,10 @@ contract Ethereum is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
 }
 
 contract Gnosis is GG_retry_role_migration {
@@ -130,6 +156,10 @@ contract Gnosis is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.GNOSIS;
   }
 }
 
@@ -141,6 +171,10 @@ contract Ink is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.INK;
+  }
 }
 
 contract Linea is GG_retry_role_migration {
@@ -150,6 +184,10 @@ contract Linea is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.LINEA;
   }
 }
 
@@ -161,6 +199,10 @@ contract Mantle is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MANTLE;
+  }
 }
 
 contract Megaeth is GG_retry_role_migration {
@@ -170,6 +212,10 @@ contract Megaeth is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MEGAETH;
   }
 }
 
@@ -191,6 +237,10 @@ contract Optimism is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.OPTIMISM;
+  }
 }
 
 contract Plasma is GG_retry_role_migration {
@@ -200,6 +250,10 @@ contract Plasma is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.PLASMA;
   }
 }
 
@@ -211,6 +265,10 @@ contract Polygon is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.POLYGON;
+  }
 }
 
 contract Scroll is GG_retry_role_migration {
@@ -220,6 +278,10 @@ contract Scroll is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SCROLL;
   }
 }
 
@@ -241,6 +303,10 @@ contract Sonic is GG_retry_role_migration {
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
   }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.SONIC;
+  }
 }
 
 contract Xlayer is GG_retry_role_migration {
@@ -250,6 +316,10 @@ contract Xlayer is GG_retry_role_migration {
 
   function NEW_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x0000000000000000000000000000000000001000; // TODO: add new guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.XLAYER;
   }
 }
 

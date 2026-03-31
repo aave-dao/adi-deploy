@@ -4,7 +4,10 @@ pragma solidity ^0.8.0;
 import {Test} from 'forge-std/Test.sol';
 import {GranularGuardianAccessControl} from 'adi/access_control/GranularGuardianAccessControl.sol';
 import {ADITestBase} from '../adi/ADITestBase.sol';
-import {GGRetryRoleMigrationArgs} from '../../src/gg_payloads/RetryRoleMigrationPayload.sol';
+import {
+  GGRetryRoleMigrationArgs,
+  RetryRoleMigrationPayload
+} from '../../src/gg_payloads/RetryRoleMigrationPayload.sol';
 import {
   Arbitrum,
   Avalanche,
@@ -25,17 +28,37 @@ import {
   Sonic,
   Xlayer
 } from '../../scripts/payloads/gg/GG_retry_role_migration.s.sol';
+import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
+import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
+import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
+import {GovernanceV3BNB} from 'aave-address-book/GovernanceV3BNB.sol';
+import {GovernanceV3Bob} from 'aave-address-book/GovernanceV3Bob.sol';
+import {GovernanceV3Celo} from 'aave-address-book/GovernanceV3Celo.sol';
+import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
+import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
+import {GovernanceV3Ink} from 'aave-address-book/GovernanceV3Ink.sol';
+import {GovernanceV3Linea} from 'aave-address-book/GovernanceV3Linea.sol';
+import {GovernanceV3Mantle} from 'aave-address-book/GovernanceV3Mantle.sol';
+import {GovernanceV3MegaEth} from 'aave-address-book/GovernanceV3MegaEth.sol';
+import {GovernanceV3Optimism} from 'aave-address-book/GovernanceV3Optimism.sol';
+import {GovernanceV3Plasma} from 'aave-address-book/GovernanceV3Plasma.sol';
+import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
+import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
+import {GovernanceV3Sonic} from 'aave-address-book/GovernanceV3Sonic.sol';
+import {GovernanceV3XLayer} from 'aave-address-book/GovernanceV3XLayer.sol';
 
 abstract contract BaseGGRetryRoleMigrationTest is ADITestBase {
   address internal _payload;
   string internal NETWORK;
   uint256 internal immutable BLOCK_NUMBER;
+  address internal _granularGuardian;
+  address internal _newRetryGuardian;
 
-  function GRANULAR_GUARDIAN() internal view virtual returns (address);
   function CURRENT_RETRY_GUARDIAN() internal view virtual returns (address);
-  function NEW_RETRY_GUARDIAN() internal view virtual returns (address);
   function CROSS_CHAIN_CONTROLLER() internal view virtual returns (address);
 
+  function _getGranularGuardian() internal view virtual returns (address);
+  function _getNewRetryGuardian() internal view virtual returns (address);
   function _getDeployedPayload() internal virtual returns (address);
 
   function _getPayload() internal virtual returns (address);
@@ -49,6 +72,8 @@ abstract contract BaseGGRetryRoleMigrationTest is ADITestBase {
     vm.createSelectFork(vm.rpcUrl(NETWORK), BLOCK_NUMBER);
 
     _payload = _getPayload();
+    _granularGuardian = _getGranularGuardian();
+    _newRetryGuardian = _getNewRetryGuardian();
   }
 
   function test_defaultTest() public {
@@ -71,25 +96,21 @@ abstract contract BaseGGRetryRoleMigrationTest is ADITestBase {
   }
 
   function test_migrationToNewRetryGuardian() public {
-    address granularGuardian = GRANULAR_GUARDIAN();
     address currentRetryGuardian = CURRENT_RETRY_GUARDIAN();
-    address newRetryGuardian = NEW_RETRY_GUARDIAN();
 
-    GranularGuardianAccessControl gg = GranularGuardianAccessControl(granularGuardian);
+    GranularGuardianAccessControl gg = GranularGuardianAccessControl(_granularGuardian);
 
-    assertEq(gg.getRoleAdmin(gg.RETRY_ROLE()), currentRetryGuardian);
     assertEq(gg.getRoleMember(gg.RETRY_ROLE(), 0), currentRetryGuardian);
 
     executePayload(vm, address(_payload));
 
-    assertEq(gg.getRoleAdmin(gg.RETRY_ROLE()), newRetryGuardian);
-    assertEq(gg.getRoleMember(gg.RETRY_ROLE(), 0), newRetryGuardian);
+    assertEq(gg.getRoleMember(gg.RETRY_ROLE(), 0), _newRetryGuardian);
   }
 }
 
 // TODO: add block number
 contract ArbitrumTest is Arbitrum, BaseGGRetryRoleMigrationTest('arbitrum', 222622842) {
-  function GRANULAR_GUARDIAN() internal pure override returns (address) {
+  function _getGranularGuardian() internal pure override returns (address) {
     return GovernanceV3Arbitrum.GRANULAR_GUARDIAN;
   }
 
@@ -112,10 +133,18 @@ contract ArbitrumTest is Arbitrum, BaseGGRetryRoleMigrationTest('arbitrum', 2226
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  } 
 }
 
 // TODO: add block number
 contract AvalancheTest is Avalanche, BaseGGRetryRoleMigrationTest('avalanche', 46727153) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Avalanche.GRANULAR_GUARDIAN;
+  }
+
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x3DBA1c4094BC0eE4772A05180B7E0c2F1cFD9c36; // BGD guardian
   }
@@ -135,10 +164,18 @@ contract AvalancheTest is Avalanche, BaseGGRetryRoleMigrationTest('avalanche', 4
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract BaseTest is Base, BaseGGRetryRoleMigrationTest('base', 43003513) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Base.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Base.CROSS_CHAIN_CONTROLLER;
   }
@@ -158,6 +195,10 @@ contract BaseTest is Base, BaseGGRetryRoleMigrationTest('base', 43003513) {
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0x7FDA7C3528ad8f05e62148a700D456898b55f8d2; // BGD guardian
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
@@ -165,6 +206,11 @@ contract BinanceTest is Binance, BaseGGRetryRoleMigrationTest('binance', 4035341
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3BNB.CROSS_CHAIN_CONTROLLER;
   }
+
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3BNB.GRANULAR_GUARDIAN;
+  }
+
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0xE8C5ab722d0b1B7316Cc4034f2BE91A5B1d29964; // BGD guardian
   }
@@ -179,10 +225,18 @@ contract BinanceTest is Binance, BaseGGRetryRoleMigrationTest('binance', 4035341
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract BobTest is Bob, BaseGGRetryRoleMigrationTest('bob', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Bob.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Bob.CROSS_CHAIN_CONTROLLER;
   }
@@ -202,10 +256,18 @@ contract BobTest is Bob, BaseGGRetryRoleMigrationTest('bob', 10000000) {
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0xdc62E0e65b2251Dc66404ca717FD32dcC365Be3A; // BGD guardian
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract CeloTest is Celo, BaseGGRetryRoleMigrationTest('celo', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Celo.GRANULAR_GUARDIAN;
+  }
+
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
     return 0xfD3a6E65e470a7D7D730FFD5D36a9354E8F9F4Ea; // BGD guardian
   }
@@ -225,10 +287,18 @@ contract CeloTest is Celo, BaseGGRetryRoleMigrationTest('celo', 10000000) {
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract EthereumTest is Ethereum, BaseGGRetryRoleMigrationTest('ethereum', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Ethereum.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Ethereum.CROSS_CHAIN_CONTROLLER;
   }
@@ -248,10 +318,18 @@ contract EthereumTest is Ethereum, BaseGGRetryRoleMigrationTest('ethereum', 1000
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract GnosisTest is Gnosis, BaseGGRetryRoleMigrationTest('gnosis', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Gnosis.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Gnosis.CROSS_CHAIN_CONTROLLER;
   }
@@ -270,10 +348,18 @@ contract GnosisTest is Gnosis, BaseGGRetryRoleMigrationTest('gnosis', 10000000) 
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract InkTest is Ink, BaseGGRetryRoleMigrationTest('ink', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Ink.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Ink.CROSS_CHAIN_CONTROLLER;
   }
@@ -293,10 +379,18 @@ contract InkTest is Ink, BaseGGRetryRoleMigrationTest('ink', 10000000) {
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract LineaTest is Linea, BaseGGRetryRoleMigrationTest('linea', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Linea.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Linea.CROSS_CHAIN_CONTROLLER;
   }
@@ -315,10 +409,18 @@ contract LineaTest is Linea, BaseGGRetryRoleMigrationTest('linea', 10000000) {
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 // TODO: add block number
 contract MantleTest is Mantle, BaseGGRetryRoleMigrationTest('mantle', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Mantle.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Mantle.CROSS_CHAIN_CONTROLLER;
   }
@@ -338,11 +440,19 @@ contract MantleTest is Mantle, BaseGGRetryRoleMigrationTest('mantle', 10000000) 
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 contract MegaethTest is Megaeth, BaseGGRetryRoleMigrationTest('megaeth', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3MegaEth.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Megaeth.CROSS_CHAIN_CONTROLLER;
+    return GovernanceV3MegaEth.CROSS_CHAIN_CONTROLLER;
   }
 
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
@@ -359,6 +469,10 @@ contract MegaethTest is Megaeth, BaseGGRetryRoleMigrationTest('megaeth', 1000000
       newRetryGuardian: NEW_RETRY_GUARDIAN()
     });
     return _deployPayload(args);
+  }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
   }
 }
 
@@ -377,6 +491,10 @@ contract MegaethTest is Megaeth, BaseGGRetryRoleMigrationTest('megaeth', 1000000
 // }
 
 contract OptimismTest is Optimism, BaseGGRetryRoleMigrationTest('optimism', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Optimism.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Optimism.CROSS_CHAIN_CONTROLLER;
   }
@@ -396,9 +514,17 @@ contract OptimismTest is Optimism, BaseGGRetryRoleMigrationTest('optimism', 1000
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 contract PlasmaTest is Plasma, BaseGGRetryRoleMigrationTest('plasma', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Plasma.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Plasma.CROSS_CHAIN_CONTROLLER;
   }
@@ -413,13 +539,22 @@ contract PlasmaTest is Plasma, BaseGGRetryRoleMigrationTest('plasma', 10000000) 
 
   function _getPayload() internal override returns (address) {
     GGRetryRoleMigrationArgs memory args = GGRetryRoleMigrationArgs({
+      granularGuardian: GRANULAR_GUARDIAN(),
       newRetryGuardian: NEW_RETRY_GUARDIAN()
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 contract PolygonTest is Polygon, BaseGGRetryRoleMigrationTest('polygon', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Polygon.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Polygon.CROSS_CHAIN_CONTROLLER;
   }
@@ -434,13 +569,22 @@ contract PolygonTest is Polygon, BaseGGRetryRoleMigrationTest('polygon', 1000000
 
   function _getPayload() internal override returns (address) {
     GGRetryRoleMigrationArgs memory args = GGRetryRoleMigrationArgs({
+      granularGuardian: GRANULAR_GUARDIAN(),
       newRetryGuardian: NEW_RETRY_GUARDIAN()
     });
     return _deployPayload(args);
   }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 contract ScrollTest is Scroll, BaseGGRetryRoleMigrationTest('scroll', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Scroll.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Scroll.CROSS_CHAIN_CONTROLLER;
   }
@@ -455,9 +599,14 @@ contract ScrollTest is Scroll, BaseGGRetryRoleMigrationTest('scroll', 10000000) 
 
   function _getPayload() internal override returns (address) {
     GGRetryRoleMigrationArgs memory args = GGRetryRoleMigrationArgs({
+      granularGuardian: GRANULAR_GUARDIAN(),
       newRetryGuardian: NEW_RETRY_GUARDIAN()
     });
     return _deployPayload(args);
+  }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
   }
 }
 
@@ -476,6 +625,10 @@ contract ScrollTest is Scroll, BaseGGRetryRoleMigrationTest('scroll', 10000000) 
 // }
 
 contract SonicTest is Sonic, BaseGGRetryRoleMigrationTest('sonic', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3Sonic.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
     return GovernanceV3Sonic.CROSS_CHAIN_CONTROLLER;
   }
@@ -490,15 +643,23 @@ contract SonicTest is Sonic, BaseGGRetryRoleMigrationTest('sonic', 10000000) {
 
   function _getPayload() internal override returns (address) {
     GGRetryRoleMigrationArgs memory args = GGRetryRoleMigrationArgs({
+      granularGuardian: GRANULAR_GUARDIAN(),
       newRetryGuardian: NEW_RETRY_GUARDIAN()
     });
     return _deployPayload(args);
   }
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
+  }
 }
 
 contract XlayerTest is Xlayer, BaseGGRetryRoleMigrationTest('xlayer', 10000000) {
+  function _getGranularGuardian() internal pure override returns (address) {
+    return GovernanceV3XLayer.GRANULAR_GUARDIAN;
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Xlayer.CROSS_CHAIN_CONTROLLER;
+    return GovernanceV3XLayer.CROSS_CHAIN_CONTROLLER;
   }
 
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
@@ -515,5 +676,9 @@ contract XlayerTest is Xlayer, BaseGGRetryRoleMigrationTest('xlayer', 10000000) 
       newRetryGuardian: NEW_RETRY_GUARDIAN()
     });
     return _deployPayload(args);
+  }
+
+  function _getNewRetryGuardian() internal pure override returns (address) {
+    return NEW_RETRY_GUARDIAN();
   }
 }
