@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {
   GranularGuardianAccessControl
-} from 'aave-delivery-infrastructure/contracts/access_control/GranularGuardianAccessControl.sol';
+} from 'adi/access_control/GranularGuardianAccessControl.sol';
 
 struct GGRetryRoleMigrationArgs {
   address granularGuardian;

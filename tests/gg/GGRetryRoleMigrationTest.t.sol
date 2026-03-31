@@ -5,7 +5,26 @@ import {Test} from 'forge-std/Test.sol';
 import {GranularGuardianAccessControl} from 'adi/access_control/GranularGuardianAccessControl.sol';
 import {ADITestBase} from '../adi/ADITestBase.sol';
 import {GGRetryRoleMigrationArgs} from '../../src/gg_payloads/RetryRoleMigrationPayload.sol';
-import {Arbitrum} from '../../scripts/gg/network_scripts/GGRetryRoleMigrationNetworkDeploys.s.sol';
+import {
+  Arbitrum,
+  Avalanche,
+  Base,
+  Binance,
+  Bob,
+  Celo,
+  Ethereum,
+  Gnosis,
+  Ink,
+  Linea,
+  Mantle,
+  Megaeth,
+  Optimism,
+  Plasma,
+  Polygon,
+  Scroll,
+  Sonic,
+  Xlayer
+} from '../../scripts/payloads/gg/GG_retry_role_migration.s.sol';
 
 abstract contract BaseGGRetryRoleMigrationTest is ADITestBase {
   address internal _payload;
@@ -279,7 +298,7 @@ contract InkTest is Ink, BaseGGRetryRoleMigrationTest('ink', 10000000) {
 // TODO: add block number
 contract LineaTest is Linea, BaseGGRetryRoleMigrationTest('linea', 10000000) {
   function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Line.CROSS_CHAIN_CONTROLLER;
+    return GovernanceV3Linea.CROSS_CHAIN_CONTROLLER;
   }
 
   function CURRENT_RETRY_GUARDIAN() internal pure override returns (address) {
