@@ -14,6 +14,7 @@ import {GovernanceV3Metis} from 'aave-address-book/GovernanceV3Metis.sol';
 import {GovernanceV3Optimism} from 'aave-address-book/GovernanceV3Optimism.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
+import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
 
 abstract contract BaseGranularGuardianMigrationTest is Test {
   string internal NETWORK;
@@ -250,5 +251,19 @@ contract PolygonGranularGuardianMigrationTest is BaseGranularGuardianMigrationTe
 
   function AAVE_GOVERNANCE_GUARDIAN() internal pure override returns (address) {
     return GovernanceV3Polygon.GOVERNANCE_GUARDIAN;
+  }
+}
+
+contract ScrollGranularGuardianMigrationTest is BaseGranularGuardianMigrationTest('scroll', 33257912) {
+  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
+    return GovernanceV3Scroll.CROSS_CHAIN_CONTROLLER;
+  }
+
+  function GRANULAR_GUARDIAN() internal pure override returns (address) {
+    return GovernanceV3Scroll.GRANULAR_GUARDIAN;
+  }
+
+  function AAVE_GOVERNANCE_GUARDIAN() internal pure override returns (address) {
+    return GovernanceV3Scroll.GOVERNANCE_GUARDIAN;
   }
 }

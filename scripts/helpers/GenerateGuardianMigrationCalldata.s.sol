@@ -13,6 +13,7 @@ import {GovernanceV3Metis} from 'aave-address-book/GovernanceV3Metis.sol';
 import {GovernanceV3Optimism} from 'aave-address-book/GovernanceV3Optimism.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
+import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
 
 contract GenerateGuardianMigrationCalldata is Script {
   struct NetworkConfig {
@@ -46,7 +47,7 @@ contract GenerateGuardianMigrationCalldata is Script {
   }
 
   function _getNetworks() internal pure returns (NetworkConfig[] memory) {
-    NetworkConfig[] memory networks = new NetworkConfig[](9);
+    NetworkConfig[] memory networks = new NetworkConfig[](10);
 
     networks[0] = NetworkConfig({
       name: 'Ethereum',
@@ -100,6 +101,12 @@ contract GenerateGuardianMigrationCalldata is Script {
       name: 'Base',
       crossChainController: GovernanceV3Base.CROSS_CHAIN_CONTROLLER,
       granularGuardian: GovernanceV3Base.GRANULAR_GUARDIAN
+    });
+
+    networks[9] = NetworkConfig({
+      name: 'Scroll',
+      crossChainController: GovernanceV3Scroll.CROSS_CHAIN_CONTROLLER,
+      granularGuardian: GovernanceV3Scroll.GRANULAR_GUARDIAN
     });
 
     return networks;
