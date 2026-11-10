@@ -1,0 +1,147 @@
+deployments/gnosis.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_binance.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/pre_prod_celo.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/pre_prod_mantle.json
+  s_f854dc51e6804c::t_33d1a274811450 29
+deployments/bob.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_base.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/arbitrum.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_megaeth.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/pre_prod_bob.json
+  s_f854dc51e6804c::t_33d1a274811450 32
+deployments/pre_prod_scroll.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/zksync.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+scripts/adapters/DeployWormholeExecutor.s.sol
+  s_f854dc51e6804c::t_45a155b7d45a65 16
+  s_f854dc51e6804c::t_8fa02c2943a608 1-15,17-139
+src/adapter_payloads/Remote_Replace_LZ_Payload.sol
+  s_f854dc51e6804c::t_04cc79fb05e88f 1-103
+deployments/metis.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/linea.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/megaeth.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_monad.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/monad.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/avalanche.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_polygon.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/pre_prod_ink.json
+  s_f854dc51e6804c::t_33d1a274811450 30
+deployments/pre_prod_plasma.json
+  s_f854dc51e6804c::t_33d1a274811450 32
+scripts/payloads/adapters/replace_lz/Network_Deployments.s.sol
+  s_f854dc51e6804c::t_73503d695cbad9 1-170
+diffs/adi_replace_lz_monad_before_adi_replace_lz_monad_after.md
+  s_f854dc51e6804c::t_5976f742c719ab 1-18
+deployments/pre_prod_metis.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/polygon.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/scroll.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/pre_prod_xlayer.json
+  s_f854dc51e6804c::t_33d1a274811450 32
+deployments/base.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/plasma.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+tests/payloads/replace_lz/ReplaceLZTest.t.sol
+  s_f854dc51e6804c::t_ea4365df9b6acb 1-15,17-105,107-109,114-116,118-160,162-170,173-231,235-274,276-300,302-318,320-448,450-452,454-459,461,463-465,467-479,481-494,497-501,505-508,510-521,525-528,530-541,545-548,550-561,579-582,584-594,598-603,605-606,608-610,612-626
+  s_f854dc51e6804c::t_5976f742c719ab 16,106,110-113,562,565-577
+  s_f854dc51e6804c::t_67c5da6fd9c0cf 275
+  s_f854dc51e6804c::t_0d454e9c89d3f7 171-172
+  s_f854dc51e6804c::t_b2c764b5abcf10 449
+  s_f854dc51e6804c::t_47bc228c497990 460,462,466,480,495-496,502-504,509,523-524,529,543-544,549,563-564,578,583,595-597,607,611
+  s_f854dc51e6804c::t_a4ac7eddf4ae04 117,161,232-234,301,319,453,522,542,604
+deployments/xlayer.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/mantle.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_optimism.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/pre_prod_ethereum.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/binance.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_soneium.json
+  s_f854dc51e6804c::t_33d1a274811450 31
+deployments/ink.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_arbitrum.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/pre_prod_avalanche.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/pre_prod_zksync.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/sonic.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/optimism.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+deployments/pre_prod_gnosis.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/ethereum.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+deployments/pre_prod_linea.json
+  s_f854dc51e6804c::t_33d1a274811450 28
+deployments/soneium.json
+  s_f854dc51e6804c::t_33d1a274811450 33
+scripts/BaseDeployerScript.sol
+  s_f854dc51e6804c::t_4f2da200d26fc2 41,91-94,139
+scripts/adapters/DeployCCIPAdapter.s.sol
+  s_f854dc51e6804c::t_08f1d652ea33dc 11-15,205-236,245-246
+  s_f854dc51e6804c::t_47d0c376c70eaf 237-244
+src/adapter_payloads/Ethereum_Replace_LZ_Payload.sol
+  s_f854dc51e6804c::t_a4ac7eddf4ae04 36
+  s_f854dc51e6804c::t_a7b41ccd81c0f5 1-35,37-148
+scripts/replace_lz.sh
+  s_f854dc51e6804c::t_b88c07d6a358ad 55-58,61-62
+  s_f854dc51e6804c::t_72706996e63bb2 59-60,63-66
+  s_f854dc51e6804c::t_ff0210c46d2f91 16,18-24,51,76-85
+  s_f854dc51e6804c::t_cf32013ad1c9c7 1-15,17,25-50,52-54,67-75,86
+deployments/celo.json
+  s_f854dc51e6804c::t_a99fac386fbdd8 33
+tests/adi/ADITestBase.sol
+  s_f854dc51e6804c::t_5976f742c719ab 106
+diffs/adi_replace_lz_avalanche_before_adi_replace_lz_avalanche_after.md
+  s_f854dc51e6804c::t_dcf9a1fd7882f0 1-30
+diffs/adi_replace_lz_binance_before_adi_replace_lz_binance_after.md
+  s_f854dc51e6804c::t_20a4edf4db9874 1-18
+diffs/adi_replace_lz_ethereum_before_adi_replace_lz_ethereum_after.md
+  s_f854dc51e6804c::t_9c73ec8b0b544a 1-80
+diffs/adi_replace_lz_gnosis_before_adi_replace_lz_gnosis_after.md
+  s_f854dc51e6804c::t_368441636e24b8 1-18
+diffs/adi_replace_lz_polygon_before_adi_replace_lz_polygon_after.md
+  s_f854dc51e6804c::t_1dde26f0665c0c 1-30
+lib/aave-delivery-infrastructure
+  s_f854dc51e6804c::t_cdafd45d380398 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a5c1a0988e26a256e1b47f1d845266e9d8eb947e",
+  "prompts": {},
+  "sessions": {
+    "s_f854dc51e6804c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "487a67bc-5574-40f6-a15c-846cbb490158",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
