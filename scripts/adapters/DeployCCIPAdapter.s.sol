@@ -8,6 +8,11 @@ abstract contract DeployCCIPAdapter is BaseDeployerScript, BaseCCIPAdapter {
   function _execute(Addresses memory addresses) internal override {
     addresses.ccipAdapter = _deployAdapter(addresses.crossChainController);
   }
+
+  /// @dev creation code + constructor args, used to predict the CREATE2 address in tests
+  function getAdapterCode() external view returns (bytes memory) {
+    return _getAdapterByteCode(_getAddresses(TRANSACTION_NETWORK()).crossChainController);
+  }
 }
 
 contract Ethereum is DeployCCIPAdapter {
@@ -186,6 +191,48 @@ contract Monad is DeployCCIPAdapter {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.MONAD;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+/// @dev serves only the Ethereum -> Gnosis lane, so it trusts no remote
+contract Ethereum_Gnosis is DeployCCIPAdapter {
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return 0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D;
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return 0x514910771AF9Ca656af840dff83E8264EcF986CA;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    return new RemoteCCC[](0);
+  }
+}
+
+contract Gnosis is DeployCCIPAdapter {
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return 0x4aAD6071085df840abD9Baf1697d5D5992bDadce;
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return 0xE2e73A1c69ecF83F464EFCE6A5be353a37cA09b2;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.GNOSIS;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {

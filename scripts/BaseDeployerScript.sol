@@ -38,6 +38,7 @@ struct Addresses {
   address scrollAdapter;
   address soneiumAdapter;
   address wormholeAdapter;
+  address wormholeExecutorAdapter;
   address xlayerAdapter;
   address zksyncAdapter;
 }
@@ -87,6 +88,10 @@ library DeployerHelpers {
       scrollAdapter: abi.decode(persistedJson.parseRaw('.scrollAdapter'), (address)),
       soneiumAdapter: abi.decode(persistedJson.parseRaw('.soneiumAdapter'), (address)),
       wormholeAdapter: abi.decode(persistedJson.parseRaw('.wormholeAdapter'), (address)),
+      wormholeExecutorAdapter: abi.decode(
+        persistedJson.parseRaw('.wormholeExecutorAdapter'),
+        (address)
+      ),
       zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address)),
       mantleAdapter: abi.decode(persistedJson.parseRaw('.mantleAdapter'), (address)),
       bobAdapter: abi.decode(persistedJson.parseRaw('.bobAdapter'), (address)),
@@ -131,6 +136,7 @@ library DeployerHelpers {
     json.serialize('scrollAdapter', addresses.scrollAdapter);
     json.serialize('soneiumAdapter', addresses.soneiumAdapter);
     json.serialize('wormholeAdapter', addresses.wormholeAdapter);
+    json.serialize('wormholeExecutorAdapter', addresses.wormholeExecutorAdapter);
     json.serialize('xlayerAdapter', addresses.xlayerAdapter);
     json = json.serialize('zksyncAdapter', addresses.zksyncAdapter);
     vm.writeJson(json, path);

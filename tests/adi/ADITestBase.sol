@@ -103,7 +103,7 @@ contract ADITestBase is Test {
     string reportName;
   }
 
-  function executePayload(Vm vm, address payload) internal {
+  function executePayload(Vm vm, address payload) internal virtual {
     GovV3Helpers.executePayload(vm, payload);
   }
 
