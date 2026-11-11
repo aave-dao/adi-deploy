@@ -1,0 +1,24 @@
+deployments/avalanche.json
+  h_739c25e72c37fb 33,36
+deployments/binance.json
+  h_739c25e72c37fb 33,36
+deployments/ethereum.json
+  h_739c25e72c37fb 5,33
+deployments/gnosis.json
+  h_739c25e72c37fb 5,36
+deployments/monad.json
+  h_739c25e72c37fb 33
+deployments/polygon.json
+  h_739c25e72c37fb 33,36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3c5b0175f898adfec68e8eabc6e606c61beb9cf4",
+  "prompts": {},
+  "humans": {
+    "h_739c25e72c37fb": {
+      "author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
