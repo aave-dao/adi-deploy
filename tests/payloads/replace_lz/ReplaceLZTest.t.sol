@@ -103,14 +103,10 @@ abstract contract BaseReplaceLZTest is ADITestBase, ReplaceLZAdapters {
   function _deliver(ReceiverSwap memory swap, bytes memory encodedTransaction) internal virtual;
 
   function setUp() public {
-    _fork();
+    vm.createSelectFork(vm.rpcUrl(NETWORK), BLOCK_NUMBER);
     _crossChainController = getCCCByChainId(_currentChainId());
     _setUpAdapters();
     _payload = _buildPayload();
-  }
-
-  function _fork() internal virtual {
-    vm.createSelectFork(vm.rpcUrl(NETWORK), BLOCK_NUMBER);
   }
 
   function test_defaultTest() public {
@@ -559,15 +555,12 @@ contract BinanceReplaceLZTest is BinancePayloadScript, BaseRemoteWormholeReplace
   }
 }
 
-/// @dev forge only forks Monad from a Monad EVM: `forge test --match-contract MonadReplaceLZTest --fork-url monad`
+/**
+ * forge-config: default.networks.network = "monad"
+ * forge-config: default.hardfork = "monad:MonadTen"
+ */
 contract MonadReplaceLZTest is MonadPayloadScript, BaseRemoteWormholeReplaceLZTest {
   constructor() BaseReplaceLZTest('monad', 121136330) {}
-
-  function _fork() internal override {
-    try vm.createSelectFork(vm.rpcUrl(NETWORK), BLOCK_NUMBER) {} catch {
-      vm.skip(true);
-    }
-  }
 
   /// @dev aave-helpers has no Monad payloads controller, so execute as it would
   function executePayload(Vm, address payload) internal override {
