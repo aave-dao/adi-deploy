@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import '../../../BaseDeployerScript.sol';
-import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
+import {CCIPAdapter} from 'adi/adapters/ccip/CCIPAdapter.sol';
 import {Ethereum_Replace_LZ_Payload, EthereumReplaceLZArgs} from '../../../../src/adapter_payloads/Ethereum_Replace_LZ_Payload.sol';
 import {Remote_Replace_LZ_Payload, RemoteReplaceLZArgs} from '../../../../src/adapter_payloads/Remote_Replace_LZ_Payload.sol';
 
@@ -63,7 +63,8 @@ contract Ethereum is Replace_LZ_Payload {
     _requireDeployed(args.currentChainGnosisCCIPBridgeAdapter);
     // ethereum.json `ccipAdapter` must hold the Gnosis-path adapter, not an older one without the mapping
     require(
-      IBaseAdapter(args.currentChainGnosisCCIPBridgeAdapter).infraToNativeChainId(
+      // CCIPAdapter declares the mapping pure, so this stays a local call and is not broadcast
+      CCIPAdapter(args.currentChainGnosisCCIPBridgeAdapter).infraToNativeChainId(
         ChainIds.GNOSIS
       ) == GNOSIS_CCIP_CHAIN_SELECTOR,
       'ccipAdapter is not the Gnosis path adapter'
