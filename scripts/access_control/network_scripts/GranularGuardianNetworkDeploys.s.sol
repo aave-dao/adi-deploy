@@ -418,3 +418,21 @@ contract Monad is DeployGranularGuardian {
     return ChainIds.MONAD;
   }
 }
+
+contract Tempo is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0x502fDdcC5586cf94BD0D313798f2006984D53DAF; // GovernanceV3Tempo.EXECUTOR_LVL_1
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x2B99790c35a401be873FA7Eb514D9220736BB1cA; // aave labs guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0xC275a4243AfBF3Eeb4A6AB1D335F8A9cBb206F3F; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+}

@@ -11,6 +11,8 @@ struct Addresses {
   address baseAdapter;
   address bobAdapter;
   address ccipAdapter;
+  /// @dev Ethereum adapter dedicated to the Tempo path
+  address ccipAdapterTempo;
   uint256 chainId;
   address clEmergencyOracle;
   address create3Factory;
@@ -22,6 +24,8 @@ struct Addresses {
   address granularCCCGuardian;
   address guardian;
   address hlAdapter;
+  /// @dev Ethereum adapter dedicated to the Tempo path
+  address hlAdapterTempo;
   address inkAdapter;
   address lineaAdapter;
   address lzAdapter;
@@ -39,6 +43,8 @@ struct Addresses {
   address soneiumAdapter;
   address wormholeAdapter;
   address wormholeExecutorAdapter;
+  /// @dev Ethereum adapter dedicated to the Tempo path
+  address wormholeExecutorAdapterTempo;
   address xlayerAdapter;
   address zksyncAdapter;
 }
@@ -52,6 +58,16 @@ library DeployerHelpers {
       ChainHelpers.getNetworkNameFromId(chainId)
     );
     return string.concat(path, '.json');
+  }
+
+  /// @dev for keys only some networks have, so other networks' JSON files don't need them
+  function _decodeOptionalAddress(
+    string memory json,
+    string memory key,
+    VmSafe vm
+  ) private view returns (address) {
+    if (!vm.keyExistsJson(json, key)) return address(0);
+    return abi.decode(json.parseRaw(key), (address));
   }
 
   function decodeJson(string memory path, VmSafe vm) internal view returns (Addresses memory) {
@@ -70,6 +86,7 @@ library DeployerHelpers {
         (address)
       ),
       ccipAdapter: abi.decode(persistedJson.parseRaw('.ccipAdapter'), (address)),
+      ccipAdapterTempo: _decodeOptionalAddress(persistedJson, '.ccipAdapterTempo', vm),
       sameChainAdapter: abi.decode(persistedJson.parseRaw('.sameChainAdapter'), (address)),
       chainId: abi.decode(persistedJson.parseRaw('.chainId'), (uint256)),
       emergencyRegistry: abi.decode(persistedJson.parseRaw('.emergencyRegistry'), (address)),
@@ -77,6 +94,7 @@ library DeployerHelpers {
       lineaAdapter: abi.decode(persistedJson.parseRaw('.lineaAdapter'), (address)),
       lzAdapter: abi.decode(persistedJson.parseRaw('.lzAdapter'), (address)),
       hlAdapter: abi.decode(persistedJson.parseRaw('.hlAdapter'), (address)),
+      hlAdapterTempo: _decodeOptionalAddress(persistedJson, '.hlAdapterTempo', vm),
       inkAdapter: abi.decode(persistedJson.parseRaw('.inkAdapter'), (address)),
       opAdapter: abi.decode(persistedJson.parseRaw('.opAdapter'), (address)),
       arbAdapter: abi.decode(persistedJson.parseRaw('.arbAdapter'), (address)),
@@ -91,6 +109,11 @@ library DeployerHelpers {
       wormholeExecutorAdapter: abi.decode(
         persistedJson.parseRaw('.wormholeExecutorAdapter'),
         (address)
+      ),
+      wormholeExecutorAdapterTempo: _decodeOptionalAddress(
+        persistedJson,
+        '.wormholeExecutorAdapterTempo',
+        vm
       ),
       zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address)),
       mantleAdapter: abi.decode(persistedJson.parseRaw('.mantleAdapter'), (address)),
@@ -109,6 +132,7 @@ library DeployerHelpers {
     json.serialize('baseAdapter', addresses.baseAdapter);
     json.serialize('bobAdapter', addresses.bobAdapter);
     json.serialize('ccipAdapter', addresses.ccipAdapter);
+    json.serialize('ccipAdapterTempo', addresses.ccipAdapterTempo);
     json.serialize('chainId', addresses.chainId);
     json.serialize('clEmergencyOracle', addresses.clEmergencyOracle);
     json.serialize('create3Factory', addresses.create3Factory);
@@ -120,6 +144,7 @@ library DeployerHelpers {
     json.serialize('guardian', addresses.guardian);
     json.serialize('granularCCCGuardian', addresses.granularCCCGuardian);
     json.serialize('hlAdapter', addresses.hlAdapter);
+    json.serialize('hlAdapterTempo', addresses.hlAdapterTempo);
     json.serialize('inkAdapter', addresses.inkAdapter);
     json.serialize('lineaAdapter', addresses.lineaAdapter);
     json.serialize('lzAdapter', addresses.lzAdapter);
@@ -137,6 +162,7 @@ library DeployerHelpers {
     json.serialize('soneiumAdapter', addresses.soneiumAdapter);
     json.serialize('wormholeAdapter', addresses.wormholeAdapter);
     json.serialize('wormholeExecutorAdapter', addresses.wormholeExecutorAdapter);
+    json.serialize('wormholeExecutorAdapterTempo', addresses.wormholeExecutorAdapterTempo);
     json.serialize('xlayerAdapter', addresses.xlayerAdapter);
     json = json.serialize('zksyncAdapter', addresses.zksyncAdapter);
     vm.writeJson(json, path);

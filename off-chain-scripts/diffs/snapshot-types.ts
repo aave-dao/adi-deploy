@@ -21,6 +21,7 @@ import {
   polygon,
   base,
   monad,
+  tempo,
 } from 'viem/chains';
 import {z} from 'zod';
 
@@ -47,6 +48,7 @@ export const CHAIN_ID = {
   MEGAETH: megaeth.id,
   ZKSYNC: zksync.id,
   MONAD: monad.id,
+  TEMPO: tempo.id,
 } as const;
 
 const zodChainId = z.nativeEnum(CHAIN_ID);

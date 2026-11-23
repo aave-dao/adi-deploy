@@ -18,6 +18,8 @@ import {Ethereum_Activate_Bob_Bridge_Adapter_Payload} from './Ethereum_Activate_
 import {Ethereum_Activate_XLayer_Bridge_Adapter_Payload} from './Ethereum_Activate_XLayer_Bridge_Adapter_Payload.s.sol';
 import {Ethereum_Activate_MegaEth_Bridge_Adapter_Payload} from './Ethereum_Activate_MegaEth_Bridge_Adapter_Payload.s.sol';
 import {Ethereum_Activate_Monad_Bridge_Adapter_Payload} from './Ethereum_Activate_Monad_Bridge_Adapter_Payload.s.sol';
+import {Ethereum_Activate_Tempo_Bridge_Adapter_Payload} from './Ethereum_Activate_Tempo_Bridge_Adapter_Payload.s.sol';
+import {Ethereum_Tempo_Path_Payload} from '../../../../src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol';
 
 contract Ethereum is Ethereum_Activate_Monad_Bridge_Adapter_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -30,6 +32,20 @@ contract Ethereum is Ethereum_Activate_Monad_Bridge_Adapter_Payload {
 
   function DESTINATION_CHAIN_ID() internal pure override returns (uint256) {
     return ChainIds.MONAD;
+  }
+}
+
+contract Ethereum_Tempo is Ethereum_Activate_Tempo_Bridge_Adapter_Payload {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function _getPayloadByteCode() internal pure override returns (bytes memory) {
+    return type(Ethereum_Tempo_Path_Payload).creationCode;
+  }
+
+  function DESTINATION_CHAIN_ID() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
   }
 }
 

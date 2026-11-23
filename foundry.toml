@@ -73,6 +73,7 @@ plasma="${RPC_PLASMA}"
 xlayer="${RPC_XLAYER}"
 megaeth="${RPC_MEGAETH}"
 monad="${RPC_MONAD}"
+tempo="${RPC_TEMPO}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY}", chain=1 }

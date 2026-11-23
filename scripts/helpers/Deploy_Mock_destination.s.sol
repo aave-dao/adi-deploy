@@ -135,3 +135,9 @@ contract Monad is BaseMockDestination {
     return ChainIds.MONAD;
   }
 }
+
+contract Tempo is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+}

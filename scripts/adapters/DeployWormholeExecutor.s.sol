@@ -3,11 +3,12 @@ pragma solidity ^0.8.0;
 
 import 'adi-scripts/Adapters/DeployWormholeExecutorAdapter.sol';
 import '../BaseDeployerScript.sol';
+import {TempoPathConfig} from './TempoPathConfig.sol';
 
 // addresses: https://registry-api.wormholelabs.xyz/v1/public/deployments (w7/on-chain-quoter/quoter-router)
 // and https://wormhole.com/docs/reference/contract-addresses/ (core)
 abstract contract DeployWormholeExecutorAdapter is BaseDeployerScript, BaseWormholeExecutorAdapter {
-  function _execute(Addresses memory addresses) internal override {
+  function _execute(Addresses memory addresses) internal virtual override {
     addresses.wormholeExecutorAdapter = _deployAdapter(addresses.crossChainController);
   }
 
@@ -135,5 +136,68 @@ contract Monad is DeployRemoteWormholeExecutorAdapter {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.MONAD;
+  }
+}
+
+contract Tempo is DeployRemoteWormholeExecutorAdapter {
+  function WORMHOLE_CORE() internal pure override returns (address) {
+    return 0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6;
+  }
+
+  /// @dev TODO(tempo): Wormhole Labs' registry lists no on-chain quoter router on Tempo, and neither the
+  /// Ethereum nor the Monad router address has code there. The router is only called when sending, which
+  /// this receive-only adapter never does, but the constructor rejects address(0). This uses the Tempo
+  /// Executor (0xA364...1625), as the October Tempo test adapter did. Replace it if Wormhole deploys a router.
+  function EXECUTOR_QUOTER_ROUTER() internal pure override returns (address) {
+    return 0xA3640464E5543182E5F587f346B6Ac1E604d1625;
+  }
+
+  /// @dev receive-only
+  function REFUND_ADDRESS() internal pure override returns (address) {
+    return address(0);
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+}
+
+/// @dev serves only the Ethereum -> Tempo path, with a higher base gas limit for delivery on Tempo
+contract Ethereum_Tempo is DeployWormholeExecutorAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    addresses.wormholeExecutorAdapterTempo = _deployAdapter(addresses.crossChainController);
+  }
+
+  function WORMHOLE_CORE() internal pure override returns (address) {
+    return 0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B;
+  }
+
+  function EXECUTOR_QUOTER_ROUTER() internal pure override returns (address) {
+    return 0xF22F1c0A3a8Cb42F695601731974784C499C4EF3;
+  }
+
+  function REFUND_ADDRESS() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  /// @dev Tempo CrossChainController, from deployments/tempo.json
+  function TEMPO_CCC() internal view virtual returns (address) {
+    return _getAddresses(ChainIds.TEMPO).crossChainController;
+  }
+
+  function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
+    return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.TEMPO;
+    remoteCCCByNetwork[0].crossChainController = TEMPO_CCC();
+
+    return remoteCCCByNetwork;
   }
 }

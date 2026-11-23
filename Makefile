@@ -30,6 +30,8 @@ custom_linea :=  --with-gas-price 1000000000 --force # 1 gwei
 # custom_bob :=  --with-gas-price 100000000 --force # 0.1 gwei
 custom_ethereum-testnet :=  --legacy --with-gas-price 27000000000 --force # 1 gwei
 custom_megaeth := --skip-simulation
+# no Etherscan on Tempo: verify on Sourcify
+custom_tempo := --verifier sourcify --verifier-url https://contracts.tempo.xyz/
 
 # params:
 #  1 - path/file_name
@@ -70,15 +72,15 @@ deploy-emergency-registry:
 
 # Deploy Proxy Factories on all networks
 deploy-initial:
-	$(call deploy_fn,InitialDeployments,monad)
+	$(call deploy_fn,InitialDeployments,tempo)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra:
-	$(call deploy_fn,ccc/DeployCCC,monad)
+	$(call deploy_fn,ccc/DeployCCC,tempo)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters:
-	$(call deploy_fn,adapters/DeployCCIPAdapter,ethereum monad)
+	$(call deploy_fn,adapters/DeployCCIPAdapter,tempo)
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters:
@@ -86,7 +88,17 @@ deploy-lz-bridge-adapters:
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters:
-	$(call deploy_fn,adapters/DeployHL,monad)
+	$(call deploy_fn,adapters/DeployHL,tempo)
+
+## Deploy Wormhole Executor bridge adapters on all networks
+deploy-wormhole-executor-bridge-adapters:
+	$(call deploy_fn,adapters/DeployWormholeExecutor,tempo)
+
+## Deploy the Ethereum adapters dedicated to the Tempo path (run after the Tempo CCC is deployed)
+deploy-tempo-ethereum-adapters:
+	$(call deploy_fn,adapters/DeployCCIPAdapter,ethereum,Ethereum_Tempo)
+	$(call deploy_fn,adapters/DeployHL,ethereum,Ethereum_Tempo)
+	$(call deploy_fn,adapters/DeployWormholeExecutor,ethereum,Ethereum_Tempo)
 
 ## Deploy SameChain adapters on ethereum
 deploy-same-chain-adapters:
@@ -149,18 +161,18 @@ set-ccf-sender-adapters:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,monad)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,tempo)
 
 # Sets the required confirmations
 set-ccr-confirmations:
-	$(call deploy_fn,CCC/Set_CCR_Confirmations,monad)
+	$(call deploy_fn,CCC/Set_CCR_Confirmations,tempo)
 
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- ACCESS CONTROL SCRIPTS ---------------------------------------------------------
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,monad)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,tempo)
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
@@ -171,7 +183,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,monad)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,tempo)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -185,8 +197,11 @@ send-message-via-adapter:
 deploy-new-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
 
+deploy-tempo-path-payload:
+	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum,Ethereum_Tempo)
+
 update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,monad)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,tempo)

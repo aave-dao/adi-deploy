@@ -2,14 +2,15 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
+import {DeployerHelpers, Addresses, ChainIds} from '../BaseDeployerScript.sol';
 import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
 
 abstract contract UpdateCCCPermissions {
-  function targetOwner() public pure virtual returns (address);
+  function targetOwner() public view virtual returns (address);
 
-  function targetADIGuardian() public pure virtual returns (address);
+  function targetADIGuardian() public view virtual returns (address);
 
-  function aDIContractsToUpdate() public pure virtual returns (address[] memory);
+  function aDIContractsToUpdate() public view virtual returns (address[] memory);
 
   function _changeOwnerAndGuardian(
     address owner,
@@ -236,6 +237,37 @@ contract UpdateCCCPermissionsMonad is UpdateCCCPermissions {
 }
 
 contract Monad is Script, UpdateCCCPermissionsMonad {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}
+
+/// @dev the CCC and Granular Guardian are read from deployments/tempo.json
+contract UpdateCCCPermissionsTempo is Script, UpdateCCCPermissions {
+  function _tempoAddresses() internal view returns (Addresses memory) {
+    return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(ChainIds.TEMPO), vm);
+  }
+
+  function targetOwner() public pure override returns (address) {
+    return 0x502fDdcC5586cf94BD0D313798f2006984D53DAF; // executor
+  }
+
+  function targetADIGuardian() public view override returns (address) {
+    return _tempoAddresses().granularCCCGuardian;
+  }
+
+  function aDIContractsToUpdate() public view override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = _tempoAddresses().crossChainController;
+    return contracts;
+  }
+}
+
+contract Tempo is UpdateCCCPermissionsTempo {
   function run() external {
     vm.startBroadcast();
 

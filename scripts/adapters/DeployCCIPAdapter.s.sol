@@ -3,9 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'adi-scripts/Adapters/DeployCCIP.sol';
 import '../BaseDeployerScript.sol';
+import {TempoPathConfig} from './TempoPathConfig.sol';
 
 abstract contract DeployCCIPAdapter is BaseDeployerScript, BaseCCIPAdapter {
-  function _execute(Addresses memory addresses) internal override {
+  function _execute(Addresses memory addresses) internal virtual override {
     addresses.ccipAdapter = _deployAdapter(addresses.crossChainController);
   }
 
@@ -240,6 +241,65 @@ contract Gnosis is DeployCCIPAdapter {
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
       .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+contract Tempo is DeployCCIPAdapter {
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return 0xa132F089492CcE5f1D79483a9e4552f37266ed01;
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return 0x15C03488B29e27d62BAf10E30b0c474bf60E0264;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+/// @dev serves only the Ethereum -> Tempo path, with a higher base gas limit for delivery on Tempo
+contract Ethereum_Tempo is DeployCCIPAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    addresses.ccipAdapterTempo = _deployAdapter(addresses.crossChainController);
+  }
+
+  function CCIP_ROUTER() internal pure override returns (address) {
+    return 0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D;
+  }
+
+  function LINK_TOKEN() internal pure override returns (address) {
+    return 0x514910771AF9Ca656af840dff83E8264EcF986CA;
+  }
+
+  /// @dev Tempo CrossChainController, from deployments/tempo.json
+  function TEMPO_CCC() internal view virtual returns (address) {
+    return _getAddresses(ChainIds.TEMPO).crossChainController;
+  }
+
+  function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
+    return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.TEMPO;
+    remoteCCCByNetwork[0].crossChainController = TEMPO_CCC();
 
     return remoteCCCByNetwork;
   }
