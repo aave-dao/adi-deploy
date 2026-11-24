@@ -1,0 +1,36 @@
+scripts/adapters/DeployHL.s.sol
+  s_04a2169a2aa7fb::t_602f20b81c96bd 224-226
+  s_04a2169a2aa7fb::t_0d2c6a707ccc21 9
+  s_04a2169a2aa7fb::t_2806d15cf60a58 213
+src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol
+  s_04a2169a2aa7fb::t_827e7b709212eb 21
+tests/payloads/ethereum/AddTempoPathTest.t.sol
+  s_04a2169a2aa7fb::t_827e7b709212eb 40,44,48,64,66,70,81-83,94,97,99,103-104,122,124,126
+  s_04a2169a2aa7fb::t_de4593be143ed3 20,78-79,106
+scripts/adapters/DeployCCIPAdapter.s.sol
+  s_04a2169a2aa7fb::t_0d2c6a707ccc21 9
+  s_04a2169a2aa7fb::t_2806d15cf60a58 272
+  s_04a2169a2aa7fb::t_602f20b81c96bd 287-289
+scripts/adapters/DeployWormholeExecutor.s.sol
+  s_04a2169a2aa7fb::t_2806d15cf60a58 164
+  s_04a2169a2aa7fb::t_602f20b81c96bd 183-185
+  s_04a2169a2aa7fb::t_0d2c6a707ccc21 11
+scripts/payloads/adapters/ethereum/Ethereum_Activate_Tempo_Bridge_Adapter_Payload.s.sol
+  s_04a2169a2aa7fb::t_827e7b709212eb 22,30,32,34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "780f30e53d973c8ea74316f238cfed35faf678a1",
+  "prompts": {},
+  "sessions": {
+    "s_04a2169a2aa7fb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4e1bed15-82d2-4350-b8b6-5b37a8533a77",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
