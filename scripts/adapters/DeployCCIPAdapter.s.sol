@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import 'adi-scripts/Adapters/DeployCCIP.sol';
 import '../BaseDeployerScript.sol';
-import {TempoPathConfig} from './TempoPathConfig.sol';
 
 abstract contract DeployCCIPAdapter is BaseDeployerScript, BaseCCIPAdapter {
   function _execute(Addresses memory addresses) internal override {
@@ -285,7 +284,7 @@ contract Ethereum_Tempo is DeployCCIPAdapter {
   }
 
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
-    return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
+    return 700_000;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

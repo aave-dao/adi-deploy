@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import 'adi-scripts/Adapters/DeployWormholeExecutorAdapter.sol';
 import '../BaseDeployerScript.sol';
-import {TempoPathConfig} from './TempoPathConfig.sol';
 
 // addresses: https://registry-api.wormholelabs.xyz/v1/public/deployments (w7/on-chain-quoter/quoter-router)
 // and https://wormhole.com/docs/reference/contract-addresses/ (core)
@@ -181,7 +180,7 @@ contract Ethereum_Tempo is DeployWormholeExecutorAdapter {
   }
 
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
-    return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
+    return 700_000;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

@@ -15,7 +15,6 @@ import {MockDestination} from 'adi-scripts/contract_extensions/MockDestination.s
 import {Addresses} from '../../scripts/BaseDeployerScript.sol';
 import {Tempo as TempoReceiversScript} from '../../scripts/ccc/Set_CCR_Receivers_Adapters.s.sol';
 import {Tempo as TempoConfirmationsScript, BaseSetCCRConfirmations} from '../../scripts/ccc/Set_CCR_Confirmations.s.sol';
-import {TempoPathConfig} from '../../scripts/adapters/TempoPathConfig.sol';
 import {TempoPathHelpers, TempoCCCDeployer} from './TempoPathHelpers.sol';
 
 /**
@@ -161,7 +160,7 @@ contract TempoDeliveryTest is Test, TempoPathHelpers {
   }
 
   function test_deliveryGas() public {
-    uint256 budget = TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT + GOVERNANCE_GAS_LIMIT;
+    uint256 budget = 700_000 + GOVERNANCE_GAS_LIMIT;
     string[3] memory names = ['CCIP', 'Hyperlane', 'Wormhole Executor'];
 
     for (uint256 b = 0; b < 3; b++) {

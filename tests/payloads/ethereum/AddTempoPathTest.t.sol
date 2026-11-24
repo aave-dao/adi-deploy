@@ -8,7 +8,6 @@ import {Create2Utils} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {ChainIds} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
-import {TempoPathConfig} from '../../../scripts/adapters/TempoPathConfig.sol';
 import {Addresses, Ethereum_Tempo as PayloadEthereumTempoScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {Ethereum_Tempo_Path_Payload} from '../../../src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol';
 
@@ -84,7 +83,6 @@ contract EthereumAddTempoPathPayloadTest is
     ];
     for (uint256 i = 0; i < adapters.length; i++) {
       IBaseAdapter adapter = IBaseAdapter(adapters[i]);
-      assertEq(adapter.BASE_GAS_LIMIT(), TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT);
       assertEq(adapter.BASE_GAS_LIMIT(), 700_000);
       assertEq(address(adapter.CROSS_CHAIN_CONTROLLER()), ETHEREUM_CCC);
       assertEq(adapter.getTrustedRemoteByChainId(ChainIds.TEMPO), _tempo.crossChainController);
