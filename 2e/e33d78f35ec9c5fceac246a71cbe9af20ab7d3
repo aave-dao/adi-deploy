@@ -1,0 +1,19 @@
+scripts/adapters/DeployWormholeExecutor.s.sol
+  s_04a2169a2aa7fb::t_f52d2a1292442d 147-149
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2ee33d78f35ec9c5fceac246a71cbe9af20ab7d3",
+  "prompts": {},
+  "sessions": {
+    "s_04a2169a2aa7fb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4e1bed15-82d2-4350-b8b6-5b37a8533a77",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
