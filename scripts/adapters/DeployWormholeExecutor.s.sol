@@ -144,10 +144,9 @@ contract Tempo is DeployRemoteWormholeExecutorAdapter {
     return 0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6;
   }
 
-  /// @dev TODO(tempo): Wormhole Labs' registry lists no on-chain quoter router on Tempo, and neither the
-  /// Ethereum nor the Monad router address has code there. The router is only called when sending, which
-  /// this receive-only adapter never does, but the constructor rejects address(0). This uses the Tempo
-  /// Executor (0xA364...1625), as the October Tempo test adapter did. Replace it if Wormhole deploys a router.
+  /// @dev Tempo only receives governance messages and never sends to other chains, so the quoter router,
+  /// which is only called when sending, is never used. Wormhole has no on-chain quoter router on Tempo and
+  /// the constructor rejects address(0), so the Tempo Wormhole Executor is passed as a placeholder.
   function EXECUTOR_QUOTER_ROUTER() internal pure override returns (address) {
     return 0xA3640464E5543182E5F587f346B6Ac1E604d1625;
   }
