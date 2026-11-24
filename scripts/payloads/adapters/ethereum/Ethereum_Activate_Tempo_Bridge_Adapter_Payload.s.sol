@@ -13,7 +13,7 @@ abstract contract Ethereum_Activate_Tempo_Bridge_Adapter_Payload is BaseDeployer
 
   function DESTINATION_CHAIN_ID() internal pure virtual returns (uint256);
 
-  function _deployPayload(AddTempoForwarderAdapterArgs memory args) internal returns (address) {
+  function _deployPayload(AddForwarderAdapterArgs memory args) internal returns (address) {
     bytes memory payloadCode = abi.encodePacked(_getPayloadByteCode(), abi.encode(args));
 
     return _deployByteCode(payloadCode, PAYLOAD_SALT());
@@ -23,9 +23,9 @@ abstract contract Ethereum_Activate_Tempo_Bridge_Adapter_Payload is BaseDeployer
   function _getPayloadArgs(
     Addresses memory currentAddresses,
     Addresses memory destinationAddresses
-  ) internal pure returns (AddTempoForwarderAdapterArgs memory) {
+  ) internal pure returns (AddForwarderAdapterArgs memory) {
     return
-      AddTempoForwarderAdapterArgs({
+      AddForwarderAdapterArgs({
         crossChainController: currentAddresses.crossChainController,
         currentChainCCIPBridgeAdapter: currentAddresses.ccipAdapter,
         destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,

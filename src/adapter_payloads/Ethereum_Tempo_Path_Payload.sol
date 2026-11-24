@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import '../templates/BaseAdaptersUpdate.sol';
 
-struct AddTempoForwarderAdapterArgs {
+struct AddForwarderAdapterArgs {
   address crossChainController;
   address currentChainCCIPBridgeAdapter;
   address destinationChainCCIPBridgeAdapter;
@@ -30,7 +30,7 @@ contract Ethereum_Tempo_Path_Payload is BaseAdaptersUpdate {
   uint256 public immutable DESTINATION_CHAIN_ID;
 
   constructor(
-    AddTempoForwarderAdapterArgs memory forwarderArgs
+    AddForwarderAdapterArgs memory forwarderArgs
   ) BaseAdaptersUpdate(forwarderArgs.crossChainController) {
     CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER = forwarderArgs.currentChainCCIPBridgeAdapter;
     DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER = forwarderArgs.destinationChainCCIPBridgeAdapter;

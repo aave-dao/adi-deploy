@@ -8,7 +8,7 @@ import {Create2Utils} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {ChainIds} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
-import {Addresses, Ethereum_Tempo as PayloadEthereumTempoScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
 import {Ethereum_Tempo_Path_Payload} from '../../../src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol';
 
 interface IOwnable {
@@ -19,11 +19,7 @@ interface IOwnable {
  * @dev nothing is deployed yet: the new Ethereum adapters are deployed on the fork from their scripts,
  * and the Tempo CCC and adapters are predicted from theirs (see TempoPathHelpers)
  */
-contract EthereumAddTempoPathPayloadTest is
-  PayloadEthereumTempoScript,
-  ADITestBase,
-  TempoPathHelpers
-{
+contract EthereumAddTempoPathPayloadTest is PayloadEthereumScript, ADITestBase, TempoPathHelpers {
   uint256 internal constant BLOCK_NUMBER = 26477900;
 
   address internal _payload;

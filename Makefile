@@ -197,9 +197,6 @@ send-message-via-adapter:
 deploy-new-path-payload:
 	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum)
 
-deploy-tempo-path-payload:
-	$(call deploy_fn,payloads/adapters/ethereum/Network_Deployments,ethereum,Ethereum_Tempo)
-
 update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
