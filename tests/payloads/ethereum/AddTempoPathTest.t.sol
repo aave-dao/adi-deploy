@@ -108,7 +108,7 @@ contract EthereumAddTempoPathPayloadTest is
     );
   }
 
-  function test_pathEnabledWithoutBandwidth() public {
+  function test_pathEnabledWithBandwidth() public {
     assertEq(
       ICrossChainForwarder(ETHEREUM_CCC).getForwarderBridgeAdaptersByChain(ChainIds.TEMPO).length,
       0
@@ -126,10 +126,10 @@ contract EthereumAddTempoPathPayloadTest is
     assertEq(forwarders[1].destinationBridgeAdapter, _tempo.hlAdapter);
     assertEq(forwarders[2].currentChainBridgeAdapter, _ethereum.wormholeExecutorAdapterTempo);
     assertEq(forwarders[2].destinationBridgeAdapter, _tempo.wormholeExecutorAdapter);
-    assertEq(ICrossChainForwarder(ETHEREUM_CCC).getOptimalBandwidthByChain(ChainIds.TEMPO), 0);
+    assertEq(ICrossChainForwarder(ETHEREUM_CCC).getOptimalBandwidthByChain(ChainIds.TEMPO), 2);
   }
 
-  /// @dev a governance-sized message to Tempo goes out through all three bridges
+  /// @dev a governance-sized message to Tempo goes out through 2 of the 3 bridges (optimal bandwidth)
   function test_forwardToTempo() public {
     executePayload(vm, _payload);
     // the Hyperlane hooks use cancun opcodes, which the shanghai profile EVM rejects
@@ -157,6 +157,6 @@ contract EthereumAddTempoPathPayloadTest is
       attempts++;
       assertEq(uint256(logs[i].topics[3]), 1, 'bridge adapter forwarding failed');
     }
-    assertEq(attempts, 3);
+    assertEq(attempts, 2);
   }
 }

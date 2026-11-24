@@ -73,6 +73,23 @@ contract Ethereum_Tempo_Path_Payload is BaseAdaptersUpdate {
     return newForwarders;
   }
 
-  // TODO(tempo): optimal bandwidth is left unset (0), so every message goes through all three adapters.
-  // Setting it to 2 via updateOptimalBandwidthByChain, as the Monad payload does, would send through 2 of 3.
+  function execute() public override {
+    executeReceiversUpdate(CROSS_CHAIN_CONTROLLER);
+
+    executeForwardersUpdate(CROSS_CHAIN_CONTROLLER);
+
+    _updateOptimalBandwidth();
+  }
+
+  function _updateOptimalBandwidth() public {
+    ICrossChainForwarder.OptimalBandwidthByChain[]
+      memory optimalBandwidthByChain = new ICrossChainForwarder.OptimalBandwidthByChain[](1);
+    optimalBandwidthByChain[0] = ICrossChainForwarder.OptimalBandwidthByChain({
+      chainId: DESTINATION_CHAIN_ID,
+      optimalBandwidth: 2
+    });
+    ICrossChainForwarder(CROSS_CHAIN_CONTROLLER).updateOptimalBandwidthByChain(
+      optimalBandwidthByChain
+    );
+  }
 }

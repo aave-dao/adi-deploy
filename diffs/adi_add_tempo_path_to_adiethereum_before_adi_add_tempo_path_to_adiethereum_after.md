@@ -11,6 +11,14 @@
         "0xf3323eCB2CD0c6eF6F75DFc74C2E82cE38FAcdEe": "0xf93916e51145d4d4BB0C9f970a96DbC367f2B145"
       }
     }
+  },
+  "optimalBandwidthByChain": {
+    "4217": {
+      "optimalBandwidth": {
+        "from": "0",
+        "to": "2"
+      }
+    }
   }
 }
 ```
