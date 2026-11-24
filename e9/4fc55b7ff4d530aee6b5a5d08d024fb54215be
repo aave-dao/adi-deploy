@@ -1,0 +1,19 @@
+scripts/helpers/UpdateCCCPermissions.s.sol
+  s_04a2169a2aa7fb::t_cb841c2294959a 8,10,12,248,253-254,257,259,264
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e94fc55b7ff4d530aee6b5a5d08d024fb54215be",
+  "prompts": {},
+  "sessions": {
+    "s_04a2169a2aa7fb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4e1bed15-82d2-4350-b8b6-5b37a8533a77",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
