@@ -8,7 +8,7 @@ import {TempoPathConfig} from './TempoPathConfig.sol';
 // addresses: https://registry-api.wormholelabs.xyz/v1/public/deployments (w7/on-chain-quoter/quoter-router)
 // and https://wormhole.com/docs/reference/contract-addresses/ (core)
 abstract contract DeployWormholeExecutorAdapter is BaseDeployerScript, BaseWormholeExecutorAdapter {
-  function _execute(Addresses memory addresses) internal virtual override {
+  function _execute(Addresses memory addresses) internal override {
     addresses.wormholeExecutorAdapter = _deployAdapter(addresses.crossChainController);
   }
 
@@ -161,12 +161,8 @@ contract Tempo is DeployRemoteWormholeExecutorAdapter {
   }
 }
 
-/// @dev serves only the Ethereum -> Tempo path, with a higher base gas limit for delivery on Tempo
+/// @dev Ethereum adapter for the Tempo path, with a higher base gas limit for delivery on Tempo
 contract Ethereum_Tempo is DeployWormholeExecutorAdapter {
-  function _execute(Addresses memory addresses) internal override {
-    addresses.wormholeExecutorAdapterTempo = _deployAdapter(addresses.crossChainController);
-  }
-
   function WORMHOLE_CORE() internal pure override returns (address) {
     return 0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B;
   }
@@ -184,6 +180,9 @@ contract Ethereum_Tempo is DeployWormholeExecutorAdapter {
     return _getAddresses(ChainIds.TEMPO).crossChainController;
   }
 
+  /// @dev these adapters are deployed for the Tempo path with a 700k base gas limit and overwrite
+  /// `wormholeExecutorAdapter` as the current Ethereum adapter. A later path reusing them inherits
+  /// the 700k base, so redeploy with its own base if it doesn't need it.
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
     return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
   }

@@ -17,7 +17,7 @@ interface IOwnable {
 }
 
 /**
- * @dev nothing is deployed yet: the Ethereum Tempo-path adapters are deployed on the fork from their scripts,
+ * @dev nothing is deployed yet: the new Ethereum adapters are deployed on the fork from their scripts,
  * and the Tempo CCC and adapters are predicted from theirs (see TempoPathHelpers)
  */
 contract EthereumAddTempoPathPayloadTest is
@@ -37,15 +37,15 @@ contract EthereumAddTempoPathPayloadTest is
     _tempo = _predictTempoAddresses();
 
     _ethereum = _getAddresses(ChainIds.ETHEREUM);
-    _ethereum.ccipAdapterTempo = Create2Utils.create2Deploy(
+    _ethereum.ccipAdapter = Create2Utils.create2Deploy(
       ADAPTER_SALT,
       new EthereumTempoCCIPCode(_tempo.crossChainController).getAdapterCode()
     );
-    _ethereum.hlAdapterTempo = Create2Utils.create2Deploy(
+    _ethereum.hlAdapter = Create2Utils.create2Deploy(
       ADAPTER_SALT,
       new EthereumTempoHLCode(_tempo.crossChainController).getAdapterCode()
     );
-    _ethereum.wormholeExecutorAdapterTempo = Create2Utils.create2Deploy(
+    _ethereum.wormholeExecutorAdapter = Create2Utils.create2Deploy(
       ADAPTER_SALT,
       new EthereumTempoWormholeCode(_tempo.crossChainController).getAdapterCode()
     );
@@ -61,13 +61,13 @@ contract EthereumAddTempoPathPayloadTest is
     Ethereum_Tempo_Path_Payload payload = Ethereum_Tempo_Path_Payload(_payload);
     assertEq(payload.CROSS_CHAIN_CONTROLLER(), ETHEREUM_CCC);
     assertEq(payload.DESTINATION_CHAIN_ID(), ChainIds.TEMPO);
-    assertEq(payload.CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER(), _ethereum.ccipAdapterTempo);
+    assertEq(payload.CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER(), _ethereum.ccipAdapter);
     assertEq(payload.DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER(), _tempo.ccipAdapter);
-    assertEq(payload.CURRENT_CHAIN_HL_BRIDGE_ADAPTER(), _ethereum.hlAdapterTempo);
+    assertEq(payload.CURRENT_CHAIN_HL_BRIDGE_ADAPTER(), _ethereum.hlAdapter);
     assertEq(payload.DESTINATION_CHAIN_HL_BRIDGE_ADAPTER(), _tempo.hlAdapter);
     assertEq(
       payload.CURRENT_CHAIN_WORMHOLE_EXECUTOR_BRIDGE_ADAPTER(),
-      _ethereum.wormholeExecutorAdapterTempo
+      _ethereum.wormholeExecutorAdapter
     );
     assertEq(
       payload.DESTINATION_CHAIN_WORMHOLE_EXECUTOR_BRIDGE_ADAPTER(),
@@ -75,12 +75,12 @@ contract EthereumAddTempoPathPayloadTest is
     );
   }
 
-  /// @dev the dedicated adapters are new and differ from the ones other chains use
-  function test_dedicatedAdapters() public {
+  /// @dev the new adapters have the Tempo settings and replace the current Ethereum adapters in ethereum.json
+  function test_newEthereumAdapters() public {
     address[3] memory adapters = [
-      _ethereum.ccipAdapterTempo,
-      _ethereum.hlAdapterTempo,
-      _ethereum.wormholeExecutorAdapterTempo
+      _ethereum.ccipAdapter,
+      _ethereum.hlAdapter,
+      _ethereum.wormholeExecutorAdapter
     ];
     for (uint256 i = 0; i < adapters.length; i++) {
       IBaseAdapter adapter = IBaseAdapter(adapters[i]);
@@ -91,20 +91,19 @@ contract EthereumAddTempoPathPayloadTest is
       assertTrue(adapter.infraToNativeChainId(ChainIds.TEMPO) != 0);
     }
     assertEq(
-      IBaseAdapter(_ethereum.ccipAdapterTempo).infraToNativeChainId(ChainIds.TEMPO),
+      IBaseAdapter(_ethereum.ccipAdapter).infraToNativeChainId(ChainIds.TEMPO),
       7281642695469137430
     );
-    assertEq(IBaseAdapter(_ethereum.hlAdapterTempo).infraToNativeChainId(ChainIds.TEMPO), 4217);
+    assertEq(IBaseAdapter(_ethereum.hlAdapter).infraToNativeChainId(ChainIds.TEMPO), 4217);
     assertEq(
-      IBaseAdapter(_ethereum.wormholeExecutorAdapterTempo).infraToNativeChainId(ChainIds.TEMPO),
+      IBaseAdapter(_ethereum.wormholeExecutorAdapter).infraToNativeChainId(ChainIds.TEMPO),
       68
     );
 
-    assertTrue(_ethereum.ccipAdapterTempo != _getAddresses(ChainIds.ETHEREUM).ccipAdapter);
-    assertTrue(_ethereum.hlAdapterTempo != _getAddresses(ChainIds.ETHEREUM).hlAdapter);
+    assertTrue(_ethereum.ccipAdapter != _getAddresses(ChainIds.ETHEREUM).ccipAdapter);
+    assertTrue(_ethereum.hlAdapter != _getAddresses(ChainIds.ETHEREUM).hlAdapter);
     assertTrue(
-      _ethereum.wormholeExecutorAdapterTempo !=
-        _getAddresses(ChainIds.ETHEREUM).wormholeExecutorAdapter
+      _ethereum.wormholeExecutorAdapter != _getAddresses(ChainIds.ETHEREUM).wormholeExecutorAdapter
     );
   }
 
@@ -120,11 +119,11 @@ contract EthereumAddTempoPathPayloadTest is
       ETHEREUM_CCC
     ).getForwarderBridgeAdaptersByChain(ChainIds.TEMPO);
     assertEq(forwarders.length, 3);
-    assertEq(forwarders[0].currentChainBridgeAdapter, _ethereum.ccipAdapterTempo);
+    assertEq(forwarders[0].currentChainBridgeAdapter, _ethereum.ccipAdapter);
     assertEq(forwarders[0].destinationBridgeAdapter, _tempo.ccipAdapter);
-    assertEq(forwarders[1].currentChainBridgeAdapter, _ethereum.hlAdapterTempo);
+    assertEq(forwarders[1].currentChainBridgeAdapter, _ethereum.hlAdapter);
     assertEq(forwarders[1].destinationBridgeAdapter, _tempo.hlAdapter);
-    assertEq(forwarders[2].currentChainBridgeAdapter, _ethereum.wormholeExecutorAdapterTempo);
+    assertEq(forwarders[2].currentChainBridgeAdapter, _ethereum.wormholeExecutorAdapter);
     assertEq(forwarders[2].destinationBridgeAdapter, _tempo.wormholeExecutorAdapter);
     assertEq(ICrossChainForwarder(ETHEREUM_CCC).getOptimalBandwidthByChain(ChainIds.TEMPO), 2);
   }

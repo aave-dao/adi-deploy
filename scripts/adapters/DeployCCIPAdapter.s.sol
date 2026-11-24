@@ -6,7 +6,7 @@ import '../BaseDeployerScript.sol';
 import {TempoPathConfig} from './TempoPathConfig.sol';
 
 abstract contract DeployCCIPAdapter is BaseDeployerScript, BaseCCIPAdapter {
-  function _execute(Addresses memory addresses) internal virtual override {
+  function _execute(Addresses memory addresses) internal override {
     addresses.ccipAdapter = _deployAdapter(addresses.crossChainController);
   }
 
@@ -269,12 +269,8 @@ contract Tempo is DeployCCIPAdapter {
   }
 }
 
-/// @dev serves only the Ethereum -> Tempo path, with a higher base gas limit for delivery on Tempo
+/// @dev Ethereum adapter for the Tempo path, with a higher base gas limit for delivery on Tempo
 contract Ethereum_Tempo is DeployCCIPAdapter {
-  function _execute(Addresses memory addresses) internal override {
-    addresses.ccipAdapterTempo = _deployAdapter(addresses.crossChainController);
-  }
-
   function CCIP_ROUTER() internal pure override returns (address) {
     return 0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D;
   }
@@ -288,6 +284,9 @@ contract Ethereum_Tempo is DeployCCIPAdapter {
     return _getAddresses(ChainIds.TEMPO).crossChainController;
   }
 
+  /// @dev these adapters are deployed for the Tempo path with a 700k base gas limit and overwrite
+  /// `ccipAdapter` as the current Ethereum adapter. A later path reusing them inherits the 700k
+  /// base, so redeploy with its own base if it doesn't need it.
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
     return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
   }

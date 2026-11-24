@@ -18,7 +18,7 @@ struct AddTempoForwarderAdapterArgs {
  * @title Ethereum_Tempo_Path_Payload
  * @author Aave Labs
  * @dev adds the Ethereum -> Tempo path to a.DI with CCIP, Hyperlane and Wormhole Executor forwarder adapters.
- * The Ethereum adapters are dedicated to this path (higher base gas limit for delivery on Tempo).
+ * The Ethereum adapters are deployed for this path (higher base gas limit for delivery on Tempo).
  */
 contract Ethereum_Tempo_Path_Payload is BaseAdaptersUpdate {
   address public immutable CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER;

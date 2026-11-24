@@ -19,7 +19,7 @@ abstract contract Ethereum_Activate_Tempo_Bridge_Adapter_Payload is BaseDeployer
     return _deployByteCode(payloadCode, PAYLOAD_SALT());
   }
 
-  /// @dev the Ethereum adapters are the ones dedicated to the Tempo path
+  /// @dev the current Ethereum adapters in deployments/ethereum.json, deployed for the Tempo path
   function _getPayloadArgs(
     Addresses memory currentAddresses,
     Addresses memory destinationAddresses
@@ -27,11 +27,11 @@ abstract contract Ethereum_Activate_Tempo_Bridge_Adapter_Payload is BaseDeployer
     return
       AddTempoForwarderAdapterArgs({
         crossChainController: currentAddresses.crossChainController,
-        currentChainCCIPBridgeAdapter: currentAddresses.ccipAdapterTempo,
+        currentChainCCIPBridgeAdapter: currentAddresses.ccipAdapter,
         destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,
-        currentChainHLBridgeAdapter: currentAddresses.hlAdapterTempo,
+        currentChainHLBridgeAdapter: currentAddresses.hlAdapter,
         destinationChainHLBridgeAdapter: destinationAddresses.hlAdapter,
-        currentChainWormholeExecutorBridgeAdapter: currentAddresses.wormholeExecutorAdapterTempo,
+        currentChainWormholeExecutorBridgeAdapter: currentAddresses.wormholeExecutorAdapter,
         destinationChainWormholeExecutorBridgeAdapter: destinationAddresses.wormholeExecutorAdapter,
         destinationChainId: destinationAddresses.chainId
       });

@@ -6,7 +6,7 @@ import '../BaseDeployerScript.sol';
 import {TempoPathConfig} from './TempoPathConfig.sol';
 
 abstract contract DeployHLAdapter is BaseDeployerScript, BaseHLAdapter {
-  function _execute(Addresses memory addresses) internal virtual override {
+  function _execute(Addresses memory addresses) internal override {
     addresses.hlAdapter = _deployAdapter(addresses.crossChainController);
   }
 
@@ -210,12 +210,8 @@ contract Tempo is DeployHLAdapter {
   }
 }
 
-/// @dev serves only the Ethereum -> Tempo path, with a higher base gas limit for delivery on Tempo
+/// @dev Ethereum adapter for the Tempo path, with a higher base gas limit for delivery on Tempo
 contract Ethereum_Tempo is DeployHLAdapter {
-  function _execute(Addresses memory addresses) internal override {
-    addresses.hlAdapterTempo = _deployAdapter(addresses.crossChainController);
-  }
-
   function HL_MAIL_BOX() internal pure override returns (address) {
     return 0xc005dc82818d67AF737725bD4bf75435d065D239;
   }
@@ -225,6 +221,9 @@ contract Ethereum_Tempo is DeployHLAdapter {
     return _getAddresses(ChainIds.TEMPO).crossChainController;
   }
 
+  /// @dev these adapters are deployed for the Tempo path with a 700k base gas limit and overwrite
+  /// `hlAdapter` as the current Ethereum adapter. A later path reusing them inherits the 700k base,
+  /// so redeploy with its own base if it doesn't need it.
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
     return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
   }
