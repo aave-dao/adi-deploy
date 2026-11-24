@@ -1,0 +1,25 @@
+scripts/adapters/DeployHL.s.sol
+  s_04a2169a2aa7fb::t_467976e4bac95c 224
+scripts/adapters/DeployWormholeExecutor.s.sol
+  s_04a2169a2aa7fb::t_467976e4bac95c 183
+tests/tempo/TempoDeliveryTest.t.sol
+  s_04a2169a2aa7fb::t_467976e4bac95c 163
+scripts/adapters/DeployCCIPAdapter.s.sol
+  s_04a2169a2aa7fb::t_467976e4bac95c 287
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "00654638f1c3f0db1c99a93a31bfb0107b6d6645",
+  "prompts": {},
+  "sessions": {
+    "s_04a2169a2aa7fb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4e1bed15-82d2-4350-b8b6-5b37a8533a77",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
