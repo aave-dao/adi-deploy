@@ -284,9 +284,6 @@ contract Ethereum_Tempo is DeployCCIPAdapter {
     return _getAddresses(ChainIds.TEMPO).crossChainController;
   }
 
-  /// @dev these adapters are deployed for the Tempo path with a 700k base gas limit and overwrite
-  /// `ccipAdapter` as the current Ethereum adapter. A later path reusing them inherits the 700k
-  /// base, so redeploy with its own base if it doesn't need it.
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
     return TempoPathConfig.ETHEREUM_PROVIDER_GAS_LIMIT;
   }
