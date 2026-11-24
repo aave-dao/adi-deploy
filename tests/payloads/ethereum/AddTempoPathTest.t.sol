@@ -9,7 +9,7 @@ import {ChainIds} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
 import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
-import {Ethereum_Tempo_Path_Payload} from '../../../src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol';
+import {Ethereum_Tempo_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol';
 
 interface IOwnable {
   function owner() external view returns (address);
@@ -45,7 +45,18 @@ contract EthereumAddTempoPathPayloadTest is PayloadEthereumScript, ADITestBase, 
       new EthereumTempoWormholeCode(_tempo.crossChainController).getAdapterCode()
     );
 
-    _payload = _deployPayload(_getPayloadArgs(_ethereum, _tempo));
+    _payload = _deployPayload(
+      AddForwarderAdapterArgs({
+        crossChainController: _ethereum.crossChainController,
+        currentChainHLBridgeAdapter: _ethereum.hlAdapter,
+        destinationChainHLBridgeAdapter: _tempo.hlAdapter,
+        currentChainCCIPBridgeAdapter: _ethereum.ccipAdapter,
+        destinationChainCCIPBridgeAdapter: _tempo.ccipAdapter,
+        currentChainWormholeExecutorBridgeAdapter: _ethereum.wormholeExecutorAdapter,
+        destinationChainWormholeExecutorBridgeAdapter: _tempo.wormholeExecutorAdapter,
+        destinationChainId: DESTINATION_CHAIN_ID()
+      })
+    );
   }
 
   function test_defaultTest() public {

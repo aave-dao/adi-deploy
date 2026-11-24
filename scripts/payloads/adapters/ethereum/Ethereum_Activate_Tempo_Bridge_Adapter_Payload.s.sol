@@ -19,28 +19,20 @@ abstract contract Ethereum_Activate_Tempo_Bridge_Adapter_Payload is BaseDeployer
     return _deployByteCode(payloadCode, PAYLOAD_SALT());
   }
 
-  /// @dev the current Ethereum adapters in deployments/ethereum.json, deployed for the Tempo path
-  function _getPayloadArgs(
-    Addresses memory currentAddresses,
-    Addresses memory destinationAddresses
-  ) internal pure returns (AddForwarderAdapterArgs memory) {
-    return
-      AddForwarderAdapterArgs({
-        crossChainController: currentAddresses.crossChainController,
-        currentChainCCIPBridgeAdapter: currentAddresses.ccipAdapter,
-        destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,
-        currentChainHLBridgeAdapter: currentAddresses.hlAdapter,
-        destinationChainHLBridgeAdapter: destinationAddresses.hlAdapter,
-        currentChainWormholeExecutorBridgeAdapter: currentAddresses.wormholeExecutorAdapter,
-        destinationChainWormholeExecutorBridgeAdapter: destinationAddresses.wormholeExecutorAdapter,
-        destinationChainId: destinationAddresses.chainId
-      });
-  }
-
   function _execute(Addresses memory addresses) internal virtual override {
     Addresses memory destinationAddresses = _getAddresses(DESTINATION_CHAIN_ID());
-    require(destinationAddresses.chainId == DESTINATION_CHAIN_ID(), 'wrong destination');
 
-    _deployPayload(_getPayloadArgs(addresses, destinationAddresses));
+    _deployPayload(
+      AddForwarderAdapterArgs({
+        crossChainController: addresses.crossChainController,
+        currentChainHLBridgeAdapter: addresses.hlAdapter,
+        destinationChainHLBridgeAdapter: destinationAddresses.hlAdapter,
+        currentChainCCIPBridgeAdapter: addresses.ccipAdapter,
+        destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,
+        currentChainWormholeExecutorBridgeAdapter: addresses.wormholeExecutorAdapter,
+        destinationChainWormholeExecutorBridgeAdapter: destinationAddresses.wormholeExecutorAdapter,
+        destinationChainId: DESTINATION_CHAIN_ID()
+      })
+    );
   }
 }
