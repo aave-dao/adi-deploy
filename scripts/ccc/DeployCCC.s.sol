@@ -227,3 +227,14 @@ contract Monad is BaseCCCNetworkDeployment {
     return ChainIds.MONAD;
   }
 }
+
+contract Tempo is BaseCCCNetworkDeployment {
+  /// @dev Chainlink "AAVE Network Emergency Count (Tempo)"
+  function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
+    return 0x0Bd931F734D4fA4F6e7566225Ce02B19996D8Ff4;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+}

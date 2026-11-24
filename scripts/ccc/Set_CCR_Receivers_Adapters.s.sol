@@ -537,3 +537,27 @@ contract Monad is BaseSetCCRAdapters {
     return receiverBridgeAdaptersToAllow;
   }
 }
+
+contract Tempo is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](3);
+    receiverBridgeAdaptersToAllow[0] = addresses.ccipAdapter;
+    receiverBridgeAdaptersToAllow[1] = addresses.hlAdapter;
+    receiverBridgeAdaptersToAllow[2] = addresses.wormholeExecutorAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}

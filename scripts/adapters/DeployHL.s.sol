@@ -8,6 +8,11 @@ abstract contract DeployHLAdapter is BaseDeployerScript, BaseHLAdapter {
   function _execute(Addresses memory addresses) internal override {
     addresses.hlAdapter = _deployAdapter(addresses.crossChainController);
   }
+
+  /// @dev creation code + constructor args, used to predict the CREATE2 address in tests
+  function getAdapterCode() external view returns (bytes memory) {
+    return _getAdapterByteCode(_getAddresses(TRANSACTION_NETWORK()).crossChainController);
+  }
 }
 
 contract Ethereum is DeployHLAdapter {
@@ -180,6 +185,53 @@ contract Monad is DeployHLAdapter {
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
       .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+contract Tempo is DeployHLAdapter {
+  function HL_MAIL_BOX() internal pure override returns (address) {
+    return 0x3a867fCfFeC2B790970eeBDC9023E75B0a172aa7;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+/// @dev Ethereum adapter for the Tempo path, with a higher base gas limit for delivery on Tempo
+contract Ethereum_Tempo is DeployHLAdapter {
+  function HL_MAIL_BOX() internal pure override returns (address) {
+    return 0xc005dc82818d67AF737725bD4bf75435d065D239;
+  }
+
+  /// @dev Tempo CrossChainController, from deployments/tempo.json
+  function TEMPO_CCC() internal view virtual returns (address) {
+    return _getAddresses(ChainIds.TEMPO).crossChainController;
+  }
+
+  function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
+    return 700_000;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.TEMPO;
+    remoteCCCByNetwork[0].crossChainController = TEMPO_CCC();
 
     return remoteCCCByNetwork;
   }

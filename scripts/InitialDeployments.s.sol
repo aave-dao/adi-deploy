@@ -393,3 +393,17 @@ contract Monad is BaseInitialDeployment {
     return 0xa9d0EAFF48cE1DF468f9eAeb7e628c413343F6A2; // GovernanceV3Monad.EXECUTOR_LVL_1;
   }
 }
+
+contract Tempo is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xEB0682d148e874553008730f0686ea89db7DA412; // MiscTempo.TRANSPARENT_PROXY_FACTORY
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return 0x502fDdcC5586cf94BD0D313798f2006984D53DAF; // GovernanceV3Tempo.EXECUTOR_LVL_1
+  }
+}

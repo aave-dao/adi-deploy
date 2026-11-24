@@ -244,3 +244,29 @@ contract Monad is Script, UpdateCCCPermissionsMonad {
     vm.stopBroadcast();
   }
 }
+
+contract UpdateCCCPermissionsTempo is UpdateCCCPermissions {
+  function targetOwner() public pure override returns (address) {
+    return 0x502fDdcC5586cf94BD0D313798f2006984D53DAF; // executor
+  }
+
+  function targetADIGuardian() public pure override returns (address) {
+    return 0xa0A8c560982F1CefA05EDe49e85CB69CDbe785B2; // Granular Guardian
+  }
+
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
+    address[] memory contracts = new address[](1);
+    contracts[0] = 0x913020De1C53903d53f29eeD57468448C8CD9442; // CCC
+    return contracts;
+  }
+}
+
+contract Tempo is Script, UpdateCCCPermissionsTempo {
+  function run() external {
+    vm.startBroadcast();
+
+    _changeOwnerAndGuardian();
+
+    vm.stopBroadcast();
+  }
+}

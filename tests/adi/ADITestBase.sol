@@ -757,7 +757,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](21);
+      uint256[] memory chainIds = new uint256[](22);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -779,6 +779,7 @@ contract ADITestBase is Test {
       chainIds[18] = ChainIds.XLAYER;
       chainIds[19] = ChainIds.MEGAETH;
       chainIds[20] = ChainIds.MONAD;
+      chainIds[21] = ChainIds.TEMPO;
 
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {

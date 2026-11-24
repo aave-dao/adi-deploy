@@ -1,0 +1,24 @@
+## Raw diff
+
+```json
+{
+  "forwarderAdaptersByChain": {
+    "4217": {
+      "from": "",
+      "to": {
+        "0x620f5754D0C138caBf57a66Ce1870414dfFE76A5": "0xe38507B340a961693c68Cb0EE540A3D532564c50",
+        "0x98773E8eacB50996E17359079CDF37c72b3A403c": "0xA33e1319559AA18D1A073096E26F481D8A17B2c9",
+        "0xf3323eCB2CD0c6eF6F75DFc74C2E82cE38FAcdEe": "0xf93916e51145d4d4BB0C9f970a96DbC367f2B145"
+      }
+    }
+  },
+  "optimalBandwidthByChain": {
+    "4217": {
+      "optimalBandwidth": {
+        "from": "0",
+        "to": "2"
+      }
+    }
+  }
+}
+```

@@ -137,3 +137,61 @@ contract Monad is DeployRemoteWormholeExecutorAdapter {
     return ChainIds.MONAD;
   }
 }
+
+contract Tempo is DeployRemoteWormholeExecutorAdapter {
+  function WORMHOLE_CORE() internal pure override returns (address) {
+    return 0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6;
+  }
+
+  /// @dev Tempo only receives governance messages and never sends to other chains, so the quoter router,
+  /// which is only called when sending, is never used. Wormhole has no on-chain quoter router on Tempo and
+  /// the constructor rejects address(0), so the Tempo Wormhole Executor is passed as a placeholder.
+  function EXECUTOR_QUOTER_ROUTER() internal pure override returns (address) {
+    return 0xA3640464E5543182E5F587f346B6Ac1E604d1625;
+  }
+
+  /// @dev receive-only
+  function REFUND_ADDRESS() internal pure override returns (address) {
+    return address(0);
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.TEMPO;
+  }
+}
+
+/// @dev Ethereum adapter for the Tempo path, with a higher base gas limit for delivery on Tempo
+contract Ethereum_Tempo is DeployWormholeExecutorAdapter {
+  function WORMHOLE_CORE() internal pure override returns (address) {
+    return 0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B;
+  }
+
+  function EXECUTOR_QUOTER_ROUTER() internal pure override returns (address) {
+    return 0xF22F1c0A3a8Cb42F695601731974784C499C4EF3;
+  }
+
+  function REFUND_ADDRESS() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  /// @dev Tempo CrossChainController, from deployments/tempo.json
+  function TEMPO_CCC() internal view virtual returns (address) {
+    return _getAddresses(ChainIds.TEMPO).crossChainController;
+  }
+
+  function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
+    return 700_000;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.TEMPO;
+    remoteCCCByNetwork[0].crossChainController = TEMPO_CCC();
+
+    return remoteCCCByNetwork;
+  }
+}
