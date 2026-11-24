@@ -26,6 +26,7 @@ struct NetworkAddresses {
   Addresses xlayer;
   Addresses megaeth;
   Addresses monad;
+  Addresses tempo;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -74,7 +75,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       plasma: _getAddresses(ChainIds.PLASMA),
       xlayer: _getAddresses(ChainIds.XLAYER),
       megaeth: _getAddresses(ChainIds.MEGAETH),
-      monad: _getAddresses(ChainIds.MONAD)
+      monad: _getAddresses(ChainIds.MONAD),
+      tempo: _getAddresses(ChainIds.TEMPO)
     });
 
     // polygon path
@@ -297,20 +299,37 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // Monad
+    // bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.ccipAdapter,
+    //   destinationBridgeAdapter: networkAddresses.monad.ccipAdapter,
+    //   destinationChainId: networkAddresses.monad.chainId
+    // });
+    // bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.hlAdapter,
+    //   destinationBridgeAdapter: networkAddresses.monad.hlAdapter,
+    //   destinationChainId: networkAddresses.monad.chainId
+    // });
+    // bridgeAdaptersToEnable[2] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.lzAdapter,
+    //   destinationBridgeAdapter: networkAddresses.monad.lzAdapter,
+    //   destinationChainId: networkAddresses.monad.chainId
+    // });
+
+    // Tempo
     bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.ccipAdapter,
-      destinationBridgeAdapter: networkAddresses.monad.ccipAdapter,
-      destinationChainId: networkAddresses.monad.chainId
+      destinationBridgeAdapter: networkAddresses.tempo.ccipAdapter,
+      destinationChainId: networkAddresses.tempo.chainId
     });
     bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.hlAdapter,
-      destinationBridgeAdapter: networkAddresses.monad.hlAdapter,
-      destinationChainId: networkAddresses.monad.chainId
+      destinationBridgeAdapter: networkAddresses.tempo.hlAdapter,
+      destinationChainId: networkAddresses.tempo.chainId
     });
     bridgeAdaptersToEnable[2] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
-      currentChainBridgeAdapter: addresses.lzAdapter,
-      destinationBridgeAdapter: networkAddresses.monad.lzAdapter,
-      destinationChainId: networkAddresses.monad.chainId
+      currentChainBridgeAdapter: addresses.wormholeExecutorAdapter,
+      destinationBridgeAdapter: networkAddresses.tempo.wormholeExecutorAdapter,
+      destinationChainId: networkAddresses.tempo.chainId
     });
 
     return bridgeAdaptersToEnable;
