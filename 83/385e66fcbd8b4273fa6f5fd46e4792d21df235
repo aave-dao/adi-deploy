@@ -1,0 +1,26 @@
+tests/payloads/ethereum/AddTempoPathTest.t.sol
+  s_04a2169a2aa7fb::t_49864a87625552 129
+  s_04a2169a2aa7fb::t_f842947d293b32 111
+  s_04a2169a2aa7fb::t_f0bf1295ed536d 132
+  s_04a2169a2aa7fb::t_78c58d4ce821b8 160
+diffs/adi_add_tempo_path_to_adiethereum_before_adi_add_tempo_path_to_adiethereum_after.md
+  s_04a2169a2aa7fb::t_b78b4c4113846c 14-21
+src/adapter_payloads/Ethereum_Tempo_Path_Payload.sol
+  s_04a2169a2aa7fb::t_eb1e3e61a4ce88 76-94
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "83385e66fcbd8b4273fa6f5fd46e4792d21df235",
+  "prompts": {},
+  "sessions": {
+    "s_04a2169a2aa7fb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4e1bed15-82d2-4350-b8b6-5b37a8533a77",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
