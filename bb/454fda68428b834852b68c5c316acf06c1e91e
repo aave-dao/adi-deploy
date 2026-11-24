@@ -1,0 +1,23 @@
+deployments/ethereum.json
+  s_4d44556f6db725::t_a220f000762dba 5,16,33
+deployments/tempo.json
+  s_4d44556f6db725::t_c68b9618855791 1-36
+scripts/helpers/UpdateCCCPermissions.s.sol
+  s_4d44556f6db725::t_ae576423f5606a 254,259
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bb454fda68428b834852b68c5c316acf06c1e91e",
+  "prompts": {},
+  "sessions": {
+    "s_4d44556f6db725": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "52bc8458-1bee-40f4-8780-3839e566783a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
