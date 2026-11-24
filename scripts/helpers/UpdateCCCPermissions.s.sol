@@ -2,15 +2,14 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
-import {DeployerHelpers, Addresses, ChainIds} from '../BaseDeployerScript.sol';
 import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
 
 abstract contract UpdateCCCPermissions {
-  function targetOwner() public view virtual returns (address);
+  function targetOwner() public pure virtual returns (address);
 
-  function targetADIGuardian() public view virtual returns (address);
+  function targetADIGuardian() public pure virtual returns (address);
 
-  function aDIContractsToUpdate() public view virtual returns (address[] memory);
+  function aDIContractsToUpdate() public pure virtual returns (address[] memory);
 
   function _changeOwnerAndGuardian(
     address owner,
@@ -246,28 +245,23 @@ contract Monad is Script, UpdateCCCPermissionsMonad {
   }
 }
 
-/// @dev the CCC and Granular Guardian are read from deployments/tempo.json
-contract UpdateCCCPermissionsTempo is Script, UpdateCCCPermissions {
-  function _tempoAddresses() internal view returns (Addresses memory) {
-    return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(ChainIds.TEMPO), vm);
-  }
-
+contract UpdateCCCPermissionsTempo is UpdateCCCPermissions {
   function targetOwner() public pure override returns (address) {
     return 0x502fDdcC5586cf94BD0D313798f2006984D53DAF; // executor
   }
 
-  function targetADIGuardian() public view override returns (address) {
-    return _tempoAddresses().granularCCCGuardian;
+  function targetADIGuardian() public pure override returns (address) {
+    return address(0); // Granular Guardian
   }
 
-  function aDIContractsToUpdate() public view override returns (address[] memory) {
+  function aDIContractsToUpdate() public pure override returns (address[] memory) {
     address[] memory contracts = new address[](1);
-    contracts[0] = _tempoAddresses().crossChainController;
+    contracts[0] = address(0); // CCC
     return contracts;
   }
 }
 
-contract Tempo is UpdateCCCPermissionsTempo {
+contract Tempo is Script, UpdateCCCPermissionsTempo {
   function run() external {
     vm.startBroadcast();
 
