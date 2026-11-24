@@ -1,0 +1,21 @@
+deployments/pre_prod_ethereum.json
+  s_4d44556f6db725::t_06fcb756d94c6e 5,9,12,15-16,19,25,27,33
+deployments/pre_prod_tempo.json
+  s_4d44556f6db725::t_1ba26a57eed64f 1-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8505957ba9211297d29f2a3b7d79338c75c29004",
+  "prompts": {},
+  "sessions": {
+    "s_4d44556f6db725": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "52bc8458-1bee-40f4-8780-3839e566783a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AlbertoCentonze <11707683+AlbertoCentonze@users.noreply.github.com>"
+    }
+  }
+}
